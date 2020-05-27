@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1590516114430.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "5FF66BF7",
+    "lastKnownWriteTime" : 1590557625,
+    "last_content_update" : 1590604139893,
+    "path" : "~/Desktop/TumorGenerator/R/generateTumor.R",
+    "project_path" : "R/generateTumor.R",
+    "properties" : {
+        "cursorPosition" : "21,1",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

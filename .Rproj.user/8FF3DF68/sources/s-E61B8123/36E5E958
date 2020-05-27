@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1590550814611.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "36E5E958",
+    "lastKnownWriteTime" : 1590551252,
+    "last_content_update" : 1590551252,
+    "path" : "~/Desktop/TumorGenerator/src/setup.h",
+    "project_path" : "src/setup.h",
+    "properties" : {
+        "cursorPosition" : "113,26",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 11,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "h"
+}

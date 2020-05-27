@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1590521666547.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "99F211D6",
+    "lastKnownWriteTime" : 1586051149,
+    "last_content_update" : 1586051149,
+    "path" : "~/Desktop/Tumor_generator_local/app.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "308,101",
+        "scrollLine" : "279"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
