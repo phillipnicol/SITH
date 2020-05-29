@@ -1,6 +1,6 @@
 
 
-generateTumor <- function(N = 100000, b = 0.25, d = 0.13, u = 0.01, du = 0.00003, s = 1.1, cutoff = 0.01) {
+generateTumor <- function(N = 100000, b = 0.25, d = 0.13, u = 0.01, du = 0.003, s = 1.1, cutoff = 0.01) {
   input <- list()
   input$params <- c(N, b, d, u, du, s)
   tumor <- simulate_tumor(input)
