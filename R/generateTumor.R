@@ -8,15 +8,27 @@ generateTumor <- function(N = 100000, b = 0.25, d = 0.13, u = 0.01, du = 0.00003
   out$cell_ids <- data.frame(tumor[[1]])
   colnames(out$cell_ids) <- c("x", "y", "z", "allele", "nmuts", "distance")
   
-  out$species_dict <- data.frame(tumor[[2]]); nc <- ncol(out$species_dict)
-  out$species_dict <- out$species_dict[out$species_dict[,nc] > 0,]
-  out$species_dict <- out$species_dict[order(-out$species[,nc]),]
+  out$alleles <- data.frame(tumor[[2]]); nc <- ncol(out$alleles)
+  out$alleles <- out$alleles[out$alleles[,nc] > 0,]
+  out$alleles <- out$alleles[order(-out$alleles[,nc]),]
 
   df <-  as.data.frame(tumor[[3]])
   ix <- which(df[,1] > cutoff*N)
-  out$muts <- cbind(ix - 1, df[ix,], df[ix,]/N)
+  out$muts <- as.data.frame(cbind(ix - 1, df[ix,], df[ix,]/N))
   out$muts <- out$muts[order(-out$muts[,3]),]
   colnames(out$muts) <- c("id", "count", "MAF")
+  
+  out$phylo_tree <- as.data.frame(tumor[[4]])
+  colnames(out$phylo_tree) <- c("parent", "child")
+  
+  color_scheme_mat <- tumor[[5]]
+  out$color_scheme <- apply(color_scheme_mat, 2, function(x) {
+    return(rgb(x[1],x[2],x[3],1))
+  })
+  
+  out$drivers <- tumor[[7]]
+  
+  out$params <- input$params
   
   return(out)
 }

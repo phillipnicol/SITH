@@ -3,31 +3,31 @@
         "definitions" : [
             {
                 "column" : 6,
-                "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/gillespie.h",
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/gillespie.h",
                 "kind" : 6,
                 "line" : 2,
-                "name" : "birth_cell(int, int, int &, double, double, double, double)",
+                "name" : "birth_cell(int &, int, int &, double, double, double, double, std::vector<std::vector<int> > &)",
                 "parent_name" : "",
-                "usr" : "c:@F@birth_cell#I#I#&I#d#d#d#d#"
+                "usr" : "c:@F@birth_cell#&I#I#S0_#d#d#d#d#&$@N@std@N@__1@S@vector>#$@N@std@N@__1@S@vector>#I#$@N@std@N@__1@S@allocator>#I#$@N@std@N@__1@S@allocator>#S3_#"
             },
             {
                 "column" : 6,
-                "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/gillespie.h",
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/gillespie.h",
                 "kind" : 6,
-                "line" : 85,
-                "name" : "gillespie_step(int &, int &, int, bool ***, double &, double, double, double, double)",
+                "line" : 123,
+                "name" : "gillespie_step(int &, int &, int, bool ***, double &, double, double, double, double, int &)",
                 "parent_name" : "",
-                "usr" : "c:@F@gillespie_step#&I#S0_#I#***b#&d#d#d#d#d#"
+                "usr" : "c:@F@gillespie_step#&I#S0_#I#***b#&d#d#d#d#d#S0_#"
             }
         ],
-        "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/gillespie.h",
-        "file_last_write" : 1590526637.000000
+        "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/gillespie.h",
+        "file_last_write" : 1590685837.000000
     },
     {
         "definitions" : [
             {
                 "column" : 6,
-                "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/neighbors.h",
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/neighbors.h",
                 "kind" : 6,
                 "line" : 3,
                 "name" : "free_neighbor(int, bool ***, int)",
@@ -36,7 +36,7 @@
             },
             {
                 "column" : 5,
-                "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/neighbors.h",
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/neighbors.h",
                 "kind" : 6,
                 "line" : 68,
                 "name" : "random_neighbor(int, bool ***)",
@@ -45,7 +45,7 @@
             },
             {
                 "column" : 6,
-                "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/neighbors.h",
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/neighbors.h",
                 "kind" : 6,
                 "line" : 86,
                 "name" : "update_lattice(int, int, bool ***)",
@@ -53,29 +53,47 @@
                 "usr" : "c:@F@update_lattice#I#I#***b#"
             }
         ],
-        "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/neighbors.h",
+        "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/neighbors.h",
         "file_last_write" : 1586360947.000000
     },
     {
         "definitions" : [
             {
                 "column" : 6,
-                "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/post_processing.h",
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/post_processing.h",
                 "kind" : 6,
                 "line" : 3,
                 "name" : "write_results(int &, int &, Rcpp::NumericMatrix &, Rcpp::IntegerMatrix &, Rcpp::IntegerVector &)",
                 "parent_name" : "",
                 "usr" : "c:@F@write_results#&I#S0_#S0_#S0_#S0_#"
+            },
+            {
+                "column" : 6,
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/post_processing.h",
+                "kind" : 6,
+                "line" : 28,
+                "name" : "write_phylo_tree(std::vector<std::vector<int> > &, Rcpp::IntegerMatrix &)",
+                "parent_name" : "",
+                "usr" : "c:@F@write_phylo_tree#&$@N@std@N@__1@S@vector>#$@N@std@N@__1@S@vector>#I#$@N@std@N@__1@S@allocator>#I#$@N@std@N@__1@S@allocator>#S2_#&I#"
+            },
+            {
+                "column" : 21,
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/post_processing.h",
+                "kind" : 6,
+                "line" : 35,
+                "name" : "get_color_scheme(int &)",
+                "parent_name" : "",
+                "usr" : "c:@F@get_color_scheme#&I#"
             }
         ],
-        "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/post_processing.h",
-        "file_last_write" : 1590556067.000000
+        "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/post_processing.h",
+        "file_last_write" : 1590685821.000000
     },
     {
         "definitions" : [
             {
                 "column" : 5,
-                "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/sampler.h",
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/sampler.h",
                 "kind" : 6,
                 "line" : 12,
                 "name" : "random_index(int &, int &)",
@@ -83,74 +101,74 @@
                 "usr" : "c:@F@random_index#&I#S0_#"
             }
         ],
-        "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/sampler.h",
+        "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/sampler.h",
         "file_last_write" : 1590538447.000000
     },
     {
         "definitions" : [
             {
                 "column" : 8,
-                "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/setup.h",
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/setup.h",
                 "kind" : 3,
-                "line" : 30,
+                "line" : 38,
                 "name" : "specie",
                 "parent_name" : "",
                 "usr" : "c:@S@specie"
             },
             {
                 "column" : 8,
-                "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/setup.h",
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/setup.h",
                 "kind" : 3,
-                "line" : 38,
+                "line" : 46,
                 "name" : "cell",
                 "parent_name" : "",
                 "usr" : "c:@S@cell"
             },
             {
                 "column" : 9,
-                "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/setup.h",
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/setup.h",
                 "kind" : 6,
-                "line" : 47,
+                "line" : 56,
                 "name" : "init_lattice",
                 "parent_name" : "",
                 "usr" : "c:@F@init_lattice#"
             },
             {
                 "column" : 6,
-                "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/setup.h",
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/setup.h",
                 "kind" : 6,
-                "line" : 73,
+                "line" : 82,
                 "name" : "trashcan(bool ***)",
                 "parent_name" : "",
                 "usr" : "c:@F@trashcan#***b#"
             },
             {
                 "column" : 6,
-                "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/setup.h",
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/setup.h",
                 "kind" : 6,
-                "line" : 87,
+                "line" : 96,
                 "name" : "initial_cell(int &, double, double)",
                 "parent_name" : "",
                 "usr" : "c:@F@initial_cell#&I#d#d#"
             },
             {
                 "column" : 5,
-                "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/setup.h",
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/setup.h",
                 "kind" : 6,
-                "line" : 110,
+                "line" : 119,
                 "name" : "max_mut(int &)",
                 "parent_name" : "",
                 "usr" : "c:@F@max_mut#&I#"
             }
         ],
-        "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/setup.h",
-        "file_last_write" : 1590551252.000000
+        "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/setup.h",
+        "file_last_write" : 1590685849.000000
     },
     {
         "definitions" : [
             {
                 "column" : 12,
-                "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/simulation.cpp",
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/simulation.cpp",
                 "kind" : 6,
                 "line" : 9,
                 "name" : "simulate_tumor(Rcpp::List)",
@@ -158,14 +176,14 @@
                 "usr" : "c:@F@simulate_tumor#I#"
             }
         ],
-        "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/simulation.cpp",
-        "file_last_write" : 1590556552.000000
+        "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/simulation.cpp",
+        "file_last_write" : 1590685854.000000
     },
     {
         "definitions" : [
             {
                 "column" : 8,
-                "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/time_course.h",
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/time_course.h",
                 "kind" : 6,
                 "line" : 2,
                 "name" : "jaccard_similarity(std::vector<int>, std::vector<int>)",
@@ -174,7 +192,7 @@
             },
             {
                 "column" : 8,
-                "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/time_course.h",
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/time_course.h",
                 "kind" : 6,
                 "line" : 32,
                 "name" : "avg_mutants(int &)",
@@ -183,7 +201,7 @@
             },
             {
                 "column" : 8,
-                "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/time_course.h",
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/time_course.h",
                 "kind" : 6,
                 "line" : 43,
                 "name" : "avg_jaccard(int &, int)",
@@ -192,7 +210,7 @@
             },
             {
                 "column" : 6,
-                "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/time_course.h",
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/time_course.h",
                 "kind" : 6,
                 "line" : 56,
                 "name" : "time_course_data(int &, double, std::ofstream &, std::ofstream &)",
@@ -200,7 +218,7 @@
                 "usr" : "c:@F@time_course_data#&I#d#S0_#S0_#"
             }
         ],
-        "file" : "/Users/phillipnicol/Desktop/TumorGenerator/src/time_course.h",
+        "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/time_course.h",
         "file_last_write" : 1586539283.000000
     }
 ]

@@ -1,3 +1,0 @@
-useDynLib(TumorGenerator, .registration=TRUE)
-export(generateTumor, visualizeTumor, simulate_tumor)
-importFrom(Rcpp, evalCpp)

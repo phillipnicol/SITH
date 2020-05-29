@@ -21,9 +21,17 @@
 #define time_course 0
 #define interval 500000
 
+#define c_eps 0.05
+#define rgb_ub 0.91
+#define rgb_lb 0.09
+
 //Initialize prng
 std::random_device rd;
 std::mt19937 generator(rd());
+
+//Make static distributions 
+std::poisson_distribution<int> mut(1.0);
+std::bernoulli_distribution dmut(1.0);
 
 //Defined types for simulation
 //A specie is a unique genotype in the cell population
@@ -42,7 +50,8 @@ struct cell {
 
 //Global variables
 double p_max;
-int drivers = 0;
+std::vector<int> drivers; 
+int total_mutations;
 
 bool*** init_lattice(void)
 {
