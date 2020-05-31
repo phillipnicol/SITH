@@ -8,3 +8,6 @@ src/*.dll
 .DS_Store
 .Rhistory
 .DS_Store
+src/.DS_Store
+.Rhistory
+.Rhistory

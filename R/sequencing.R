@@ -8,10 +8,10 @@ randomSingleCells <- function(tumor, ncells, noise = 0.0) {
   counter <- 1
   for(i in cells) {
     allele <- tumor$cell_ids[i,4] + 1
-    row <- which(rownames(tumor$alleles) == sprintf("%d", allele))
+    row <- tumor$alleles[allele,]
     df[counter,] <- rep(0, ncol(df))
     rownames(df)[counter] <- sprintf("SC-%d", counter)
-    for(j in tumor$alleles[row,]) {
+    for(j in row) {
       if(j == -1) {
         break
       }
@@ -49,9 +49,9 @@ singleCell <- function(tumor, pos, noise = 0.0) {
   df <- data.frame(matrix(nrow = 1, ncol = 0))
 
   allele <- cell_df[,4] + 1
-  row <- which(rownames(tumor$alleles) == sprintf("%d", allele))
+  row <- tumor$alleles[allele,]
   
-  for(j in tumor$alleles[row,]) {
+  for(j in row) {
     if(j == -1) {
       break
     }

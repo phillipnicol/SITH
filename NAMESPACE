@@ -1,3 +1,4 @@
 useDynLib(TumorGenerator, .registration=TRUE)
-export(generateTumor, visualizeTumor, simulate_tumor)
+export(generateTumor, visualizeTumor, simulate_tumor, spatialDistribution,
+bulkSample, randomBulkSamples, singleCell, randomSingleCells)
 importFrom(Rcpp, evalCpp)

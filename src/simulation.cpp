@@ -17,6 +17,7 @@ Rcpp::List simulate_tumor(Rcpp::List input) {
     double u = params[3];
     double du = params[4];
     double multiplicative_update = params[5];
+    bool verbose = params[6];
 
     double time = 0;
     p_max = wt_br + wt_dr;
@@ -31,7 +32,7 @@ Rcpp::List simulate_tumor(Rcpp::List input) {
 
     std::vector<std::vector<int> > phylo_tree(2, std::vector<int>());
 
-    std::cout << "Initializing structures..." << std::endl;
+    if(verbose) {Rcpp::Rcout << "Initializing structures ... ...\n";}
     //initialize empty lattice
     bool*** lattice = init_lattice();
 
@@ -49,18 +50,19 @@ Rcpp::List simulate_tumor(Rcpp::List input) {
         ++iteration;
         if(iteration % interval == 0)
         {
-            Rcpp::Rcout << "Simulated time: " << time << " Population: " << cells.size() << std::endl;
+            if(verbose) {Rcpp::Rcout << "Simulated time: " << time << " days. Population is " << cells.size() << " cells. \n";}
             iteration = 1;
         }
     }
 
     //Print summary of simulation
-    std::cout << "Process Complete... Releasing memory..." << std::endl;
-    std::cout << "There are " << drivers.size() << " driver mutations" << std::endl;
-    std::cout << "Simulated time is " << time << std::endl;
-    end = clock();
-    std::cout << "Simulation completed in " << (double)(end - start)/CLOCKS_PER_SEC << " s." << std::endl;
+    if(verbose) {Rcpp::Rcout << "Simulation complete. Releasing memory ... ... \n";}
     trashcan(lattice);   
+
+    if(verbose) {Rcpp::Rcout << "Simulated time is " << time << "\n";}
+
+    end = clock();
+    if(verbose) {Rcpp::Rcout << "Simulation completed in " << (double)(end - start)/CLOCKS_PER_SEC << " s.\n";}
 
     //save the data
     Rcpp::NumericMatrix cell_coords(cells.size(), 6);

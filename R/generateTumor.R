@@ -1,21 +1,21 @@
 
 
-generateTumor <- function(N = 100000, b = 0.25, d = 0.13, u = 0.01, du = 0.003, s = 1.1, cutoff = 0.01) {
+generateTumor <- function(N = 100000, b = 0.25, d = 0.13, u = 0.01, du = 0.003, s = 1.1, cutoff = 0.01, verbose = TRUE) {
   input <- list()
-  input$params <- c(N, b, d, u, du, s)
+  input$params <- c(N, b, d, u, du, s, verbose)
   tumor <- simulate_tumor(input)
   out <- list()
   out$cell_ids <- data.frame(tumor[[1]])
   colnames(out$cell_ids) <- c("x", "y", "z", "allele", "nmuts", "distance")
   
   out$alleles <- data.frame(tumor[[2]]); nc <- ncol(out$alleles)
-  out$alleles <- out$alleles[out$alleles[,nc] > 0,]
-  out$alleles <- out$alleles[order(-out$alleles[,nc]),]
 
   df <-  as.data.frame(tumor[[3]])
-  ix <- which(df[,1] > cutoff*N)
-  out$muts <- as.data.frame(cbind(ix - 1, df[ix,], df[ix,]/N))
-  out$muts <- out$muts[order(-out$muts[,3]),]
+  #ix <- which(df[,1] > cutoff*N)
+  ix <- as.data.frame(0:(nrow(df)-1))
+  out$muts <- cbind(ix, df[,1], df[,1]/N)
+  #out$muts <- as.data.frame(cbind(ix - 1, df[ix,], df[ix,]/N))
+  #out$muts <- out$muts[order(-out$muts[,3]),]
   colnames(out$muts) <- c("id", "count", "MAF")
   
   out$phylo_tree <- as.data.frame(tumor[[4]])

@@ -15,6 +15,15 @@ spatialDistribution <- function(tumor, make.plot = TRUE) {
   out$mean_mutant <- cbind(vals, mean_mutant)
   colnames(out$mean_mutant) <- c("Distance", "Mean # mutations")
   
+  driver_ids <- tumor$cell_ids[which(tumor$cell_ids$allele %in% tumor$drivers),]
+  vals <- c(0:max(driver_ids$distance))
+  mean_driver <- as.data.frame(sapply(vals, function(x) {
+    return(nrow(driver_ids[driver_ids$distance == x,])/nrow(tumor$cell_ids[tumor$cell_ids$distance == x,]) )
+  }))
+  vals <- as.data.frame(vals)
+  out$mean_driver <- cbind(vals, mean_driver)
+  colnames(out$mean_driver) <- c("Distance", "Mean # drivers")
+  
   #Now do jaccard similarity 
   N <- 500
   jaccard_mat <- matrix(0, nrow = N, ncol = 2)
@@ -28,14 +37,11 @@ spatialDistribution <- function(tumor, make.plot = TRUE) {
     allele1 <- tumor$cell_ids$allele[s[1]] + 1
     allele2 <- tumor$cell_ids$allele[s[2]] + 1
     
-    row1 <- which(rownames(tumor$alleles) == sprintf("%d", allele1))
-    row2 <- which(rownames(tumor$alleles) == sprintf("%d", allele2))
-    
-    v1 <- tumor$alleles[row1 ,-ncol(tumor$alleles)]
-    v1 <- v1[v1 != -1]
-    
-    v2 <- tumor$alleles[row2 ,-ncol(tumor$alleles)]
-    v2 <- v2[v2 != -1]
+    row1 <- tumor$alleles[allele1,-ncol(tumor$alleles)]
+    row2 <- tumor$alleles[allele2,-ncol(tumor$alleles)]
+
+    v1 <- row1[row1 != -1]
+    v2 <- row2[row2 != -1]
     
     jaccard_mat[i,1] <- round(dist)
     jaccard_mat[i,2] <- length(intersect(v1, v2))/length(union(v1,v2))
@@ -56,10 +62,17 @@ spatialDistribution <- function(tumor, make.plot = TRUE) {
 
 make_plot <- function(out.spatial, tumor) {
   par(mfrow=c(2,2))
+  
   plot(out.spatial$mean_mutant[,1], out.spatial$mean_mutant[,2], pch = 4, col = "blue", xlab = "Euclid. distance",
        ylab = "Mean # of mutants per cell", main = "Mutations per cell")
-  plot(out.spatial$jaccard[,1], out.spatial$jaccard[,2], pch = 4, col = "red", main = "Jaccard index comparison",
+  
+  plot(out.spatial$mean_driver[,1], out.spatial$mean_driver[,2], pch = 4, col = "orange", xlab = "Euclid. distance", 
+       ylab = "Mean # of drivers per cell", main = "Drivers per cell")
+  
+  plot(out.spatial$jaccard[,1], out.spatial$jaccard[,2], pch = 16, col = "red", main = "Jaccard index comparison",
        xlab = "Euclid. distance between cells", ylab = "Jaccard index")
+  
+  tumor$muts <- tumor$muts[order(tumor$muts$MAF, decreasing = T),]; tumor$muts <- tumor$muts[tumor$muts$MAF > 0.01,]
   plot(1:length(tumor$muts$MAF), tumor$muts$MAF, pch = 16, col = "green", xlab = "k-th largest clone", 
        ylab = "Mutation allele frequency", main = "Clone sizes")
   
