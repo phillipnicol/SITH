@@ -6,29 +6,26 @@
 #include"post_processing.h"
 
 // [[Rcpp::export]]
-Rcpp::List simulate_tumor(Rcpp::List input) {
-    clock_t start, end;
+Rcpp::List simulate_tumor(Rcpp::List input) { 
+    clock_t start, end; 
     start = clock();
 
-    std::vector<double> params = input["params"];
-    int tumor_size = params[0];
-    double wt_br = params[1];
-    double wt_dr = params[2];
-    double u = params[3];
-    double du = params[4];
-    double multiplicative_update = params[5];
+    std::vector<double> params = input["params"]; 
+    int tumor_size = params[0]; 
+    double wt_br = params[1]; 
+    double wt_dr = params[2]; 
+    double u = params[3]; 
+    double du = params[4]; 
+    double multiplicative_update = params[5]; 
     bool verbose = params[6];
 
-    double time = 0;
-    p_max = wt_br + wt_dr;
-
+    double time = 0; 
 
     //INIT global vars
-    total_mutations = 0;
+    total_mutations = 0; 
     drivers.clear(); 
-    p_max = 1.0;
-    mut = std::poisson_distribution<int>(u);
-    dmut = std::bernoulli_distribution(du);
+    p_max = wt_br + wt_dr; 
+    nbhd = Rcpp::IntegerVector::create(1,2,3,4,5,6);
 
     std::vector<std::vector<int> > phylo_tree(2, std::vector<int>());
 

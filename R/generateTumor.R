@@ -13,11 +13,9 @@
 #' @param verbose Whether or not to print simulation details to the R console
 #' 
 #' @return A list \code{out}. 
-generateTumor <- function(N = 100000, b = 0.25, d = 0.13, u = 0.01, du = 0.003, s = 1.1, 
-                          seed = -1, verbose = TRUE) {
-  if(seed == -1) {seed <- sample((-2^{31}+1):(2^{31}-1), 1)}
+generateTumor <- function(N = 100000, b = 0.25, d = 0.13, u = 0.01, du = 0.003, s = 1.1, verbose = TRUE) {
   input <- list()
-  input$params <- c(N, b, d, u, du, s, verbose, seed)
+  input$params <- c(N, b, d, u, du, s, verbose)
   tumor <- simulate_tumor(input)
   out <- list()
   out$cell_ids <- data.frame(tumor[[1]])

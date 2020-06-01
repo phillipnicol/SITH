@@ -1,14 +1,14 @@
 // preprocessing
-#include<iostream>
-#include<vector>
-#include<random>
-#include<algorithm>
-#include<cmath>
-#include<fstream>
-#include<set>
-#include<float.h>
-#include<string>
-#include<Rcpp.h>
+#include<iostream> 
+#include<vector> 
+#include<random> 
+#include<algorithm> 
+#include<cmath> 
+#include<fstream> 
+#include<set> 
+#include<float.h> 
+#include<string> 
+#include<Rcpp.h> 
 
 
 //define dimensions of lattice
@@ -51,6 +51,7 @@ struct cell {
 double p_max;
 std::vector<int> drivers; 
 int total_mutations;
+Rcpp::IntegerVector nbhd = Rcpp::IntegerVector::create(1,2,3,4,5,6);
 
 bool*** init_lattice(void)
 {
@@ -124,3 +125,5 @@ int max_mut(std::vector<specie> &species) {
     }
     return max;
 }
+
+inline int randWrapper(const int n) { return floor(unif_rand()*n); }

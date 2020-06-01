@@ -14,13 +14,15 @@ int random_index(std::vector<cell> &cells, std::vector<specie> &species)
     int index, trial;
     double u_trial;
 
-    std::uniform_int_distribution<int> rand_int(0,cells.size() - 1);
-    std::uniform_real_distribution<double> rand_real(0, p_max);
+    //std::uniform_int_distribution<int> rand_int(0,cells.size() - 1);
+    //std::uniform_real_distribution<double> rand_real(0, p_max);
     while(true)
     {
-        trial = rand_int(generator);
+        //check this
+        trial = R::runif(0, cells.size() - 1);
         
-        u_trial = rand_real(generator);
+        u_trial = R::runif(0, p_max);
+        
         if(u_trial < cells[trial].species.b + cells[trial].species.d)
         {
             index = trial;

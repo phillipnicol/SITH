@@ -65,17 +65,14 @@ bool free_neighbor(cell cell, bool*** lattice, int key)
     return false;
 }
 
-int random_neighbor(cell cell, bool*** lattice)
-{
+int random_neighbor(cell cell, bool*** lattice) {
     //randomly permute an array of keys
-    static int nbhd[6] = {1,2,3,4,5,6};
-    std::shuffle(nbhd, nbhd+6, generator);
-    for(int i = 0; i < 6; ++i)
-    {
-        if(free_neighbor(cell, lattice, nbhd[i]) == true)
-        {
+    std::random_shuffle(nbhd.begin(), nbhd.end(), randWrapper);
+
+    for(int i = 0; i < 6; ++i) {
+        if(free_neighbor(cell, lattice, nbhd[i]) == true) {
             //if a free neighbor is found, this is the key
-            return nbhd[i];
+            return nbhd[i]; 
         }
     }
     //otherwise, no free neighbors, and key is 0

@@ -1,5 +1,6 @@
 
-cell birth_cell(cell &cell, int key, std::vector<specie> &species, double wt_dr, double u, double du, double multiplicative_udpate, std::vector<std::vector<int> > &phylo_tree) {
+cell birth_cell(cell &cell, const int key, std::vector<specie> &species, const double wt_dr, const double u, const double du, 
+                const double multiplicative_udpate, std::vector<std::vector<int> > &phylo_tree) {
     struct cell new_cell;
     new_cell.x = cell.x;
     new_cell.y = cell.y;
@@ -32,7 +33,7 @@ cell birth_cell(cell &cell, int key, std::vector<specie> &species, double wt_dr,
     } 
 
     //daughter cell 
-    int nmuts = mut(generator);
+    int nmuts = R::rpois(u);
     if(nmuts > 0) {
         specie new_species;
         new_species.id = species.size(); 
@@ -45,7 +46,7 @@ cell birth_cell(cell &cell, int key, std::vector<specie> &species, double wt_dr,
             phylo_tree[0].push_back(cell.species.genotype.back());
             phylo_tree[1].push_back(total_mutations); 
 
-            if(dmut(generator) == 1) {
+            if((int)R::rnbinom(1,du) == 1) {
                 //apply multiplicative update
                 br *= multiplicative_udpate;
                 drivers.push_back(total_mutations);          
@@ -75,7 +76,7 @@ cell birth_cell(cell &cell, int key, std::vector<specie> &species, double wt_dr,
     }
 
     //original cell may mutate as well
-    nmuts = mut(generator);
+    nmuts = R::rpois(u);
     if(nmuts > 0) {
         specie new_species;
         new_species.id = species.size(); 
@@ -89,7 +90,7 @@ cell birth_cell(cell &cell, int key, std::vector<specie> &species, double wt_dr,
             phylo_tree[0].push_back(cell.species.genotype.back());
             phylo_tree[1].push_back(total_mutations); 
 
-            if(dmut(generator) == 1) {
+            if((int)R::rnbinom(1,du) == 1) {
                 //apply multiplicative update
                 br *= multiplicative_udpate;
                 drivers.push_back(total_mutations);          
@@ -115,8 +116,8 @@ cell birth_cell(cell &cell, int key, std::vector<specie> &species, double wt_dr,
 }
 
 
-void gillespie_step(std::vector<cell> &cells, std::vector<specie> &species, int index, bool*** lattice, double &time,
-              double wt_dr, double u, double du, double multiplicative_update, std::vector<std::vector<int> > &phylo_tree) {
+void gillespie_step(std::vector<cell> &cells, std::vector<specie> &species, const int index, bool*** lattice, double &time,
+              const double wt_dr, const double u, const double du, const double multiplicative_update, std::vector<std::vector<int> > &phylo_tree) {
 
     //Randomly selected cell (from previous step)
     cell cell = cells[index];
@@ -127,17 +128,17 @@ void gillespie_step(std::vector<cell> &cells, std::vector<specie> &species, int 
     {
         //key != 0 so there is at least one free neighbor
         //Probability of birth event
-        std::bernoulli_distribution dist(cell.species.b/(cell.species.b + cell.species.d));
-        if(dist(generator) == 1)
+        int bd = R::rbinom(1,cell.species.b/(cell.species.b + cell.species.d));
+        //std::bernoulli_distribution dist(cell.species.b/(cell.species.b + cell.species.d));
+        if(bd == 1)
         {
             //Birth
             update_lattice(cell, key, lattice);
             struct cell new_cell = birth_cell(cells[index], key, species, wt_dr, u, du, multiplicative_update, phylo_tree);
             cells.push_back(new_cell);
             //Update time (approximate)
-            double lambda = cells.size()*p_max;
-            std::exponential_distribution<double> dist(lambda);
-            time += dist(generator);            
+            double lambda = 1/(cells.size()*p_max);
+            time += R::rexp(lambda);            
         }
         else
         {
@@ -151,9 +152,8 @@ void gillespie_step(std::vector<cell> &cells, std::vector<specie> &species, int 
                 cells.pop_back();   
                 --species[cell.species.id].count;
                 //update time(approximate)
-                double lambda = cells.size()*p_max;
-                std::exponential_distribution<double> dist(lambda);
-                time += dist(generator);             
+                double lambda = 1/(cells.size()*p_max);
+                time += R::rexp(lambda);           
             }
         }
     }
@@ -161,8 +161,9 @@ void gillespie_step(std::vector<cell> &cells, std::vector<specie> &species, int 
     {
         //Key = 0 and the cell has no free neighbors
         //No birth can occur, but the cell could still die
-        std::bernoulli_distribution dist(cell.species.b/(cell.species.b + cell.species.d));
-        if(dist(generator) == 0)
+        int bd = R::rbinom(1,cell.species.b/(cell.species.b + cell.species.d));
+        //std::bernoulli_distribution dist(cell.species.b/(cell.species.b + cell.species.d));
+        if(bd == 0)
         {
             //Death
             if(cells.size() > 1)
@@ -172,9 +173,8 @@ void gillespie_step(std::vector<cell> &cells, std::vector<specie> &species, int 
                 std::swap(cells[index], cells.back());
                 cells.pop_back();
                 --species[cell.species.id].count;
-                double lambda = cells.size()*p_max;
-                std::exponential_distribution<double> dist(lambda);
-                time += dist(generator);    
+                double lambda = 1/(cells.size()*p_max);
+                time += R::rexp(lambda);
             }        
         }
     }
