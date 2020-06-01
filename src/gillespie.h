@@ -31,10 +31,6 @@ cell birth_cell(cell &cell, int key, std::vector<specie> &species, double wt_dr,
         --new_cell.z;
     } 
 
-    static std::normal_distribution<double> noise(0.0, c_eps);
-    static std::uniform_real_distribution<double> inclination(0, M_PI);
-    static std::uniform_real_distribution<double> azimuth(0, 2*M_PI);
-
     //daughter cell 
     int nmuts = mut(generator);
     if(nmuts > 0) {
@@ -45,6 +41,9 @@ cell birth_cell(cell &cell, int key, std::vector<specie> &species, double wt_dr,
         for(int i = 0; i < nmuts; ++i) {
             ++total_mutations;
             new_gt.push_back(total_mutations); 
+
+            phylo_tree[0].push_back(cell.species.genotype.back());
+            phylo_tree[1].push_back(total_mutations); 
 
             if(dmut(generator) == 1) {
                 //apply multiplicative update
@@ -64,11 +63,6 @@ cell birth_cell(cell &cell, int key, std::vector<specie> &species, double wt_dr,
 
         species.push_back(new_species);
         new_cell.species = new_species;
-
-
-        //update phylo_tree
-        phylo_tree[0].push_back(cell.species.id);
-        phylo_tree[1].push_back(new_species.id);
             
     }
     else {
@@ -86,10 +80,15 @@ cell birth_cell(cell &cell, int key, std::vector<specie> &species, double wt_dr,
         specie new_species;
         new_species.id = species.size(); 
         std::vector<int> new_gt = cell.species.genotype;
+            
         double br = cell.species.b;
         for(int i = 0; i < nmuts; ++i) {
             ++total_mutations;
             new_gt.push_back(total_mutations); 
+
+            phylo_tree[0].push_back(cell.species.genotype.back());
+            phylo_tree[1].push_back(total_mutations); 
+
             if(dmut(generator) == 1) {
                 //apply multiplicative update
                 br *= multiplicative_udpate;
@@ -107,10 +106,6 @@ cell birth_cell(cell &cell, int key, std::vector<specie> &species, double wt_dr,
         }
 
         species[cell.species.id].count--;
-        
-        //update phylo_tree
-        phylo_tree[0].push_back(cell.species.id);
-        phylo_tree[1].push_back(new_species.id);
 
         species.push_back(new_species);
         cell.species = new_species;

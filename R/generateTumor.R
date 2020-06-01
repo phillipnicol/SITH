@@ -1,8 +1,23 @@
-
-
-generateTumor <- function(N = 100000, b = 0.25, d = 0.13, u = 0.01, du = 0.003, s = 1.1, cutoff = 0.01, verbose = TRUE) {
+#' Spatial simulation of tumor growth
+#' 
+#' @description Simulate the spatial growth of a tumor using a multi-type branching
+#' process on the three-dimensional integer lattice.
+#' 
+#' @param N Number of cells in the tumor
+#' @param b Cell division rate
+#' @param d Cell death rate 
+#' @param u Mutation rate. When a cell divides, both daughter cell acquire $Pois(u)$ genetic alterations
+#' @param du The probability that a genetic alteration is a driver mutation
+#' @param s The selective advantage conferred to a driver mutation. A cell with k
+#' driver mutations is given birth rate $bs^k$
+#' @param verbose Whether or not to print simulation details to the R console
+#' 
+#' @return A list \code{out}. 
+generateTumor <- function(N = 100000, b = 0.25, d = 0.13, u = 0.01, du = 0.003, s = 1.1, 
+                          seed = -1, verbose = TRUE) {
+  if(seed == -1) {seed <- sample((-2^{31}+1):(2^{31}-1), 1)}
   input <- list()
-  input$params <- c(N, b, d, u, du, s, verbose)
+  input$params <- c(N, b, d, u, du, s, verbose, seed)
   tumor <- simulate_tumor(input)
   out <- list()
   out$cell_ids <- data.frame(tumor[[1]])

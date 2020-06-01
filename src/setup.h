@@ -21,7 +21,6 @@
 #define time_course 0
 #define interval 500000
 
-#define c_eps 0.05
 #define rgb_ub 0.91
 #define rgb_lb 0.09
 

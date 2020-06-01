@@ -23,7 +23,7 @@ Rcpp::List simulate_tumor(Rcpp::List input) {
     p_max = wt_br + wt_dr;
 
 
-    //clear global vars
+    //INIT global vars
     total_mutations = 0;
     drivers.clear(); 
     p_max = 1.0;
