@@ -87,7 +87,7 @@
             }
         ],
         "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/post_processing.h",
-        "file_last_write" : 1590685821.000000
+        "file_last_write" : 1591040919.000000
     },
     {
         "definitions" : [
@@ -110,7 +110,7 @@
                 "column" : 8,
                 "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/setup.h",
                 "kind" : 3,
-                "line" : 37,
+                "line" : 26,
                 "name" : "specie",
                 "parent_name" : "",
                 "usr" : "c:@S@specie"
@@ -119,7 +119,7 @@
                 "column" : 8,
                 "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/setup.h",
                 "kind" : 3,
-                "line" : 45,
+                "line" : 34,
                 "name" : "cell",
                 "parent_name" : "",
                 "usr" : "c:@S@cell"
@@ -128,7 +128,7 @@
                 "column" : 9,
                 "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/setup.h",
                 "kind" : 6,
-                "line" : 56,
+                "line" : 45,
                 "name" : "init_lattice",
                 "parent_name" : "",
                 "usr" : "c:@F@init_lattice#"
@@ -137,7 +137,7 @@
                 "column" : 6,
                 "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/setup.h",
                 "kind" : 6,
-                "line" : 82,
+                "line" : 71,
                 "name" : "trashcan(bool ***)",
                 "parent_name" : "",
                 "usr" : "c:@F@trashcan#***b#"
@@ -146,32 +146,41 @@
                 "column" : 6,
                 "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/setup.h",
                 "kind" : 6,
-                "line" : 96,
-                "name" : "initial_cell(int &, double, double)",
+                "line" : 85,
+                "name" : "initial_cell(std::vector<specie> &, double, double)",
                 "parent_name" : "",
-                "usr" : "c:@F@initial_cell#&I#d#d#"
+                "usr" : "c:@F@initial_cell#&$@N@std@N@__1@S@vector>#$@S@specie#$@N@std@N@__1@S@allocator>#S2_#d#d#"
             },
             {
                 "column" : 5,
                 "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/setup.h",
                 "kind" : 6,
-                "line" : 119,
-                "name" : "max_mut(int &)",
+                "line" : 108,
+                "name" : "max_mut(std::vector<specie> &)",
                 "parent_name" : "",
-                "usr" : "c:@F@max_mut#&I#"
+                "usr" : "c:@F@max_mut#&$@N@std@N@__1@S@vector>#$@S@specie#$@N@std@N@__1@S@allocator>#S2_#"
+            },
+            {
+                "column" : 6,
+                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/setup.h",
+                "kind" : 6,
+                "line" : 118,
+                "name" : "gv_init(const int, const double, const double, const double, const double, const double)",
+                "parent_name" : "",
+                "usr" : "c:@F@gv_init#1I#1d#1d#1d#1d#1d#"
             },
             {
                 "column" : 12,
                 "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/setup.h",
                 "kind" : 6,
-                "line" : 129,
+                "line" : 133,
                 "name" : "randWrapper(const int)",
                 "parent_name" : "",
                 "usr" : "c:@F@randWrapper#1I#"
             }
         ],
         "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/setup.h",
-        "file_last_write" : 1591026099.000000
+        "file_last_write" : 1591069212.000000
     },
     {
         "definitions" : [
@@ -179,55 +188,13 @@
                 "column" : 12,
                 "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/simulation.cpp",
                 "kind" : 6,
-                "line" : 9,
+                "line" : 8,
                 "name" : "simulate_tumor(Rcpp::List)",
                 "parent_name" : "",
                 "usr" : "c:@F@simulate_tumor#I#"
             }
         ],
         "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/simulation.cpp",
-        "file_last_write" : 1591026114.000000
-    },
-    {
-        "definitions" : [
-            {
-                "column" : 8,
-                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/time_course.h",
-                "kind" : 6,
-                "line" : 2,
-                "name" : "jaccard_similarity(std::vector<int>, std::vector<int>)",
-                "parent_name" : "",
-                "usr" : "c:@F@jaccard_similarity#$@N@std@N@__1@S@vector>#I#$@N@std@N@__1@S@allocator>#I#S0_#"
-            },
-            {
-                "column" : 8,
-                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/time_course.h",
-                "kind" : 6,
-                "line" : 32,
-                "name" : "avg_mutants(int &)",
-                "parent_name" : "",
-                "usr" : "c:@F@avg_mutants#&I#"
-            },
-            {
-                "column" : 8,
-                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/time_course.h",
-                "kind" : 6,
-                "line" : 43,
-                "name" : "avg_jaccard(int &, int)",
-                "parent_name" : "",
-                "usr" : "c:@F@avg_jaccard#&I#I#"
-            },
-            {
-                "column" : 6,
-                "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/time_course.h",
-                "kind" : 6,
-                "line" : 56,
-                "name" : "time_course_data(int &, double, std::ofstream &, std::ofstream &)",
-                "parent_name" : "",
-                "usr" : "c:@F@time_course_data#&I#d#S0_#S0_#"
-            }
-        ],
-        "file" : "/Users/phillipnicol/Documents/GitHub/TumorGenerator/src/time_course.h",
-        "file_last_write" : 1586539283.000000
+        "file_last_write" : 1591135809.000000
     }
 ]

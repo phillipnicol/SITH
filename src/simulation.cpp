@@ -2,7 +2,6 @@
 #include"neighbors.h"
 #include"sampler.h"
 #include"gillespie.h"
-#include"time_course.h"
 #include"post_processing.h"
 
 // [[Rcpp::export]]
@@ -21,11 +20,7 @@ Rcpp::List simulate_tumor(Rcpp::List input) {
 
     double time = 0; 
 
-    //INIT global vars
-    total_mutations = 0; 
-    drivers.clear(); 
-    p_max = wt_br + wt_dr; 
-    nbhd = Rcpp::IntegerVector::create(1,2,3,4,5,6);
+    gv_init(tumor_size, wt_br, wt_dr, u, du, multiplicative_update);
 
     std::vector<std::vector<int> > phylo_tree(2, std::vector<int>());
 
@@ -56,7 +51,7 @@ Rcpp::List simulate_tumor(Rcpp::List input) {
     if(verbose) {Rcpp::Rcout << "Simulation complete. Releasing memory ... ... \n";}
     trashcan(lattice);   
 
-    if(verbose) {Rcpp::Rcout << "Simulated time is " << time << "\n";}
+    if(verbose) {Rcpp::Rcout << "Simulated time is " << time << " days \n";}
 
     end = clock();
     if(verbose) {Rcpp::Rcout << "Simulation completed in " << (double)(end - start)/CLOCKS_PER_SEC << " s.\n";}
@@ -86,5 +81,6 @@ Rcpp::List simulate_tumor(Rcpp::List input) {
     out.push_back(color_scheme);
     out.push_back(species.size());
     out.push_back(driver_muts);
+    out.push_back(time);
     return(out);
 }

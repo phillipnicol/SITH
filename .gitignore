@@ -11,3 +11,4 @@ src/*.dll
 src/.DS_Store
 .Rhistory
 .Rhistory
+inst/doc

@@ -19,8 +19,9 @@ Your Name, email optional.
 Maintainer: Your Name <your@email.com>
 }
 \references{
-  This optional section can contain literature or other references for
-  background information.
+K. Chkhaidze, T. Heide, B. Werner, M. Williams, W. Huang, G. Caravagna, T. Graham, and A. Sottoriva. 
+Spatially con- strained tumour growth affects the patterns of clonal selection and neutral drift in cancer genomic data. 
+\emph{PLOS Computational Biology}, 2019.
 }
 \keyword{ package }
 \seealso{
@@ -28,7 +29,13 @@ Maintainer: Your Name <your@email.com>
 }
 \examples{
   \dontrun{
-     ## Optional simple examples of the most important functions
-     ## These can be in \dontrun{} and \donttest{} blocks.   
+    ## Simulate a tumor with 100000 cells
+    out <- simulateTumor(N = 100000)
+    
+    ## Interactive visualization of tumor (if rgl is installed)
+    visualizeTumor(tumor_instance = out)
+    
+    ## View a summary of the spatial distribution of mutations
+    sp <- spatialDistribution(tumor = out)
   }
 }

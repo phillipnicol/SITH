@@ -1,19 +1,54 @@
-#' Spatial simulation of tumor growth
+#' @title Spatial simulation of tumor growth
 #' 
-#' @description Simulate the spatial growth of a tumor using a multi-type branching
+#' @description Simulate the spatial growth of a tumor with a multi-type branching
 #' process on the three-dimensional integer lattice.
 #' 
-#' @param N Number of cells in the tumor
-#' @param b Cell division rate
-#' @param d Cell death rate 
-#' @param u Mutation rate. When a cell divides, both daughter cell acquire $Pois(u)$ genetic alterations
-#' @param du The probability that a genetic alteration is a driver mutation
+#' @param N Number of cells in the tumor.
+#' @param b Cell division rate.
+#' @param d Cell death rate.
+#' @param u Mutation rate. When a cell divides, both daughter cell acquire \eqn{Pois(u)} genetic alterations
+#' @param du The probability that a genetic alteration is a driver mutation.
 #' @param s The selective advantage conferred to a driver mutation. A cell with k
-#' driver mutations is given birth rate $bs^k$
-#' @param verbose Whether or not to print simulation details to the R console
+#' driver mutations is given birth rate \eqn{bs^k}.
+#' @param verbose Whether or not to print simulation details to the R console.
 #' 
-#' @return A list \code{out}. 
-generateTumor <- function(N = 100000, b = 0.25, d = 0.13, u = 0.01, du = 0.003, s = 1.1, verbose = TRUE) {
+#' @return A list with components 
+#' \itemize{
+#' \item \code{cell_ids} - A data frame containing the information for the simulated cells. (x,y,z) position, allele ID number
+#' (note that 0 is the wild-type allele),
+#' number of genetic alterations, and Euclidean distance from origin are included. 
+#' \item \code{muts} - A data frame consisting of the mutation ID number, the count of the mutation within the population, 
+#' and the mutation allele frequency (which is the count divided by N). 
+#' \item \code{phylo_tree} - A data frame giving all of the information necessary to determine the order of mutations. The parent
+#' of a mutation is defined to be the most recent mutation that precedes it. Since the ID 0 corresponds to the initial mutation,
+#' 0 does not have any parents and is thus the root of the tree. 
+#' \item \code{alleles} - A data frame containing the information about the mutations that make up each allele. The \eqn{i}-th 
+#' row of this data frame corresponds to the allele ID \eqn{i-1}. The positive numbers in each row correspond to the IDs of the 
+#' mutations present in that allele, while a -1 is simply a placeholder and indicates no mutation. The count column gives
+#' the number of cells which have the specific allele. 
+#' \item \code{color_scheme} - A vector containing an assignment of a color to each allele.
+#' \item \code{drivers} - A vector containing the ID numbers for the driver mutations.
+#' \item \code{time} - The simulated time (in days). 
+#' \item \code{params} - The parameters used for the simulation. 
+#' } 
+#' 
+#' @details The model is based upon Waclaw et. al. (2015), although the simulation algorithm differs. A growth of a canerous tumor
+#' is modeled using an exponential birth-death process on the three-dimensional integer lattice. Each cell is given a birth rate
+#' \eqn{b} and a death rate \eqn{d} such that the time until cell division or cell death is exponentially distributed with 
+#' parameters \eqn{b} and \eqn{d}, respectively. A cell can replicate if at least one of the six sites adjacent to it is
+#' unoccupied. Each time cell replication occurs, both daughter cells recevie \eqn{Pois(u)} genetic alterations. Each 
+#' alteration is a driver mutation with some probability \eqn{du}. A cell with k driver mutations is given birth rate 
+#' \eqn{bs^k}. The simulation begins with a single cell at the origin at time \eqn{t = 0}. 
+#' 
+#' The model is simulated using a Gillespie algorithm. 
+#' 
+#' @references B. Waclaw, I. Bozic, M. Pittman, R. Hruban, B. Vogelstein and M. Nowak. A spatial model predicts
+#' that dispersal and cell turnover limit intratumor heterogeneity. \emph{Nature}, pages 261-264, 2015. 
+#' 
+#' D. Gillespie. Exact stochastic simulation of coupled chemical reactions. \emph{The Journal of Physical Chemistry},
+#' volume 81, pages 2340-2361, 1970.
+#' 
+simulateTumor <- function(N = 250000, b = 0.25, d = 0.18, u = 0.01, du = 0.003, s = 1.05, verbose = TRUE) {
   input <- list()
   input$params <- c(N, b, d, u, du, s, verbose)
   tumor <- simulate_tumor(input)
@@ -22,13 +57,11 @@ generateTumor <- function(N = 100000, b = 0.25, d = 0.13, u = 0.01, du = 0.003, 
   colnames(out$cell_ids) <- c("x", "y", "z", "allele", "nmuts", "distance")
   
   out$alleles <- data.frame(tumor[[2]]); nc <- ncol(out$alleles)
+  colnames(out$alleles)[ncol(out$alleles)] <- "count"
 
   df <-  as.data.frame(tumor[[3]])
-  #ix <- which(df[,1] > cutoff*N)
   ix <- as.data.frame(0:(nrow(df)-1))
   out$muts <- cbind(ix, df[,1], df[,1]/N)
-  #out$muts <- as.data.frame(cbind(ix - 1, df[ix,], df[ix,]/N))
-  #out$muts <- out$muts[order(-out$muts[,3]),]
   colnames(out$muts) <- c("id", "count", "MAF")
   
   out$phylo_tree <- as.data.frame(tumor[[4]])
@@ -40,6 +73,7 @@ generateTumor <- function(N = 100000, b = 0.25, d = 0.13, u = 0.01, du = 0.003, 
   })
   
   out$drivers <- tumor[[7]]
+  out$time <- tumor[[8]]
   
   out$params <- input$params
   

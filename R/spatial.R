@@ -1,5 +1,9 @@
 
-spatialDistribution <- function(tumor, make.plot = TRUE) {
+#' Quantify the spatial distribution of mutants
+#' 
+#' @param tumor The output of \link[TumorGenerator]{simulateTumor}. 
+#' @return The sum of \code{x} and \code{y}.
+spatialDistribution <- function(tumor, N = 500, cutoff = 0.01, make.plot = TRUE) {
   out <- list()
   
   #First do mean number of mutants by distance
@@ -25,7 +29,6 @@ spatialDistribution <- function(tumor, make.plot = TRUE) {
   colnames(out$mean_driver) <- c("Distance", "Mean # drivers")
   
   #Now do jaccard similarity 
-  N <- 500
   jaccard_mat <- matrix(0, nrow = N, ncol = 2)
   
   for(i in 1:N) {
@@ -55,24 +58,24 @@ spatialDistribution <- function(tumor, make.plot = TRUE) {
   out$jaccard <- cbind(vals, mean_jaccard)
   colnames(out$jaccard) <- c("Distance", "Mean jaccard index")
   
-  if(make.plot) {make_plot(out, tumor)}
+  if(make.plot) {make_plot(out, tumor, cutoff)}
   
   return(out)
 }
 
-make_plot <- function(out.spatial, tumor) {
+make_plot <- function(out.spatial, tumor, cutoff) {
   par(mfrow=c(2,2))
   
-  plot(out.spatial$mean_mutant[,1], out.spatial$mean_mutant[,2], pch = 4, col = "blue", xlab = "Euclid. distance",
+  plot(out.spatial$mean_mutant[,1], out.spatial$mean_mutant[,2], pch = 4, col = "blue", xlab = "Euclid. distance from origin",
        ylab = "Mean # of mutants per cell", main = "Mutations per cell")
   
-  plot(out.spatial$mean_driver[,1], out.spatial$mean_driver[,2], pch = 4, col = "orange", xlab = "Euclid. distance", 
-       ylab = "Mean # of drivers per cell", main = "Drivers per cell")
+  hist(tumor$cell_ids$nmuts, breaks = 0:max(tumor$cell_ids$nmuts), main = "Histogram of mutations per cell",
+       xlab = "Number of mutations")
   
   plot(out.spatial$jaccard[,1], out.spatial$jaccard[,2], pch = 16, col = "red", main = "Jaccard index comparison",
        xlab = "Euclid. distance between cells", ylab = "Jaccard index")
   
-  tumor$muts <- tumor$muts[order(tumor$muts$MAF, decreasing = T),]; tumor$muts <- tumor$muts[tumor$muts$MAF > 0.01,]
+  tumor$muts <- tumor$muts[order(tumor$muts$MAF, decreasing = T),]; tumor$muts <- tumor$muts[tumor$muts$MAF > cutoff,]
   plot(1:length(tumor$muts$MAF), tumor$muts$MAF, pch = 16, col = "green", xlab = "k-th largest clone", 
        ylab = "Mutation allele frequency", main = "Clone sizes")
   

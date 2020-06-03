@@ -1,0 +1,20 @@
+---
+title: "Spatial simulations of tumor growth using the TumorGenerator R package"
+author: "Phillip B. Nicol"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(TumorGenerator)
+```

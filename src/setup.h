@@ -1,11 +1,8 @@
 // preprocessing
 #include<iostream> 
 #include<vector> 
-#include<random> 
 #include<algorithm> 
 #include<cmath> 
-#include<fstream> 
-#include<set> 
 #include<float.h> 
 #include<string> 
 #include<Rcpp.h> 
@@ -23,14 +20,6 @@
 
 #define rgb_ub 0.91
 #define rgb_lb 0.09
-
-//Initialize prng
-std::random_device rd;
-std::mt19937 generator(rd());
-
-//Make static distributions 
-std::poisson_distribution<int> mut(1.0);
-std::bernoulli_distribution dmut(1.0);
 
 //Defined types for simulation
 //A specie is a unique genotype in the cell population
@@ -124,6 +113,21 @@ int max_mut(std::vector<specie> &species) {
         }
     }
     return max;
+}
+
+void gv_init(const int N, const double wt_br, const double wt_dr, const double u, const double du, const double s) {
+    total_mutations = 0; 
+    drivers.clear(); 
+    p_max = wt_br + wt_dr; 
+    nbhd = Rcpp::IntegerVector::create(1,2,3,4,5,6);
+
+    //error checking 
+    if(N < 1) {Rcpp::stop("N must be at least 2.");}
+    if(wt_dr > wt_br) {Rcpp::stop("Death rate can not be greater than birth rate.");}
+    if((wt_br < 0) || (wt_dr < 0)) {Rcpp::stop("Birth and death rates must be non-negative.");}
+    if(u < 0) {Rcpp::stop("u must be non-negative");}
+    if(du < 0.0 || du > 1.0) {Rcpp::stop("du must be in [0,1]");}
+    if(s < 0) {Rcpp::stop("s must be non-negative");}
 }
 
 inline int randWrapper(const int n) { return floor(unif_rand()*n); }
