@@ -6,8 +6,6 @@
 
 // [[Rcpp::export]]
 Rcpp::List simulate_tumor(Rcpp::List input) { 
-    clock_t start, end; 
-    start = clock();
 
     std::vector<double> params = input["params"]; 
     int tumor_size = params[0]; 
@@ -15,12 +13,13 @@ Rcpp::List simulate_tumor(Rcpp::List input) {
     double wt_dr = params[2]; 
     double u = params[3]; 
     double du = params[4]; 
-    double multiplicative_update = params[5]; 
+    double s = params[5]; 
     bool verbose = params[6];
 
     double time = 0; 
 
-    gv_init(tumor_size, wt_br, wt_dr, u, du, multiplicative_update);
+    //Initialize global variables
+    gv_init(tumor_size, wt_br, wt_dr, u, du, s);
 
     std::vector<std::vector<int> > phylo_tree(2, std::vector<int>());
 
@@ -35,10 +34,16 @@ Rcpp::List simulate_tumor(Rcpp::List input) {
 
     int index;
     int iteration = 1;
+
+    //start clock
+    clock_t start, end; 
+    start = clock();
+
+    //main simulation loop
     while(cells.size() < tumor_size)
     {
         index = random_index(cells, species);
-        gillespie_step(cells, species, index, lattice, time, wt_dr, u, du, multiplicative_update, phylo_tree);
+        gillespie_step(cells, species, index, lattice, time, wt_dr, u, du, s, phylo_tree);
         ++iteration;
         if(iteration % interval == 0)
         {

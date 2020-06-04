@@ -1,36 +1,21 @@
 
 cell birth_cell(cell &cell, const int key, std::vector<specie> &species, const double wt_dr, const double u, const double du, 
-                const double multiplicative_udpate, std::vector<std::vector<int> > &phylo_tree) {
+                const double s, std::vector<std::vector<int> > &phylo_tree) {
     struct cell new_cell;
     new_cell.x = cell.x;
     new_cell.y = cell.y;
     new_cell.z = cell.z;
 
-    //based on key value, coordinates of new cell are chosen
-    if(key == 1)
-    {
-        ++new_cell.x;
+    //Check for which coordinate to update 
+    switch(key) {
+        case 1: ++new_cell.x; break;
+        case 2: --new_cell.x; break; 
+        case 3: ++new_cell.y; break; 
+        case 4: --new_cell.y; break; 
+        case 5: ++new_cell.z; break; 
+        case 6: --new_cell.z; break; 
+        default: Rcpp::stop("Algorithm internal error.");
     }
-    else if(key == 2)
-    {
-        --new_cell.x;
-    }
-    else if(key == 3)
-    {
-        ++new_cell.y;
-    }
-    else if(key == 4)
-    {
-        --new_cell.y;
-    }
-    else if(key == 5)
-    {
-        ++new_cell.z;
-    }
-    else
-    {
-        --new_cell.z;
-    } 
 
     //daughter cell 
     int nmuts = R::rpois(u);
@@ -46,9 +31,9 @@ cell birth_cell(cell &cell, const int key, std::vector<specie> &species, const d
             phylo_tree[0].push_back(cell.species.genotype.back());
             phylo_tree[1].push_back(total_mutations); 
 
-            if((int)R::rnbinom(1,du) == 1) {
+            if((int)R::rbinom(1,du) == 1) {
                 //apply multiplicative update
-                br *= multiplicative_udpate;
+                br *= s;
                 drivers.push_back(total_mutations);          
             }
         }
@@ -71,7 +56,7 @@ cell birth_cell(cell &cell, const int key, std::vector<specie> &species, const d
         new_cell.species.b = cell.species.b;
         new_cell.species.d = cell.species.d;
         new_cell.species.id = cell.species.id;
-        new_cell.species.genotype = cell.species.genotype;
+        new_cell.species.genotype = cell.species.genotype; 
         ++species[cell.species.id].count;
     }
 
@@ -90,9 +75,9 @@ cell birth_cell(cell &cell, const int key, std::vector<specie> &species, const d
             phylo_tree[0].push_back(cell.species.genotype.back());
             phylo_tree[1].push_back(total_mutations); 
 
-            if((int)R::rnbinom(1,du) == 1) {
+            if((int)R::rbinom(1,du) == 1) {
                 //apply multiplicative update
-                br *= multiplicative_udpate;
+                br *= s;
                 drivers.push_back(total_mutations);          
             }
         }
@@ -115,9 +100,8 @@ cell birth_cell(cell &cell, const int key, std::vector<specie> &species, const d
     return new_cell;
 }
 
-
 void gillespie_step(std::vector<cell> &cells, std::vector<specie> &species, const int index, bool*** lattice, double &time,
-              const double wt_dr, const double u, const double du, const double multiplicative_update, std::vector<std::vector<int> > &phylo_tree) {
+              const double wt_dr, const double u, const double du, const double s, std::vector<std::vector<int> > &phylo_tree) {
 
     //Randomly selected cell (from previous step)
     cell cell = cells[index];
@@ -134,7 +118,7 @@ void gillespie_step(std::vector<cell> &cells, std::vector<specie> &species, cons
         {
             //Birth
             update_lattice(cell, key, lattice);
-            struct cell new_cell = birth_cell(cells[index], key, species, wt_dr, u, du, multiplicative_update, phylo_tree);
+            struct cell new_cell = birth_cell(cells[index], key, species, wt_dr, u, du, s, phylo_tree);
             cells.push_back(new_cell);
             //Update time (approximate)
             double lambda = 1/(cells.size()*p_max);

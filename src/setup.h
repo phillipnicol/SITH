@@ -118,7 +118,8 @@ int max_mut(std::vector<specie> &species) {
 void gv_init(const int N, const double wt_br, const double wt_dr, const double u, const double du, const double s) {
     total_mutations = 0; 
     drivers.clear(); 
-    p_max = wt_br + wt_dr; 
+    p_max = wt_br + wt_dr;
+     
     nbhd = Rcpp::IntegerVector::create(1,2,3,4,5,6);
 
     //error checking 
