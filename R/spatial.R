@@ -2,6 +2,9 @@
 #' Quantify the spatial distribution of mutants
 #' 
 #' @param tumor The output of \link[TumorGenerator]{simulateTumor}. 
+#' @param N TODO
+#' @param cutoff TODO
+#' @param make.plot TODO 
 #' @return The sum of \code{x} and \code{y}.
 spatialDistribution <- function(tumor, N = 500, cutoff = 0.01, make.plot = TRUE) {
   out <- list()

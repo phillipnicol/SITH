@@ -1,6 +1,17 @@
+/*
+filename: gillespie.h
+project: TumorGenerator R package
+author: Phillip B. Nicol
+license: GPL v3 
+date: June 4, 2020
+
+summary: contains functions that perform cell division, cell death, 
+mutation, and updates time. 
+*/
 
 cell birth_cell(cell &cell, const int key, std::vector<specie> &species, const double wt_dr, const double u, const double du, 
                 const double s, std::vector<std::vector<int> > &phylo_tree) {
+    //form new cell 
     struct cell new_cell;
     new_cell.x = cell.x;
     new_cell.y = cell.y;
@@ -18,6 +29,7 @@ cell birth_cell(cell &cell, const int key, std::vector<specie> &species, const d
     }
 
     //daughter cell 
+    //Receieve a poisson number of genetic alterations 
     int nmuts = R::rpois(u);
     if(nmuts > 0) {
         specie new_species;

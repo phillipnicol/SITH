@@ -1,4 +1,17 @@
-
+#' Simulate single cell sequencing data 
+#' 
+#' @description Simulate single cell sequencing data by random selecting cells from the tumor. 
+#' 
+#' @param tumor A list which is the output of \code{\link{simulateTumor}}.
+#' @param ncells The number of cells to sample.
+#' @param noise The false negative rate. 
+#' 
+#' @return A data frame with sample names on the row and mutation ID on the column. 
+#' A 1 indicates that the mutation is present in the cell and a 0 indicates the mutation is not present. 
+#' 
+#' @details TODO 
+#' 
+#' @author Phillip B. Nicol 
 
 randomSingleCells <- function(tumor, ncells, noise = 0.0) {
   cells <- sample(1:nrow(tumor$cell_ids), ncells, replace = F)
@@ -37,6 +50,20 @@ randomSingleCells <- function(tumor, ncells, noise = 0.0) {
   return(df)
 }
 
+#' Simulate single cell sequencing data 
+#' 
+#' @description Simulate single cell sequencing data by selecting a cell at a specified position 
+#' 
+#' @param tumor A list which is the output of \code{\link{simulateTumor}}.
+#' @param pos A vector of length 3 giving the (x,y,z) coordinates of the cell to sample. 
+#' @param noise The false negative rate. 
+#' 
+#' @details TODO 
+#' 
+#' @author Phillip B. Nicol
+#' 
+#' @references 
+#' 
 singleCell <- function(tumor, pos, noise = 0.0) {
   if(length(pos) != 3) {
     stop("Position must be a vector of length 3.")
@@ -64,7 +91,19 @@ singleCell <- function(tumor, pos, noise = 0.0) {
   return(df)
 }
 
-randomBulkSamples <- function(tumor, nsamples, cube_length = 5, cutoff = 0.05) {
+#' Simulate bulk sequencing data 
+#' 
+#' @description Simulate bulk sequencing data by takign a local sample of the tumor
+#' and computing the variant allele frequencies of the various mutations. 
+#' 
+#' @param tumor A list which is the output of \code{\link{simulateTumor}}.
+#' @param nsamples The number of samples to take.
+#' @param cube_length The side length of the cube in
+#' @param threshold TODO 
+randomBulkSamples <- function(tumor, nsamples, cube_length = 5, threshold = 0.05) {
+  if(cube_length %% 2 == 0 | cube_length < 1) {
+    stop("cube_length must be an odd positive integer.")
+  }
   
   cells <- sample(1:nrow(tumor$cell_ids), nsamples, replace = F)
   
@@ -86,7 +125,7 @@ randomBulkSamples <- function(tumor, nsamples, cube_length = 5, cutoff = 0.05) {
     input$alleles <- tumor$alleles
     total_sqnc <- as.data.frame(randomSingleCells(input, nrow(cell_subset)))
     total_sqnc <- colSums(total_sqnc)/bulk_size
-    total_sqnc <- total_sqnc[total_sqnc > cutoff]
+    total_sqnc <- total_sqnc[total_sqnc > threshold]
     
     total_sqnc <- as.data.frame(t(total_sqnc))
 
@@ -109,7 +148,12 @@ randomBulkSamples <- function(tumor, nsamples, cube_length = 5, cutoff = 0.05) {
   return(as.data.frame(df))
 }
 
-
+#' Quantify the spatial distribution of mutants
+#' 
+#' @param tumor The output of \link[TumorGenerator]{simulateTumor}. 
+#' @param pos TODO
+#' @param cube_length TODO 
+#' @param threshold TODO 
 bulkSample <- function(tumor, pos, cube_length = 5, threshold = 0.05) {
   if(length(pos) != 3) {
     stop("Position must be a vector of length 3.")

@@ -2,3 +2,7 @@ useDynLib(TumorGenerator, .registration=TRUE)
 export(simulateTumor, visualizeTumor, plotSlice, spatialDistribution,
 bulkSample, randomBulkSamples, singleCell, randomSingleCells)
 importFrom(Rcpp, evalCpp)
+importFrom("grDevices", "colorRampPalette", "rgb")
+importFrom("graphics", "hist", "par")
+importFrom("stats", "rbinom")
+importFrom("scatterplot3d", "scatterplot3d") 

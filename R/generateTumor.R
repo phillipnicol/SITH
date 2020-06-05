@@ -32,7 +32,7 @@
 #' \item \code{params} - The parameters used for the simulation. 
 #' } 
 #' 
-#' @details The model is based upon Waclaw et. al. (2015), although the simulation algorithm differs. A growth of a canerous tumor
+#' @details The model is based upon Waclaw et. al. (2015), although the simulation algorithm used is different. A growth of a canerous tumor
 #' is modeled using an exponential birth-death process on the three-dimensional integer lattice. Each cell is given a birth rate
 #' \eqn{b} and a death rate \eqn{d} such that the time until cell division or cell death is exponentially distributed with 
 #' parameters \eqn{b} and \eqn{d}, respectively. A cell can replicate if at least one of the six sites adjacent to it is
@@ -40,7 +40,7 @@
 #' alteration is a driver mutation with some probability \eqn{du}. A cell with k driver mutations is given birth rate 
 #' \eqn{bs^k}. The simulation begins with a single cell at the origin at time \eqn{t = 0}. 
 #' 
-#' The model is simulated using a Gillespie algorithm. 
+#' The model is simulated using a Gillespie algorithm. MAYBE WRITE A LTITLE MORE 
 #' 
 #' @references B. Waclaw, I. Bozic, M. Pittman, R. Hruban, B. Vogelstein and M. Nowak. A spatial model predicts
 #' that dispersal and cell turnover limit intratumor heterogeneity. \emph{Nature}, pages 261-264, 2015. 
@@ -49,32 +49,44 @@
 #' volume 81, pages 2340-2361, 1970.
 #' 
 simulateTumor <- function(N = 250000, b = 0.25, d = 0.18, u = 0.01, du = 0.003, s = 1.05, verbose = TRUE) {
+  #create input list
   input <- list()
   input$params <- c(N, b, d, u, du, s, verbose)
+  
+  #call Rcpp function
   tumor <- simulate_tumor(input)
+  
   out <- list()
+  
+  #position data for the N cells 
   out$cell_ids <- data.frame(tumor[[1]])
   colnames(out$cell_ids) <- c("x", "y", "z", "allele", "nmuts", "distance")
   
+  #record the information for the uniqe alleles
   out$alleles <- data.frame(tumor[[2]]); nc <- ncol(out$alleles)
   colnames(out$alleles)[ncol(out$alleles)] <- "count"
 
+  #get mutation ID and MAF 
   df <-  as.data.frame(tumor[[3]])
   ix <- as.data.frame(0:(nrow(df)-1))
   out$muts <- cbind(ix, df[,1], df[,1]/N)
   colnames(out$muts) <- c("id", "count", "MAF")
   
+  #record phylogenetic tree 
   out$phylo_tree <- as.data.frame(tumor[[4]])
   colnames(out$phylo_tree) <- c("parent", "child")
   
+  #Record colors for plotting purposes 
   color_scheme_mat <- tumor[[5]]
   out$color_scheme <- apply(color_scheme_mat, 2, function(x) {
     return(rgb(x[1],x[2],x[3],1))
   })
   
+  #record a list of drivers and the simulated time (in days)
   out$drivers <- tumor[[7]]
   out$time <- tumor[[8]]
   
+  #return parameters used for simulation 
   out$params <- input$params
   
   return(out)

@@ -1,3 +1,16 @@
+/*
+filename: simulation.cpp
+project: TumorGenerator R package
+author: Phillip B. Nicol
+license: GPL v3 
+date: June 4, 2020
+
+summary: simulation.cpp holds the main procedure for the 
+simulation of tumor growth
+*/
+
+
+
 #include"setup.h"
 #include"neighbors.h"
 #include"sampler.h"
@@ -7,6 +20,7 @@
 // [[Rcpp::export]]
 Rcpp::List simulate_tumor(Rcpp::List input) { 
 
+    //Read input list (from R)
     std::vector<double> params = input["params"]; 
     int tumor_size = params[0]; 
     double wt_br = params[1]; 
@@ -16,6 +30,7 @@ Rcpp::List simulate_tumor(Rcpp::List input) {
     double s = params[5]; 
     bool verbose = params[6];
 
+    //Init time 
     double time = 0; 
 
     //Initialize global variables
@@ -61,7 +76,7 @@ Rcpp::List simulate_tumor(Rcpp::List input) {
     end = clock();
     if(verbose) {Rcpp::Rcout << "Simulation completed in " << (double)(end - start)/CLOCKS_PER_SEC << " s.\n";}
 
-    //save the data
+    //save the data and write them to R objects 
     Rcpp::NumericMatrix cell_coords(cells.size(), 6);
 
     int maximum_mut = max_mut(species);

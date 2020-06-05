@@ -7,7 +7,7 @@
 visualizeTumor(tumor, plot.type = "normal", background = "black", axes = FALSE)
 }
 \arguments{
-\item{tumor}{The output of \code{simualteTumor}.}
+\item{tumor}{A list which is the output of \code{\link{simulateTumor}}.}
 
 \item{plot.type}{Which type of plot to draw. "Normal" assigns a random rgb value to each allele while
 "heat" colors cells with more mutations red and cells with fewer mutations blue.}

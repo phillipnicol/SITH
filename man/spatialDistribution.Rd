@@ -8,6 +8,12 @@ spatialDistribution(tumor, N = 500, cutoff = 0.01, make.plot = TRUE)
 }
 \arguments{
 \item{tumor}{The output of \link[TumorGenerator]{simulateTumor}.}
+
+\item{N}{TODO}
+
+\item{cutoff}{TODO}
+
+\item{make.plot}{TODO}
 }
 \value{
 The sum of \code{x} and \code{y}.
