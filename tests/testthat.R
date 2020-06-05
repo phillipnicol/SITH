@@ -1,4 +1,4 @@
 library(testthat)
-library(TumorGenerator)
+library(SMITH)
 
-test_check("TumorGenerator")
+test_check("SMITH")

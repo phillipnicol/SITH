@@ -1,4 +1,4 @@
-Package: TumorGenerator
+Package: SMITH
 Type: Package
 Title: What the Package Does in One 'Title Case' Line
 Version: 1.0.0
@@ -21,4 +21,4 @@ Suggests:
 LinkingTo: Rcpp
 RoxygenNote: 7.1.0
 VignetteBuilder: knitr
-Encoding: UTF-8 
+Encoding: UTF-8

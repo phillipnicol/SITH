@@ -1,6 +1,6 @@
-useDynLib(TumorGenerator, .registration=TRUE)
+useDynLib(SMITH, .registration=TRUE)
 export(simulateTumor, visualizeTumor, plotSlice, spatialDistribution,
-bulkSample, randomBulkSamples, singleCell, randomSingleCells)
+bulkSample, randomBulkSamples, singleCell, randomSingleCells, randomNeedles)
 importFrom(Rcpp, evalCpp)
 importFrom("grDevices", "colorRampPalette", "rgb")
 importFrom("graphics", "hist", "par")
