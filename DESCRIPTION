@@ -21,4 +21,4 @@ Suggests:
 LinkingTo: Rcpp
 RoxygenNote: 7.1.0
 VignetteBuilder: knitr
-Encoding: UTF-8
+Encoding: UTF-8 
