@@ -16,5 +16,15 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
+set.seed(1126490984)
 library(TumorGenerator)
 ```
+
+```{r}
+out <- simulateTumor(N = 250000, verbose = F)
+visualizeTumor(out, background = "white")
+rgl::rglwidget() 
+visualizeTumor(out, background = "white", plot.type = "heat") 
+rgl::rglwidget()
+```
+

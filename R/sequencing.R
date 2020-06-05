@@ -197,3 +197,54 @@ bulkSample <- function(tumor, pos, cube_length = 5, threshold = 0.05) {
 
 return(as.data.frame(df))
 }
+
+
+
+#' Simulate bulk sequencing data 
+#' 
+#' @description Simulate bulk sequencing data by takign a local sample of the tumor
+#' and computing the variant allele frequencies of the various mutations. 
+#' 
+#' @param tumor A list which is the output of \code{\link{simulateTumor}}.
+#' @param nsamples The number of samples to take.
+#' @param cube_length The side length of the cube in
+#' @param threshold TODO 
+randomNeedles <- function(tumor, nsamples, threshold = 0.05) {
+  cells <- sample(1:nrow(tumor$cell_ids), nsamples, replace = F)
+  
+  df <- data.frame(matrix(nrow = nsamples, ncol = 0))
+  
+  counter <- 1
+  for(i in cells) {
+    dim <- sample(1:3,2,replace = F)
+    cell_subset <- tumor$cell_ids[(tumor$cell_ids[,dim[1]] == tumor$cell_ids[i,dim[1]])
+                                  & (tumor$cell_ids[,dim[2]] == tumor$cell_ids[i,dim[2]]),]
+      
+    input <- list()
+    input$cell_ids <- cell_subset
+    input$alleles <- tumor$alleles
+    total_sqnc <- as.data.frame(randomSingleCells(input, nrow(cell_subset)))
+    total_sqnc <- colSums(total_sqnc)/nrow(cell_subset)
+    total_sqnc <- total_sqnc[total_sqnc > threshold]
+    
+    total_sqnc <- as.data.frame(t(total_sqnc))
+    
+    df[counter,] <- rep(0, ncol(df))
+    rownames(df)[counter] <- sprintf("Bulk-%d", counter)    
+    for(j in 1:ncol(total_sqnc)) {
+      if(colnames(total_sqnc)[j] %in% colnames(df)) {
+        key <- which(colnames(df) == colnames(total_sqnc)[j])
+        df[counter, key] <- total_sqnc[1,j] 
+      }
+      else {
+        df <- cbind(df, 0)
+        colnames(df)[ncol(df)] <- colnames(total_sqnc)[j]
+        df[counter, ncol(df)] <- total_sqnc[1,j]
+      }
+    }
+    counter <- counter + 1
+  }
+  
+  return(as.data.frame(df))
+}
+
