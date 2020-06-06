@@ -31,7 +31,7 @@ allele frequency. Lattice sites without cells are assumed to be normal tissue, a
 Note that \code{cube.length} is required to be an odd integer (in order to have a well-defined center point).
 }
 \examples{
-set.seed(1126490984)
+set.seed(116776544, kind = "Mersenne-Twister", normal.kind = "Inversion")
 out <- simulateTumor(N = 1000)
 df <- bulkSample(tumor = out, pos = c(0,0,0))
 

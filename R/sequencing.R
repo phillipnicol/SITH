@@ -200,7 +200,7 @@ randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05
 #' @author Phillip B. Nicol 
 #' 
 #' @examples 
-#' set.seed(1126490984)
+#' set.seed(116776544, kind = "Mersenne-Twister", normal.kind = "Inversion")
 #' out <- simulateTumor(N = 1000)
 #' df <- bulkSample(tumor = out, pos = c(0,0,0))
 #' 

@@ -10,8 +10,8 @@ test_that("C++ code rejects improper parameter values", {
 })
 
 test_that("Simulation behaves as expected", {
-  set.seed(116776544)
-  out <- simulateTumor(N = 200, verbose = F, du = 0.5)
+  set.seed(116776544, kind = "Mersenne-Twister", normal.kind = "Inversion")
+  out <- simulateTumor(N = 200, verbose = FALSE, du = 0.5)
   
   expect_equal(nrow(out$cell_ids), 200)
   expect_equal(mean(out$cell_ids$nmuts), 1.1)
