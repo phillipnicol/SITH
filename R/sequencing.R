@@ -9,7 +9,8 @@
 #' @return A data frame with sample names on the row and mutation ID on the column. 
 #' A 1 indicates that the mutation is present in the cell and a 0 indicates the mutation is not present. 
 #' 
-#' @details TODO 
+#' @details The procedure is exactly the same as \code{\link{singleCell}} except that it allows multiple cells
+#' to be sequenced at once (chosen randomly throughout the entire tumor). 
 #' 
 #' @author Phillip B. Nicol 
 
@@ -58,11 +59,19 @@ randomSingleCells <- function(tumor, ncells, noise = 0.0) {
 #' @param pos A vector of length 3 giving the (x,y,z) coordinates of the cell to sample. 
 #' @param noise The false negative rate. 
 #' 
-#' @details TODO 
+#' @return A data frame with 1 row and columns corresponding to the mutations present in the cell. A 1 indicates that
+#' the mutation is detected while a 0 indicates the mutation is not detected. 
+#' 
+#' @details This function selects the cell at \code{pos} (error if no cell at specified position exists) and returns
+#' the list of mutations present in the cell. Due to technological artifacts, the false negative rate can be quite higher
+#' (10-20 percent). To account for this,
+#' the \code{noise} parameter introduces false negatives into the data set at the specified rate. 
 #' 
 #' @author Phillip B. Nicol
 #' 
 #' @references 
+#' K. Jahn, J. Kupiers and N. Beerenwinkel. Tree inference for single-cell data. Genome Biology, volume 17, 2016. 
+#' 
 #' 
 singleCell <- function(tumor, pos, noise = 0.0) {
   if(length(pos) != 3) {
@@ -91,18 +100,26 @@ singleCell <- function(tumor, pos, noise = 0.0) {
   return(df)
 }
 
-#' Simulate bulk sequencing data 
+#' Simulate bulk sampling 
 #' 
-#' @description Simulate bulk sequencing data by takign a local sample of the tumor
+#' @description Simulate bulk sequencing data by takign a local sample from the tumor
 #' and computing the variant allele frequencies of the various mutations. 
 #' 
 #' @param tumor A list which is the output of \code{\link{simulateTumor}}.
-#' @param nsamples The number of samples to take.
-#' @param cube_length The side length of the cube in
-#' @param threshold TODO 
-randomBulkSamples <- function(tumor, nsamples, cube_length = 5, threshold = 0.05) {
-  if(cube_length %% 2 == 0 | cube_length < 1) {
-    stop("cube_length must be an odd positive integer.")
+#' @param nsamples The number of bulk samples to take. 
+#' @param cube.length The side length of the cube of cells to be sampled. 
+#' @param threshold Only mutations with an allele frequency greater than the threshold will be included in the sample.
+#' 
+#' @return A data frame with \code{nsamples} rows and columns corresponding to the mutations. 
+#' The entries are the mutation allele frequency.
+#' 
+#' @details This is the same as \code{\link{bulkSample}}, except multiple samples are taken 
+#' with random center points. 
+#' 
+#' @author Phillip B. Nicol 
+randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05) {
+  if(cube.length %% 2 == 0 | cube.length < 1) {
+    stop("cube.length must be an odd positive integer.")
   }
   
   cells <- sample(1:nrow(tumor$cell_ids), nsamples, replace = F)
@@ -110,15 +127,15 @@ randomBulkSamples <- function(tumor, nsamples, cube_length = 5, threshold = 0.05
   df <- data.frame(matrix(nrow = nsamples, ncol = 0))
   
   #Take around 1 percent of the tumor
-  bulk_size <- cube_length^3
-  cube_length <- cube_length - 1
+  bulk_size <- cube.length^3
+  cube.length <- cube.length - 1
   
   counter <- 1
   for(i in cells) {
     cx <- tumor$cell_ids[i,1]; cy <- tumor$cell_ids[i,2]; cz <- tumor$cell_ids[i,3]
-    cell_subset <-  tumor$cell_ids[((tumor$cell_ids$x >= cx - cube_length/2) & (tumor$cell_ids$x <= cx + cube_length/2) &
-                                  (tumor$cell_ids$y >= cy - cube_length/2) & (tumor$cell_ids$y <= cy + cube_length/2) &
-                                  (tumor$cell_ids$z >= cz - cube_length/2) & (tumor$cell_ids$z <= cz + cube_length/2)),]
+    cell_subset <-  tumor$cell_ids[((tumor$cell_ids$x >= cx - cube.length/2) & (tumor$cell_ids$x <= cx + cube.length/2) &
+                                  (tumor$cell_ids$y >= cy - cube.length/2) & (tumor$cell_ids$y <= cy + cube.length/2) &
+                                  (tumor$cell_ids$z >= cz - cube.length/2) & (tumor$cell_ids$z <= cz + cube.length/2)),]
     
     input <- list()
     input$cell_ids <- cell_subset
@@ -148,26 +165,45 @@ randomBulkSamples <- function(tumor, nsamples, cube_length = 5, threshold = 0.05
   return(as.data.frame(df))
 }
 
-#' Quantify the spatial distribution of mutants
+#' Simulate bulk sampling 
+#' 
+#' @description Simulate bulk sequencing data by takign a local sample from the tumor
+#' and computing the variant allele frequencies of the various mutations. 
 #' 
 #' @param tumor The output of \link[TumorGenerator]{simulateTumor}. 
-#' @param pos TODO
-#' @param cube_length TODO 
-#' @param threshold TODO 
-bulkSample <- function(tumor, pos, cube_length = 5, threshold = 0.05) {
+#' @param pos The center point of the sample.
+#' @param cube.length The side length of the cube of cells to be sampled. 
+#' @param threshold Only mutations with an allele frequency greater than the threshold will be included in the sample.
+#' 
+#' @return A data frame with 1 row and columns corresponding to the mutations. The entries are the mutation allele frequency.
+#' 
+#' @details A local region of the tumor is sampled by constructing a cube with side length \code{cube.length} around
+#' the center point \code{pos}. Each cell within the cube is sampled, and the reported quantity is variant (or mutation) 
+#' allele frequency. Lattice sites without cells are assumed to be normal tissue, and thus the reported MAF may be less than
+#' 1.0 even if the mutation is present in all cancerous cells. 
+#' 
+#' Note that \code{cube.length} is required to be an odd integer (in order to have a well-defined center point). 
+#' 
+#' @author Phillip B. Nicol 
+#' 
+#' @references 
+#' K. Chkhaidze, T. Heide, B. Werner, M. Williams, W. Huang, G. Caravagna, T. Graham, and 
+#' A. Sottoriva. Spatially con- strained tumour growth affects the 
+#' patterns of clonal selection and neutral drift in cancer genomic data. PLOS Computational Biology, 2019.
+bulkSample <- function(tumor, pos, cube.length = 5, threshold = 0.05) {
   if(length(pos) != 3) {
     stop("Position must be a vector of length 3.")
   }
   
   cx <- pos[1]; cy <- pos[2]; cz <- pos[3]
-  bulk_size <- cube_length^3
-  cube_length <- cube_length - 1
+  bulk_size <- cube.length^3
+  cube.length <- cube.length - 1
   
   df <- data.frame(matrix(nrow = 1, ncol = 0))  
   
-  cell_subset <-  tumor$cell_ids[((tumor$cell_ids$x >= cx - cube_length/2) & (tumor$cell_ids$x <= cx + cube_length/2) &
-                                    (tumor$cell_ids$y >= cy - cube_length/2) & (tumor$cell_ids$y <= cy + cube_length/2) &
-                                    (tumor$cell_ids$z >= cz - cube_length/2) & (tumor$cell_ids$z <= cz + cube_length/2)),]
+  cell_subset <-  tumor$cell_ids[((tumor$cell_ids$x >= cx - cube.length/2) & (tumor$cell_ids$x <= cx + cube.length/2) &
+                                    (tumor$cell_ids$y >= cy - cube.length/2) & (tumor$cell_ids$y <= cy + cube.length/2) &
+                                    (tumor$cell_ids$z >= cz - cube.length/2) & (tumor$cell_ids$z <= cz + cube.length/2)),]
   
   if(nrow(cell_subset) == 0) {
     warning("Sample is empty")
@@ -200,15 +236,24 @@ return(as.data.frame(df))
 
 
 
-#' Simulate bulk sequencing data 
+#' Simulate needle sequencing data
 #' 
-#' @description Simulate bulk sequencing data by takign a local sample of the tumor
-#' and computing the variant allele frequencies of the various mutations. 
+#' @description Simulate a sampling procedure which takes a fine needle through the simulated tumor and
+#' reports the mutation allele frequency of the sampled cells. 
 #' 
 #' @param tumor A list which is the output of \code{\link{simulateTumor}}.
 #' @param nsamples The number of samples to take.
-#' @param cube_length The side length of the cube in
-#' @param threshold TODO 
+#' @param threshold Only mutations with an allele frequency greater than the threshold will be included in the sample.
+#' 
+#' @author Phillip B. Nicol
+#' 
+#' @details This sampling procedure is inspired by Chkhaidze et. al. (2019). A random one-dimensional cross-section 
+#' of the tumor is chosen, and the cells within this cross section are sampled, reporting mutation allele frequency. 
+#' 
+#' @references 
+#' K. Chkhaidze, T. Heide, B. Werner, M. Williams, W. Huang, G. Caravagna, T. Graham, and 
+#' A. Sottoriva. Spatially con- strained tumour growth affects the 
+#' patterns of clonal selection and neutral drift in cancer genomic data. PLOS Computational Biology, 2019.
 randomNeedles <- function(tumor, nsamples, threshold = 0.05) {
   cells <- sample(1:nrow(tumor$cell_ids), nsamples, replace = F)
   

@@ -1,11 +1,31 @@
 
 #' Quantify the spatial distribution of mutants
 #' 
-#' @param tumor The output of \link[TumorGenerator]{simulateTumor}. 
-#' @param N TODO
-#' @param cutoff TODO
-#' @param make.plot TODO 
-#' @return The sum of \code{x} and \code{y}.
+#' @description Provides a summary the spatial distribution of mutants within the simulated
+#' tumor. 
+#' 
+#' @param tumor A list which is the output of \code{\link{simulateTumor}}.
+#' @param N The number of pairs to sample. 
+#' @param cutoff For a plot of clone sizes, all mutations with a MAF below \code{cutoff} are ignored. 
+#' @param make.plot Whether or not to make plots. 
+#' 
+#' @return A list with the following components
+#' \itemize{
+#' \item \code{mean_mutant} - A data frame with 2 columns giving the mean number of mutants
+#' as a function of Euclidean distance from the lattice origin (Euclid. distance rounded to nearest integer). 
+#' \item \code{mean_driver} - The same as \code{mean_mutant} except for driver mutations only. Will be \code{NULL} if 
+#' no drivers are present in the simulated tumor. 
+#' \item \code{jaccard} A data farme with two columns giving mean jaccard index as a function of Euclidean distance 
+#' between pairs of cells (rounded to nearest integer). 
+#' }
+#' 
+#' @details The genotype of a cell can be interpreted as a binary vector where the \eqn{i}-th component is 1 if mutation
+#' \eqn{i} is present in the cell and is 0 otherwise. Then a natural comparison of the similarity between two cells is the 
+#' Jaccard index \eqn{J(A,B) = |I(A,B)|/|U(A,B)|}, where \eqn{I(A,B)} is the intersection of \eqn{A} and \eqn{B} and 
+#' \eqn{U(A,B)} is the union. This function estimates the Jaccard index as a function of Euclidean distance between the 
+#' cells by randomly sampling \eqn{N} pairs of cells. 
+#' 
+#' @author Phillip B. Nicol
 spatialDistribution <- function(tumor, N = 500, cutoff = 0.01, make.plot = TRUE) {
   out <- list()
   

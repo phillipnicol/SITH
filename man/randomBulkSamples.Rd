@@ -2,20 +2,31 @@
 % Please edit documentation in R/sequencing.R
 \name{randomBulkSamples}
 \alias{randomBulkSamples}
-\title{Simulate bulk sequencing data}
+\title{Simulate bulk sampling}
 \usage{
-randomBulkSamples(tumor, nsamples, cube_length = 5, threshold = 0.05)
+randomBulkSamples(tumor, nsamples, cube.length = 5, threshold = 0.05)
 }
 \arguments{
 \item{tumor}{A list which is the output of \code{\link{simulateTumor}}.}
 
-\item{nsamples}{The number of samples to take.}
+\item{nsamples}{The number of bulk samples to take.}
 
-\item{cube_length}{The side length of the cube in}
+\item{cube.length}{The side length of the cube of cells to be sampled.}
 
-\item{threshold}{TODO}
+\item{threshold}{Only mutations with an allele frequency greater than the threshold will be included in the sample.}
+}
+\value{
+A data frame with \code{nsamples} rows and columns corresponding to the mutations. 
+The entries are the mutation allele frequency.
 }
 \description{
-Simulate bulk sequencing data by takign a local sample of the tumor
+Simulate bulk sequencing data by takign a local sample from the tumor
 and computing the variant allele frequencies of the various mutations.
+}
+\details{
+This is the same as \code{\link{bulkSample}}, except multiple samples are taken 
+with random center points.
+}
+\author{
+Phillip B. Nicol
 }

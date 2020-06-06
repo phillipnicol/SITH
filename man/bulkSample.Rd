@@ -2,19 +2,39 @@
 % Please edit documentation in R/sequencing.R
 \name{bulkSample}
 \alias{bulkSample}
-\title{Quantify the spatial distribution of mutants}
+\title{Simulate bulk sampling}
 \usage{
-bulkSample(tumor, pos, cube_length = 5, threshold = 0.05)
+bulkSample(tumor, pos, cube.length = 5, threshold = 0.05)
 }
 \arguments{
 \item{tumor}{The output of \link[TumorGenerator]{simulateTumor}.}
 
-\item{pos}{TODO}
+\item{pos}{The center point of the sample.}
 
-\item{cube_length}{TODO}
+\item{cube.length}{The side length of the cube of cells to be sampled.}
 
-\item{threshold}{TODO}
+\item{threshold}{Only mutations with an allele frequency greater than the threshold will be included in the sample.}
+}
+\value{
+A data frame with 1 row and columns corresponding to the mutations. The entries are the mutation allele frequency.
 }
 \description{
-Quantify the spatial distribution of mutants
+Simulate bulk sequencing data by takign a local sample from the tumor
+and computing the variant allele frequencies of the various mutations.
+}
+\details{
+A local region of the tumor is sampled by constructing a cube with side length \code{cube.length} around
+the center point \code{pos}. Each cell within the cube is sampled, and the reported quantity is variant (or mutation) 
+allele frequency. Lattice sites without cells are assumed to be normal tissue, and thus the reported MAF may be less than
+1.0 even if the mutation is present in all cancerous cells. 
+
+Note that \code{cube.length} is required to be an odd integer (in order to have a well-defined center point).
+}
+\references{
+K. Chkhaidze, T. Heide, B. Werner, M. Williams, W. Huang, G. Caravagna, T. Graham, and 
+A. Sottoriva. Spatially con- strained tumour growth affects the 
+patterns of clonal selection and neutral drift in cancer genomic data. PLOS Computational Biology, 2019.
+}
+\author{
+Phillip B. Nicol
 }

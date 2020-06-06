@@ -1,6 +1,7 @@
 ---
-title: "Spatial simulations of tumor growth using the TumorGenerator R package"
+title: "SMITH vignette" 
 author: "Phillip B. Nicol"
+date: June 5, 2020
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{my-vignette}
@@ -13,23 +14,66 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+options(width = 800)
 ```
 
 ```{r setup}
 set.seed(1126490984)
-library(TumorGenerator)
+library(SMITH)
 rgl::setupKnitr()
 ```
 
-```{r, rgl = TRUE}
+## Simulating spatial tumor growth 
+```{r}
 out <- simulateTumor(N = 250000, verbose = F)
-par(mfrow = c(2,2))
+```
+
+
+## Visualization 
+```{r, rgl = TRUE, fig.width = 7, fig.height = 5}
 visualizeTumor(out, background = "white")
-visualizeTumor(out, background = "white", plot.type = "heat") 
+rgl::view3d(zoom = 0.66)
 ```
 
-```{r, rgl = TRUE}
+```{r, rgl = TRUE, fig.width = 7, fig.height = 5}
 visualizeTumor(out, background = "white", plot.type = "heat")
+rgl::view3d(zoom = 0.66)
 ```
 
+```{r, fig.width = 7.5, fig.height = 4}
+par(mfrow = c(1,2))
+plotSlice(tumor = out)
+plotSlice(tumor = out, plot.type = "heat")
+```
+
+## Spatial distribution of mutants
+```{r, fig.width = 7.5, fig.height = 6}
+sp <- spatialDistribution(tumor = out)
+```
+
+## Simulating sequencing data 
+
+```{r}
+Scs <- randomSingleCells(tumor = out, ncells = 5, noise = 0.1)
+head(Scs)
+```
+
+
+```{r}
+Bulks <- randomBulkSamples(tumor = out, nsamples = 5, cube.length = 7, threshold = 0.05)
+head(Bulks)
+```
+
+
+```{r}
+Needs <- randomNeedles(tumor = out, nsamples = 5, threshold = 0.05)
+head(Needs)
+```
+
+
+## Appendix
+
+```{r}
+sessionInfo()
+```
 

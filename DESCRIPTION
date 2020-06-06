@@ -1,11 +1,11 @@
 Package: SMITH
 Type: Package
-Title: What the Package Does in One 'Title Case' Line
+Title: Visualize and analyze intratumor heterogeneity using a spatial model of tumor growth
 Version: 1.0.0
 Date: 2020-05-26
 Author: Phillip B. Nicol
-Maintainer: Your Name <your@email.com>
-Description: One paragraph description of what the package does as one or more full sentences.
+Maintainer: Phillip B. Nicol <philnicol740@gmail.com>
+Description: TODO
 License: GPL (>= 2)
 Imports: 
     Rcpp (>= 1.0.4),

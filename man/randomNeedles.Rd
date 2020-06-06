@@ -2,7 +2,7 @@
 % Please edit documentation in R/sequencing.R
 \name{randomNeedles}
 \alias{randomNeedles}
-\title{Simulate bulk sequencing data}
+\title{Simulate needle sequencing data}
 \usage{
 randomNeedles(tumor, nsamples, threshold = 0.05)
 }
@@ -11,11 +11,21 @@ randomNeedles(tumor, nsamples, threshold = 0.05)
 
 \item{nsamples}{The number of samples to take.}
 
-\item{threshold}{TODO}
-
-\item{cube_length}{The side length of the cube in}
+\item{threshold}{Only mutations with an allele frequency greater than the threshold will be included in the sample.}
 }
 \description{
-Simulate bulk sequencing data by takign a local sample of the tumor
-and computing the variant allele frequencies of the various mutations.
+Simulate a sampling procedure which takes a fine needle through the simulated tumor and
+reports the mutation allele frequency of the sampled cells.
+}
+\details{
+This sampling procedure is inspired by Chkhaidze et. al. (2019). A random one-dimensional cross-section 
+of the tumor is chosen, and the cells within this cross section are sampled, reporting mutation allele frequency.
+}
+\references{
+K. Chkhaidze, T. Heide, B. Werner, M. Williams, W. Huang, G. Caravagna, T. Graham, and 
+A. Sottoriva. Spatially con- strained tumour growth affects the 
+patterns of clonal selection and neutral drift in cancer genomic data. PLOS Computational Biology, 2019.
+}
+\author{
+Phillip B. Nicol
 }

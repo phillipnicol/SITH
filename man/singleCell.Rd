@@ -13,14 +13,21 @@ singleCell(tumor, pos, noise = 0)
 
 \item{noise}{The false negative rate.}
 }
+\value{
+A data frame with 1 row and columns corresponding to the mutations present in the cell. A 1 indicates that
+the mutation is detected while a 0 indicates the mutation is not detected.
+}
 \description{
 Simulate single cell sequencing data by selecting a cell at a specified position
 }
 \details{
-TODO
+This function selects the cell at \code{pos} (error if no cell at specified position exists) and returns
+the list of mutations present in the cell. Due to technological artifacts, the false negative rate can be quite higher
+(10-20 percent). To account for this,
+the \code{noise} parameter introduces false negatives into the data set at the specified rate.
 }
 \references{
-
+K. Jahn, J. Kupiers and N. Beerenwinkel. Tree inference for single-cell data. Genome Biology, volume 17, 2016.
 }
 \author{
 Phillip B. Nicol

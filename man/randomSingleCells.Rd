@@ -21,7 +21,8 @@ A 1 indicates that the mutation is present in the cell and a 0 indicates the mut
 Simulate single cell sequencing data by random selecting cells from the tumor.
 }
 \details{
-TODO
+The procedure is exactly the same as \code{\link{singleCell}} except that it allows multiple cells
+to be sequenced at once (chosen randomly throughout the entire tumor).
 }
 \author{
 Phillip B. Nicol
