@@ -25,6 +25,11 @@
 #' \eqn{U(A,B)} is the union. This function estimates the Jaccard index as a function of Euclidean distance between the 
 #' cells by randomly sampling \eqn{N} pairs of cells. 
 #' 
+#' @examples 
+#' set.seed(1126490984)
+#' out <- simulateTumor(N = 1000, du = 0.1)
+#' sp <- spatialDistribution(tumor = out, make.plot = FALSE)
+#' 
 #' @author Phillip B. Nicol
 spatialDistribution <- function(tumor, N = 500, cutoff = 0.01, make.plot = TRUE) {
   out <- list()

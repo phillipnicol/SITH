@@ -44,6 +44,11 @@
 #' 
 #' @author Phillip B. Nicol <philnicol740@gmail.com>
 #' 
+#' @examples 
+#' out <- simulateTumor(N = 1000)
+#' #Take a look at mutants in order of decreasing MAF
+#' sig_muts <- out$muts[order(out$muts$MAF, decreasing = TRUE),]
+#' 
 #' @references B. Waclaw, I. Bozic, M. Pittman, R. Hruban, B. Vogelstein and M. Nowak. A spatial model predicts
 #' that dispersal and cell turnover limit intratumor heterogeneity. \emph{Nature}, pages 261-264, 2015. 
 #' 

@@ -66,6 +66,12 @@ alteration is a driver mutation with some probability \eqn{du}. A cell with k dr
 
 The model is simulated using a Gillespie algorithm. See the package vignette for details on how the algorithm is implemented.
 }
+\examples{
+out <- simulateTumor(N = 1000)
+#Take a look at mutants in order of decreasing MAF
+sig_muts <- out$muts[order(out$muts$MAF, decreasing = TRUE),]
+
+}
 \references{
 B. Waclaw, I. Bozic, M. Pittman, R. Hruban, B. Vogelstein and M. Nowak. A spatial model predicts
 that dispersal and cell turnover limit intratumor heterogeneity. \emph{Nature}, pages 261-264, 2015. 
