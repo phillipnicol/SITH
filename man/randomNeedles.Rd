@@ -21,6 +21,11 @@ reports the mutation allele frequency of the sampled cells.
 This sampling procedure is inspired by Chkhaidze et. al. (2019). A random one-dimensional cross-section 
 of the tumor is chosen, and the cells within this cross section are sampled, reporting mutation allele frequency.
 }
+\examples{
+out <- simulateTumor(N = 1000)
+df <- randomNeedles(tumor = out, nsamples = 5)
+
+}
 \references{
 K. Chkhaidze, T. Heide, B. Werner, M. Williams, W. Huang, G. Caravagna, T. Graham, and 
 A. Sottoriva. Spatially con- strained tumour growth affects the 

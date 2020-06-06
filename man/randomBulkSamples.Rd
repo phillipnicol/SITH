@@ -27,6 +27,11 @@ and computing the variant allele frequencies of the various mutations.
 This is the same as \code{\link{bulkSample}}, except multiple samples are taken 
 with random center points.
 }
+\examples{
+out <- simulateTumor(N = 1000)
+df <- randomBulkSamples(tumor = out, nsamples = 5, cube.length = 5, threshold = 0.05)
+
+}
 \author{
 Phillip B. Nicol
 }

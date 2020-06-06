@@ -26,9 +26,15 @@ the list of mutations present in the cell. Due to technological artifacts, the f
 (10-20 percent). To account for this,
 the \code{noise} parameter introduces false negatives into the data set at the specified rate.
 }
+\examples{
+set.seed(1126490984)
+out <- simulateTumor(N = 1000)
+df <- singleCell(tumor = out, pos = c(0,0,0), noise = 0.1)
+
+}
 \references{
 K. Jahn, J. Kupiers and N. Beerenwinkel. Tree inference for single-cell data. Genome Biology, volume 17, 2016.
 }
 \author{
-Phillip B. Nicol
+Phillip B. Nicol <philnicol740@gmail.com>
 }

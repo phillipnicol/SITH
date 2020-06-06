@@ -4,10 +4,28 @@ author: "Phillip B. Nicol"
 date: June 5, 2020
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{my-vignette}
+  %\VignetteIndexEntry{SMITH}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+references:
+- id: fenner2012a
+  title: One-click science marketing
+  author:
+  - family: Fenner
+    given: Martin
+  container-title: Nature Materials
+  volume: 11
+  URL: 'http://dx.doi.org/10.1038/nmat3283'
+  DOI: 10.1038/nmat3283
+  issue: 4
+  publisher: Nature Publishing Group
+  page: 261-263
+  type: article-journal
+  issued:
+    year: 2012
+    month: 3
 ---
+
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -15,6 +33,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 options(width = 800)
+options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
 ```{r setup}
@@ -22,6 +41,8 @@ set.seed(1126490984)
 library(SMITH)
 rgl::setupKnitr()
 ```
+
+## Introduction 
 
 ## Simulating spatial tumor growth 
 ```{r}
@@ -53,12 +74,14 @@ sp <- spatialDistribution(tumor = out)
 
 ## Simulating sequencing data 
 
+### Single cell sequencing 
+
 ```{r}
 Scs <- randomSingleCells(tumor = out, ncells = 5, noise = 0.1)
 head(Scs)
 ```
 
-
+### Bulk sampling 
 ```{r}
 Bulks <- randomBulkSamples(tumor = out, nsamples = 5, cube.length = 7, threshold = 0.05)
 head(Bulks)
@@ -70,8 +93,12 @@ Needs <- randomNeedles(tumor = out, nsamples = 5, threshold = 0.05)
 head(Needs)
 ```
 
+@fenner2012a
 
 ## Appendix
+### References 
+
+### The simulation algorithm 
 
 ```{r}
 sessionInfo()

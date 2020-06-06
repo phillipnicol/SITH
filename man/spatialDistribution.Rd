@@ -33,7 +33,7 @@ tumor.
 \details{
 The genotype of a cell can be interpreted as a binary vector where the \eqn{i}-th component is 1 if mutation
 \eqn{i} is present in the cell and is 0 otherwise. Then a natural comparison of the similarity between two cells is the 
-Jaccard index \eqn{J(A,B) = |I(A,B)|/|U(A,B)|}, where \eqn{I(A,B)}$ is the intersection of \eqn{A} and \eqn{B} and 
+Jaccard index \eqn{J(A,B) = |I(A,B)|/|U(A,B)|}, where \eqn{I(A,B)} is the intersection of \eqn{A} and \eqn{B} and 
 \eqn{U(A,B)} is the union. This function estimates the Jaccard index as a function of Euclidean distance between the 
 cells by randomly sampling \eqn{N} pairs of cells.
 }

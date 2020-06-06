@@ -40,7 +40,9 @@
 #' alteration is a driver mutation with some probability \eqn{du}. A cell with k driver mutations is given birth rate 
 #' \eqn{bs^k}. The simulation begins with a single cell at the origin at time \eqn{t = 0}. 
 #' 
-#' The model is simulated using a Gillespie algorithm. MAYBE WRITE A LTITLE MORE 
+#' The model is simulated using a Gillespie algorithm. See the package vignette for details on how the algorithm is implemented. 
+#' 
+#' @author Phillip B. Nicol <philnicol740@gmail.com>
 #' 
 #' @references B. Waclaw, I. Bozic, M. Pittman, R. Hruban, B. Vogelstein and M. Nowak. A spatial model predicts
 #' that dispersal and cell turnover limit intratumor heterogeneity. \emph{Nature}, pages 261-264, 2015. 

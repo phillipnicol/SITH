@@ -5,8 +5,9 @@ Version: 1.0.0
 Date: 2020-05-26
 Author: Phillip B. Nicol
 Maintainer: Phillip B. Nicol <philnicol740@gmail.com>
-Description: TODO
+Description: Implements a three-dimensional stochastic model of cancer growth and mutation. Allows for interactive visualization of the diversity within the simulated tumor. Contains functions which create simulated sequencing datasets from the tumor. 
 License: GPL (>= 2)
+Depends: R (>= 4.0.0)
 Imports: 
     Rcpp (>= 1.0.4),
     scatterplot3d,
@@ -22,3 +23,5 @@ LinkingTo: Rcpp
 RoxygenNote: 7.1.0
 VignetteBuilder: knitr
 Encoding: UTF-8
+URL: https://github.com/phillipnicol/SMITH
+BugReports: https://github.com/phillipnicol/SMITH/issues

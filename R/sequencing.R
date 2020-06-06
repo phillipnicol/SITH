@@ -12,7 +12,11 @@
 #' @details The procedure is exactly the same as \code{\link{singleCell}} except that it allows multiple cells
 #' to be sequenced at once (chosen randomly throughout the entire tumor). 
 #' 
-#' @author Phillip B. Nicol 
+#' @author Phillip B. Nicol <philnicol740@gmail.com>
+#' 
+#' @examples
+#' out <- simulateTumor(N = 1000)
+#' df <- randomSingleCells(tumor = out, ncells = 5, noise = 0.10) 
 
 randomSingleCells <- function(tumor, ncells, noise = 0.0) {
   cells <- sample(1:nrow(tumor$cell_ids), ncells, replace = F)
@@ -67,7 +71,12 @@ randomSingleCells <- function(tumor, ncells, noise = 0.0) {
 #' (10-20 percent). To account for this,
 #' the \code{noise} parameter introduces false negatives into the data set at the specified rate. 
 #' 
-#' @author Phillip B. Nicol
+#' @author Phillip B. Nicol <philnicol740@gmail.com>
+#' 
+#' @examples 
+#' set.seed(1126490984)
+#' out <- simulateTumor(N = 1000)
+#' df <- singleCell(tumor = out, pos = c(0,0,0), noise = 0.1)
 #' 
 #' @references 
 #' K. Jahn, J. Kupiers and N. Beerenwinkel. Tree inference for single-cell data. Genome Biology, volume 17, 2016. 
@@ -115,6 +124,10 @@ singleCell <- function(tumor, pos, noise = 0.0) {
 #' 
 #' @details This is the same as \code{\link{bulkSample}}, except multiple samples are taken 
 #' with random center points. 
+#' 
+#' @examples 
+#' out <- simulateTumor(N = 1000)
+#' df <- randomBulkSamples(tumor = out, nsamples = 5, cube.length = 5, threshold = 0.05)
 #' 
 #' @author Phillip B. Nicol 
 randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05) {
@@ -186,6 +199,11 @@ randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05
 #' 
 #' @author Phillip B. Nicol 
 #' 
+#' @examples 
+#' set.seed(1126490984)
+#' out <- simulateTumor(N = 1000)
+#' df <- bulkSample(tumor = out, pos = c(0,0,0))
+#' 
 #' @references 
 #' K. Chkhaidze, T. Heide, B. Werner, M. Williams, W. Huang, G. Caravagna, T. Graham, and 
 #' A. Sottoriva. Spatially con- strained tumour growth affects the 
@@ -249,6 +267,10 @@ return(as.data.frame(df))
 #' 
 #' @details This sampling procedure is inspired by Chkhaidze et. al. (2019). A random one-dimensional cross-section 
 #' of the tumor is chosen, and the cells within this cross section are sampled, reporting mutation allele frequency. 
+#' 
+#' @examples 
+#' out <- simulateTumor(N = 1000)
+#' df <- randomNeedles(tumor = out, nsamples = 5)
 #' 
 #' @references 
 #' K. Chkhaidze, T. Heide, B. Werner, M. Williams, W. Huang, G. Caravagna, T. Graham, and 

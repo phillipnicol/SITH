@@ -64,7 +64,7 @@ unoccupied. Each time cell replication occurs, both daughter cells recevie \eqn{
 alteration is a driver mutation with some probability \eqn{du}. A cell with k driver mutations is given birth rate 
 \eqn{bs^k}. The simulation begins with a single cell at the origin at time \eqn{t = 0}. 
 
-The model is simulated using a Gillespie algorithm. MAYBE WRITE A LTITLE MORE
+The model is simulated using a Gillespie algorithm. See the package vignette for details on how the algorithm is implemented.
 }
 \references{
 B. Waclaw, I. Bozic, M. Pittman, R. Hruban, B. Vogelstein and M. Nowak. A spatial model predicts
@@ -72,4 +72,7 @@ that dispersal and cell turnover limit intratumor heterogeneity. \emph{Nature}, 
 
 D. Gillespie. Exact stochastic simulation of coupled chemical reactions. \emph{The Journal of Physical Chemistry},
 volume 81, pages 2340-2361, 1970.
+}
+\author{
+Phillip B. Nicol <philnicol740@gmail.com>
 }

@@ -24,6 +24,10 @@ Simulate single cell sequencing data by random selecting cells from the tumor.
 The procedure is exactly the same as \code{\link{singleCell}} except that it allows multiple cells
 to be sequenced at once (chosen randomly throughout the entire tumor).
 }
+\examples{
+out <- simulateTumor(N = 1000)
+df <- randomSingleCells(tumor = out, ncells = 5, noise = 0.10) 
+}
 \author{
-Phillip B. Nicol
+Phillip B. Nicol <philnicol740@gmail.com>
 }

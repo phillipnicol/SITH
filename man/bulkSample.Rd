@@ -30,6 +30,12 @@ allele frequency. Lattice sites without cells are assumed to be normal tissue, a
 
 Note that \code{cube.length} is required to be an odd integer (in order to have a well-defined center point).
 }
+\examples{
+set.seed(1126490984)
+out <- simulateTumor(N = 1000)
+df <- bulkSample(tumor = out, pos = c(0,0,0))
+
+}
 \references{
 K. Chkhaidze, T. Heide, B. Werner, M. Williams, W. Huang, G. Caravagna, T. Graham, and 
 A. Sottoriva. Spatially con- strained tumour growth affects the 
