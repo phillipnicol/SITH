@@ -7,7 +7,7 @@
 bulkSample(tumor, pos, cube.length = 5, threshold = 0.05)
 }
 \arguments{
-\item{tumor}{The output of \link[TumorGenerator]{simulateTumor}.}
+\item{tumor}{A list which is the output of \code{\link{simulateTumor}}.}
 
 \item{pos}{The center point of the sample.}
 

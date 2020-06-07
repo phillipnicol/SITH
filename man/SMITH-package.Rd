@@ -15,7 +15,7 @@ provides functions to simulate single cell sequencing and bulk sampling data set
   See the package vignette for more information on the model and the algorithm used. 
 }
 
-\author{Phillip Nicol}
+\author{Phillip B. Nicol}
 \references{
 B. Waclaw, I. Bozic, M. Pittman, R. Hruban, B. Vogelstein and M. Nowak. A spatial model predicts that dispersal and cell turnover limit intratumor heterogeneity. \emph{Nature}, pages 261-264, 2015. 
 

@@ -183,7 +183,7 @@ randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05
 #' @description Simulate bulk sequencing data by takign a local sample from the tumor
 #' and computing the variant allele frequencies of the various mutations. 
 #' 
-#' @param tumor The output of \link[TumorGenerator]{simulateTumor}. 
+#' @param tumor A list which is the output of \code{\link{simulateTumor}}.
 #' @param pos The center point of the sample.
 #' @param cube.length The side length of the cube of cells to be sampled. 
 #' @param threshold Only mutations with an allele frequency greater than the threshold will be included in the sample.
