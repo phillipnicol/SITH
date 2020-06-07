@@ -1,7 +1,7 @@
 Package: SMITH
 Type: Package
 Title: Visualize and analyze intratumor heterogeneity using a spatial model of tumor growth
-Version: 1.0.0
+Version: 0.0.0.9000
 Date: 2020-05-26
 Author: Phillip B. Nicol
 Maintainer: Phillip B. Nicol <philnicol740@gmail.com>
