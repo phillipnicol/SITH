@@ -132,3 +132,18 @@ void gv_init(const int N, const double wt_br, const double wt_dr, const double u
 }
 
 inline int randWrapper(const int n) { return floor(unif_rand()*n); }
+
+//Store all permutations 
+std::vector<std::vector<int> > get_perms(std::vector<int> v) {
+    std::vector<std::vector<int> > perms;
+
+    do {
+        std::vector<int> p;
+        for(int i = 0; i < v.size(); ++i) {
+            p.push_back(v[i]);
+        }
+        perms.push_back(p);
+    } while(std::next_permutation(v.begin(), v.end()));
+
+    return perms;
+}

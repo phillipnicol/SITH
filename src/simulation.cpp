@@ -9,8 +9,6 @@ summary: simulation.cpp holds the main procedure for the
 simulation of tumor growth
 */
 
-
-
 #include"setup.h"
 #include"neighbors.h"
 #include"sampler.h"
@@ -36,10 +34,14 @@ Rcpp::List simulate_tumor(Rcpp::List input) {
     //Initialize global variables
     gv_init(tumor_size, wt_br, wt_dr, u, du, s);
 
+    std::vector<int> v;
+    v.push_back(1); v.push_back(2); v.push_back(3); v.push_back(4); v.push_back(5); v.push_back(6);
+    std::vector<std::vector<int> > perms = get_perms(v);
+
     std::vector<std::vector<int> > phylo_tree(2, std::vector<int>());
 
     if(verbose) {Rcpp::Rcout << "Initializing structures ... ...\n";}
-    //initialize empty lattice
+    //initialize empty lattice 
     bool*** lattice = init_lattice();
 
     //initialize vector of cells:
@@ -58,7 +60,7 @@ Rcpp::List simulate_tumor(Rcpp::List input) {
     while(cells.size() < tumor_size)
     {
         index = random_index(cells, species);
-        gillespie_step(cells, species, index, lattice, time, wt_dr, u, du, s, phylo_tree);
+        gillespie_step(cells, species, index, lattice, time, wt_dr, u, du, s, phylo_tree, perms);
         ++iteration;
         if(iteration % interval == 0)
         {

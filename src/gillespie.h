@@ -113,13 +113,14 @@ cell birth_cell(cell &cell, const int key, std::vector<specie> &species, const d
 }
 
 void gillespie_step(std::vector<cell> &cells, std::vector<specie> &species, const int index, bool*** lattice, double &time,
-              const double wt_dr, const double u, const double du, const double s, std::vector<std::vector<int> > &phylo_tree) {
+              const double wt_dr, const double u, const double du, const double s, std::vector<std::vector<int> > &phylo_tree,
+              std::vector<std::vector<int> > &perms) {
 
     //Randomly selected cell (from previous step)
     cell cell = cells[index];
     //Look at the neighbors of the cell and find a (random) neighbor
     //If no random neighbor, key = 0
-    int key = random_neighbor(cell, lattice);
+    int key = random_neighbor(cell, lattice, perms);
     if(key != 0)
     {
         //key != 0 so there is at least one free neighbor
