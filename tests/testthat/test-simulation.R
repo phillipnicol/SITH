@@ -9,16 +9,16 @@ test_that("C++ code rejects improper parameter values", {
   expect_error(simulateTumor(du = 1.1))
 })
 
-test_that("Simulation behaves as expected", {
+test_that("Simulation is reproducible", {
   set.seed(116776544)
   out <- simulateTumor(N = 200, verbose = FALSE, du = 0.5)
   
   expect_equal(nrow(out$cell_ids), 200)
-  expect_equal(mean(out$cell_ids$nmuts), 1.29)
-  expect_equal(length(out$drivers), 15)
-  expect_equal(nrow(out$muts), 24)
-  expect_equal(out$muts$MAF[5], 0.01)
-  expect_equal(out$time, 69.47163, tolerance = 0.1)
+  expect_equal(mean(out$cell_ids$nmuts), 1.675)
+  expect_equal(length(out$drivers), 12)
+  expect_equal(nrow(out$muts), 19)
+  expect_equal(out$muts$MAF[5], 0)
+  expect_equal(out$time, 43.879, tolerance = 0.1)
   
   out <- simulateTumor(N = 200, verbose = F, du = 1.0)
   expect_equal(nrow(out$muts) - 1, length(out$drivers))

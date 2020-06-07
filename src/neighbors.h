@@ -69,7 +69,8 @@ int random_neighbor(cell cell, bool*** lattice, std::vector<std::vector<int> > &
     //randomly permute an array of keys
     //std::random_shuffle(nbhd.begin(), nbhd.end(), randWrapper);
     //nbhd = Rcpp::sample(nbhd,6);
-    int ix = floor(unif_rand()*720); 
+    //int ix = floor(unif_rand()*720); 
+    int ix = R::runif(0,720);
 
     for(int j = 0; j < 6; ++j) {
         if(free_neighbor(cell, lattice, perms[ix][j]) == true) {

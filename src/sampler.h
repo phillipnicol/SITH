@@ -19,7 +19,7 @@ int random_index(std::vector<cell> &cells, std::vector<specie> &species)
     while(true)
     {
         //check this
-        trial = R::runif(0, cells.size() - 1);
+        trial = R::runif(0, cells.size());
         
         u_trial = R::runif(0, p_max);
         
