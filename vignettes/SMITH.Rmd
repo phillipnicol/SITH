@@ -1,29 +1,111 @@
 ---
-title: "SMITH vignette" 
+title: "Creating and visualizing spatial simulations of tumor growth using SMITH" 
 author: "Phillip B. Nicol"
 date: June 5, 2020
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{SMITH}
+  %\VignetteIndexEntry{SMITH-introduction}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 references:
-- id: fenner2012a
-  title: One-click science marketing
+- id: waclaw2015
+  title: A spatial model predicts that dispersal and cell turnover limit intratumour heterogeneity
   author:
-  - family: Fenner
-    given: Martin
-  container-title: Nature Materials
-  volume: 11
-  URL: 'http://dx.doi.org/10.1038/nmat3283'
-  DOI: 10.1038/nmat3283
-  issue: 4
-  publisher: Nature Publishing Group
-  page: 261-263
+  - family: Waclaw et. al.
+  container-title: Nature
+  DOI: https://doi.org/10.1038/nature14971
+  publisher: Nature
+  page: 261-264
+  type: article-journal
+  issued:
+    year: 2015
+- id: chkhaidze2019
+  title: Spatially constrained tumor growth affects the patters of clonal selection and neutral drift in cancer genomic data 
+  author:
+  - family: Chkhaidze et. al.
+  container-title: PLOS Computational Biology
+  DOI: https://doi.org/10.1371/journal.pcbi.1007243
+  publisher: PLOS Computational Biology
+  type: article-journal
+  issued:
+    year: 2019
+    
+- id: greves2012
+  title: Clonal Evolution in Cancer
+  author:
+  - family: Greaves and Maley
+  container-title: Nature
+  publisher: Nature
   type: article-journal
   issued:
     year: 2012
-    month: 3
+  page: 306-313
+  
+- id: stanta2018
+  title: Overview on clinical relevance of intra-tumor heterogeneity.
+  author:
+  - family: Stanta and Bonin
+  container-title: Fronteirs in Medicine
+  publisher: Frontiers in Medicine
+  type: article-journal
+  issued:
+    year: 2018
+
+- id: opasic2019
+  title: How many samples are needed to infer truly clonam mutations from heterogenous tumours?
+  author: 
+  - family: Opasic et. al. 
+  container-title: BMC Cancer
+  publisher: BMC Cancer
+  type: article-journal
+  DOI: https://doi.org/10.1186/s12885-019-5597-1
+  issued:
+    year: 2018
+    
+- id: kimura1964
+  title: The number of alleles that can be maintained in a finite population
+  author: 
+  - family: Kimura and Crow 
+  container-title: Genetics
+  publisher: Genetics
+  type: article-journal
+  page: 725-738
+  issued:
+    year: 1964
+    
+- id: kuipers2016
+  title: Tree inference for single-cell data 
+  author: 
+  - family: Kuipers and Beerenwinkel
+  container-title: Genome Biology
+  publisher: Genome Biology
+  type: article-journal
+  page: 86
+  issued:
+    year: 2016
+    
+- id: gillespie1977
+  title: Exact stochastic simulation of coupled chemical reactions
+  author: 
+  - family: Gillespie
+  container-title: The Journal of Physical Chemistry
+  publisher: The Journal of Physical Chemistry
+  type: article-journal
+  page: 2340-2361
+  issued:
+    year: 1977
+    
+- id: cooper2000
+  title: The Cell, A Molecular Approach
+  author: 
+  - family: Cooper
+  container-title: Sinauer Associates
+  publisher: Sinauer Associates 
+  type: book
+  issued:
+    year: 2000
+
+link-citations: yes 
 ---
 
 
@@ -38,17 +120,17 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 
 ## Introduction 
 
-The cells within a cancerous tumor are usually highly diverse. An average tumor contains hundreds of thousands of mutations spread throughout billions of cancer cells, although it is thought that only a small percentage of these mutations are "drivers" which facilitate the progression of cancer into later stages (CITE). A lack of understanding about the evolutionary process which results in the observed intratumor heterogeneity is a major obstacle preventing the development of effective cancer therapies (CITE). 
+The cells within a cancerous tumor are usually highly diverse. An average tumor contains hundreds of thousands of mutations spread throughout billions of cancer cells, although it is thought that only a small percentage of these mutations are "drivers" which facilitate the progression of cancer into later stages [@greves2012]. A lack of understanding about the evolutionary process which results in the observed intratumor heterogeneity is a major obstacle preventing the development of effective cancer therapies [@stanta2018].
 
-Tumor growth is inherently a three-dimensional process. For this reason, the most accurate models of intratumor heterogeneity will factor in the effects that spatial growth has on the diversity of the tumor. One of the most popular models was introduced by (CITE) in 2015, which models spatial tumor growth as a multi-type branching process where cells occupy sites on a 3D lattice. Similar models have been studied in more recent literature (See CITE, CITE). However, the software is either unavailable or designed to run at the command line, which is inconvenient for `R` users. 
+Tumor growth is inherently a three-dimensional process. For this reason, the most accurate models of intratumor heterogeneity will factor in the effects that spatial growth has on the diversity of the tumor. One of the most popular models was introduced by @waclaw2015, which models spatial tumor growth as a multi-type branching process where cells occupy sites on a 3D lattice. Similar models have been studied in more recent literature (See @chkhaidze2019, @opasic2019). However, the software is either unavailable or designed to run at the command line, which is inconvenient for `R` users. 
 
 This package, a Spatial Model of IntraTumor Heterogeneity (SMITH), implements a 3D lattice-based model of tumor growth (see Model details) that can be used entirely from the `R` console. The package allows for 3D interactive visualizations of the tumor, as well as a comprehensive summary of the spatial distribution of mutants within the tumor. `SMITH` also contains functions allowing users to create simulated datasets from the generated tumor. 
 
 
 ### Model details 
-Tumor growth is modeled as an exponential birth-death process (cite) where cells occupy sites on the three-dimensional integer lattice. Each cell is given a birth rate $b$ and a death rate $d$ such that the time until cell replication or death is exponentially distributed with parameters $b$ and $d$, respectively. A cell can replicate if at least one of the six sites adjacent to it is unoccupied. Each time cell replication occurs, both daughter cells acquire $Pois(u)$ mutations, for some chosen (usually small) $u$. We follow the ``infinite alleles model" (cite) in assuming that each alteration occurs only once, so that each mutation event induces a unique allele in the population. 
+Tumor growth is modeled as an exponential birth-death process where cells occupy sites on the three-dimensional integer lattice. Each cell is given a birth rate $b$ and a death rate $d$ such that the time until cell replication or death is exponentially distributed with parameters $b$ and $d$, respectively. A cell can replicate if at least one of the six sites adjacent to it is unoccupied. Each time cell replication occurs, both daughter cells acquire $Pois(u)$ mutations, for some chosen (usually small) $u$. We follow the "infinite alleles model" [@kimura1964] in assuming that each alteration occurs only once, so that each mutation event induces a unique allele in the population. 
 
-An alteration is a driver mutation with probability $du$ and is a passenger otherwise. To model the selective advantage conferred to driver mutations, the birth rate of a cell depends on the number of driver mutations present in its genotype. Following a common assumption (cite), a cell with $k$ driver mutations is given a birth rate $bs^k$, where $m \geq 1$ and $b$ is the initial, or wild-type, birth rate. The death rate remains the same as the dynamics of the model are completely determined by $b/d$. Since cancerous tumors are believed to often begin with a single mutated cell (CITE), the initial state of the model is a single cell at the origin with $b > d$. 
+An alteration is a driver mutation with probability $du$ and is a passenger otherwise. To model the selective advantage conferred to driver mutations, the birth rate of a cell depends on the number of driver mutations present in its genotype. Following a common assumption [@waclaw2015], a cell with $k$ driver mutations is given a birth rate $bs^k$, where $m \geq 1$ and $b$ is the initial, or wild-type, birth rate. The death rate remains the same as the dynamics of the model are completely determined by $b/d$. Since cancerous tumors are believed to often begin with a single mutated cell [@cooper2000], the initial state of the model is a single cell at the origin with $b > d$. 
 
 For more information on how the model is simulated, see the appendix. 
 
@@ -101,7 +183,7 @@ plotSlice(tumor = out, plot.type = "heat")
 ```
 
 ## Spatial distribution of mutants
-One of the main reasons for using a spatial simulation of tumor growth is to investigate biases in the distribution of mutants throughout the tumor. There are countless questions that can be asked, and hopefully the return value of `simulateTumor()` will give enough information to answer most of these. To get a quick summary of the spatial distribution of mutations, `SMITH` includes `spatialDistribution()`. This includes a plot of the number of mutations as a function of Euclidean distance, a histogram of the number of mutations, and the mutations with the largest MAF. We can compare the similarity of two cells $A$ and $B$ by viewing their genotypes as a binary vector (with component $i$ on if mutation $i$ is present in the cell) and computing the *jaccard index* $J(A,B) = |A \cap B|/|A \cup B|$. 
+One of the main reasons for using a spatial simulation of tumor growth is to investigate biases in the distribution of mutants throughout the tumor. There are countless questions that can be asked, and hopefully the return value of `simulateTumor()` will give enough information to answer most of these. To get a quick summary of the spatial distribution of mutations, `SMITH` includes `spatialDistribution()`. This includes a plot of the number of mutations as a function of Euclidean distance, a histogram of the number of mutations, and the mutations with the largest MAF. We can compare the similarity of two cells $A$ and $B$ by viewing their genotypes as a binary vector (with component $i$ on if mutation $i$ is present in the cell) and computing the *jaccard index* $J(A,B) = |A \cap B|/|A \cup B|$. `spatialDistribution()` also estimates the average Jaccard index of cells as a function of the Euclidean distance between them. 
 
 ```{r, fig.width = 7.5, fig.height = 6}
 sp <- spatialDistribution(tumor = out)
@@ -109,17 +191,22 @@ sp <- spatialDistribution(tumor = out)
 
 Note that the list `sp` also contains all of the raw data needed to generate the plots. 
 
+```{r}
+names(sp)
+```
+
+
 ## Simulating sequencing data 
 An exciting application of the spatial models of intratumor heterogeneity is to use them to generate simulated sequencing data sets. 
 
-Recently, there have been a myriad of algorithms designed to infer clonal composition or tumor phylogeny from single cell sequencing or bulk sequencing data sets (CITE). It is not well understood what the impact of spatially biased sampling methods will have on these methods. Using simulated data sets from spatial models could be helpful in determining which inference algorithms are likely to be useful in practice. 
+Recently, there have been a myriad of algorithms designed to infer clonal composition or tumor phylogeny from single cell sequencing or bulk sequencing data sets (for example, @kuipers2016). It is not well understood what the impact of spatially biased sampling methods will have on these methods. Using simulated data sets from spatial models could be helpful in determining which inference algorithms are likely to be useful in practice. 
 
 `SMITH` contains several functions that simulate single cell sequencing and bulk sampling, allowing the user to get simulated sequencing datasets from the tumor. 
 
 
 ### Single cell sequencing 
 
-`randomSingleCells()` will take random cells from the tumor, reporting the list of mutations present in each cell. Due to artifacts of sequencing technology, it is expected that there are a large number of false negatives. To account for this, the `noise` parameter introduces false negatives into the data set at the specified rate. 
+`randomSingleCells()` will take random cells from the tumor, reporting the list of mutations present in each cell. Due to artifacts of sequencing technology, it is expected that there are a large number of false negatives. To account for this, the `noise` parameter introduces false negatives into the data set at the specified rate. The function returns a binary matrix, where a $1$ indicates that a mutation is present. 
 ```{r}
 Scs <- randomSingleCells(tumor = out, ncells = 5, noise = 0.1)
 head(Scs)
@@ -128,7 +215,7 @@ head(Scs)
 The user can also sequence a single cell at a specified $(x,y,z)$ location using the `singleCell()` function with argument `pos = (x,y,z)`. See the user manual for details. 
 
 ### Bulk sampling 
-One can also simulate bulk sampling by taking a collection of cells and calculating the variant allele frequency (VAF) of each mutation. One way to define a collection of cells is to take a $n \times n \times n$ cube. Function `randomBulkSamples` will choose random locations for the cubes. Note that argument `cube.length` must be odd in order for the cube to have a well-defined center. In practice, mutations that fall a certain VAF ($\approx 0.05$) are either ignored or undetected due to technological artifacts. To account for this, the `threshold` argument will ignore mutations below a certain VAF. 
+One can also simulate bulk sampling by taking a collection of cells and calculating the variant allele frequency (VAF) of each mutation. One way to define a collection of cells is to take a $n \times n \times n$ cube. Function `randomBulkSamples` will choose random locations for the cubes. Note that argument `cube.length` must be odd in order for the cube to have a well-defined center. In practice, mutations that fall a certain VAF ($\approx 0.05$) are either ignored or undetected due to technological artifacts. To account for this, the `threshold` argument will ignore mutations below a certain VAF. The return of the function is a matrix of VAFs. 
 
 ```{r}
 Bulks <- randomBulkSamples(tumor = out, nsamples = 5, cube.length = 7, threshold = 0.05)
@@ -137,7 +224,7 @@ head(Bulks)
 
 If instead one would like to choose the location of the cube, `bulkSample()` can be used and `pos` can be set to the cube center. 
 
-One can also simulate a long, thin needle passing through the tumor to collect a sample, as described in (CITE). This is implemented as `randomNeedles()` and takes the same arguments as `randomBulkSamples` (minus `cube.length`).
+One can also simulate a long, thin needle passing through the tumor to collect a sample, as described in @chkhaidze2019. This is implemented as `randomNeedles()` and takes the same arguments as `randomBulkSamples` (minus `cube.length`).
 
 ```{r}
 Needs <- randomNeedles(tumor = out, nsamples = 5, threshold = 0.05)
@@ -146,23 +233,20 @@ head(Needs)
 
 There is currently no function allowing the user to select the location of the user, although this could be included in future versions. 
 
-
-@fenner2012a
-
 ## Appendix
-### References 
-
 ### The simulation algorithm 
-The model is simulated using a Gillespie algorithm (Cite). Given a population of $N$ cells at time $t$, cell $i$ is chosen to replicate with probability $b_i/\sum_{j=1}^N (b_j + d_j)$ (provided a free space is available) and die with probability $d_i/\sum_{j=1}^N(b_j + d_j)$. After an event is seleceted, the time is updated to be $t + X$, where 
+The model is simulated using a Gillespie algorithm [@gillespie1977]. Given a population of $N$ cells at time $t$, cell $i$ is chosen to replicate with probability $b_i/\sum_{j=1}^N (b_j + d_j)$ (provided a free space is available) and die with probability $d_i/\sum_{j=1}^N(b_j + d_j)$. After an event is seleceted, the time is updated to be $t + X$, where 
 $$ X \sim Expo \left( \sum_{j \in V} b_j + \sum_{j=1}^N d_j \right)$$
 and $V$ is the subset of cells which are able to replicate (i.e, they have an unoccupied neighbor). Maintaining the list of cells with a free neighbor can be expensive, so our simulation algorithm approximates the parameter of the exponential distribution with $p_{max} = \max_j (b_j + d_j)$. 
 
 A standard approach is to use inverse transform sampling to select a cell for replication or death. However, this requires computing a cumulative sum over the birth and death rates for all unique alleles in the population, which is likely to scale linearly with $N$. We circumvent this issue by using rejection sampling. On each iteration, a random cell $i$ is selected uniformly from the population. Next, we obtain a sample $u$ from the distribution over $[0, p_{max}]$, where $p_{max}$ is as above. If $u < b_i + d_i$, then cell $i$ is selected to replicate or die. Otherwise, we proceed to the next iteration. Although there are contrived examples where rejection sampling is inefficient, the expected run-time is nearly constant for reasonable parameter values. 
-
-
 
 ### Session information
 ```{r}
 sessionInfo()
 ```
 
+
+
+
+# References 
