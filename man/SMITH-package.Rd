@@ -8,7 +8,7 @@ of tumor growth and mutation. Interactive 3D visualization of the tumor are poss
 provides functions to simulate single cell sequencing and bulk sampling data sets from the simulated tumor. 
 }
 \section{Background}{
-  On-lattice models of tumor growth and mutation are computationally efficient and provide a simple setting to study how spatially constrained growth impacts intratumor heterogeneity. While this model has been studied extensively in literature (see Waclaw (2015), Chkhaidze (2019), Opasic (2019)), existing software is either not publically available or inconvenient to use with \R. 
+  On-lattice models of tumor growth and mutation are computationally efficient and provide a simple setting to study how spatially constrained growth impacts intratumor heterogeneity. While this model has been studied extensively in literature (see Waclaw (2015), Chkhaidze (2019), Opasic (2019)), existing software is either not publicly available or inconvenient to use with \R. 
   
   The motivation for creating the \pkg{SMITH} package was to provide a spatial simulator that is both easy to use and can be used entirely with \R. The core function in the package is \code{\link{simulateTumor}}, which wraps a C++ implementation of the model into \R using the \pkg{Rcpp} package. Once the results of the simulation are saved as an \R object, \pkg{SMITH} provides several other useful functions for studying this model. 
   

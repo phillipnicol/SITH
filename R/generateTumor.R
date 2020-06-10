@@ -32,11 +32,11 @@
 #' \item \code{params} - The parameters used for the simulation. 
 #' } 
 #' 
-#' @details The model is based upon Waclaw et. al. (2015), although the simulation algorithm used is different. A growth of a canerous tumor
+#' @details The model is based upon Waclaw et. al. (2015), although the simulation algorithm used is different. A growth of a cancerous tumor
 #' is modeled using an exponential birth-death process on the three-dimensional integer lattice. Each cell is given a birth rate
 #' \eqn{b} and a death rate \eqn{d} such that the time until cell division or cell death is exponentially distributed with 
 #' parameters \eqn{b} and \eqn{d}, respectively. A cell can replicate if at least one of the six sites adjacent to it is
-#' unoccupied. Each time cell replication occurs, both daughter cells recevie \eqn{Pois(u)} genetic alterations. Each 
+#' unoccupied. Each time cell replication occurs, both daughter cells receive \eqn{Pois(u)} genetic alterations. Each 
 #' alteration is a driver mutation with some probability \eqn{du}. A cell with k driver mutations is given birth rate 
 #' \eqn{bs^k}. The simulation begins with a single cell at the origin at time \eqn{t = 0}. 
 #' 

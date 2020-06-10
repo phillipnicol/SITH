@@ -29,3 +29,9 @@ test_that("The alleles data frame is properly constructed", {
   
   expect_equal(50, sum(out$alleles$count))
 })
+
+test_that("The wild type allele is grey", {
+  out <- simulateTumor(N = 50, verbose = F)
+  
+  expect_equal(out$color_scheme[1], "#808080FF")
+})

@@ -37,7 +37,7 @@ Rcpp::NumericMatrix get_color_scheme(std::vector<specie> &species) {
 
     color_scheme(0,0) = 0.5; color_scheme(1,0) = 0.5; color_scheme(2,0) = 0.5; 
 
-    for(int i = 0; i < species.size(); ++i) {
+    for(int i = 1; i < species.size(); ++i) {
         color_scheme(0,i) = R::runif(rgb_lb, rgb_ub);
         color_scheme(1,i) = R::runif(rgb_lb, rgb_ub);
         color_scheme(2,i) = R::runif(rgb_lb, rgb_ub);
