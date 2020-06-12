@@ -129,28 +129,30 @@ void gillespie_step(std::vector<cell> &cells, std::vector<specie> &species, cons
         //std::bernoulli_distribution dist(cell.species.b/(cell.species.b + cell.species.d));
         if(bd == 1)
         {
+            //Update time (approximate)
+            double lambda = 1/(cells.size()*p_max);
+            time += R::rexp(lambda);   
+
             //Birth
             update_lattice(cell, key, lattice);
             struct cell new_cell = birth_cell(cells[index], key, species, wt_dr, u, du, s, phylo_tree);
-            cells.push_back(new_cell);
-            //Update time (approximate)
-            double lambda = 1/(cells.size()*p_max);
-            time += R::rexp(lambda);            
+            cells.push_back(new_cell);         
         }
         else
         {
             //Death
             if(cells.size() > 1)
             {
+                //update time(approximate)
+                double lambda = 1/(cells.size()*p_max);
+                time += R::rexp(lambda);       
+
                 //Free up the space in the lattice
                 lattice[cell.x][cell.y][cell.z] = 0;
                 //remove cell from list
                 std::swap(cells[index], cells.back());
                 cells.pop_back();   
-                --species[cell.species.id].count;
-                //update time(approximate)
-                double lambda = 1/(cells.size()*p_max);
-                time += R::rexp(lambda);           
+                --species[cell.species.id].count;    
             }
         }
     }
@@ -165,13 +167,15 @@ void gillespie_step(std::vector<cell> &cells, std::vector<specie> &species, cons
             //Death
             if(cells.size() > 1)
             {
+                //Update time--approximate 
+                double lambda = 1/(cells.size()*p_max);
+                time += R::rexp(lambda);
+
                 //procedure same as above
                 lattice[cell.x][cell.y][cell.z] = 0;
                 std::swap(cells[index], cells.back());
                 cells.pop_back();
                 --species[cell.species.id].count;
-                double lambda = 1/(cells.size()*p_max);
-                time += R::rexp(lambda);
             }        
         }
     }
