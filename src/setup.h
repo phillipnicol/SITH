@@ -14,9 +14,8 @@
 #define y_dim 500
 #define z_dim 500
 
-//take data at different time points (1 = true)
-#define time_course 0
-#define interval 500000
+//How often to print to screen? 
+#define interval 2000000
 
 #define rgb_ub 0.91
 #define rgb_lb 0.09
@@ -33,14 +32,13 @@ struct specie {
 //A cell is specified by its coordinates and specie type
 struct cell {
     int x,y,z;
-    specie species;
+    int id;
 };
 
 //Global variables
 double p_max;
 std::vector<int> drivers; 
 int total_mutations;
-Rcpp::IntegerVector nbhd = Rcpp::IntegerVector::create(1,2,3,4,5,6);
 
 bool*** init_lattice(void)
 {
@@ -98,10 +96,11 @@ cell initial_cell(std::vector<specie> &species, double wt_br, double wt_dr)
     initial_type.count = 1;
     initial_type.genotype.push_back(0);
 
+    //Save the species type in the vector
     species.push_back(initial_type);
 
-    //save the species type in vector
-    cell.species = initial_type;
+    //Let the cell id point to this id
+    cell.id = initial_type.id;
     return cell;
 }
 
@@ -119,8 +118,6 @@ void gv_init(const int N, const double wt_br, const double wt_dr, const double u
     total_mutations = 0; 
     drivers.clear(); 
     p_max = wt_br + wt_dr;
-     
-    nbhd = Rcpp::IntegerVector::create(1,2,3,4,5,6);
 
     //error checking 
     if(N < 1) {Rcpp::stop("N must be at least 2.");}
@@ -130,8 +127,6 @@ void gv_init(const int N, const double wt_br, const double wt_dr, const double u
     if(du < 0.0 || du > 1.0) {Rcpp::stop("du must be in [0,1]");}
     if(s < 0) {Rcpp::stop("s must be non-negative");}
 }
-
-inline int randWrapper(const int n) { return floor(unif_rand()*n); }
 
 //Store all permutations 
 std::vector<std::vector<int> > get_perms(std::vector<int> v) {
@@ -146,4 +141,8 @@ std::vector<std::vector<int> > get_perms(std::vector<int> v) {
     } while(std::next_permutation(v.begin(), v.end()));
 
     return perms;
+}
+
+void cleanup(std::vector<cell> &cells, std::vector<specie> &species) {
+    
 }

@@ -18,12 +18,12 @@ int random_index(std::vector<cell> &cells, std::vector<specie> &species)
     //std::uniform_real_distribution<double> rand_real(0, p_max);
     while(true)
     {
-        //check this
         trial = R::runif(0, cells.size());
-        
         u_trial = R::runif(0, p_max);
+
+        specie cell_species = species[cells[trial].id];
         
-        if(u_trial < cells[trial].species.b + cells[trial].species.d)
+        if(u_trial < cell_species.b + cell_species.d)
         {
             index = trial;
             break;

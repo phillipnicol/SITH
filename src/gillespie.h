@@ -9,7 +9,7 @@ summary: contains functions that perform cell division, cell death,
 mutation, and updates time. 
 */
 
-cell birth_cell(cell &cell, const int key, std::vector<specie> &species, const double wt_dr, const double u, const double du, 
+cell birth_cell(cell &cell, const int key, const specie cell_species, std::vector<specie> &species, const double wt_dr, const double u, const double du, 
                 const double s, std::vector<std::vector<int> > &phylo_tree) {
     //form new cell 
     struct cell new_cell;
@@ -34,13 +34,13 @@ cell birth_cell(cell &cell, const int key, std::vector<specie> &species, const d
     if(nmuts > 0) {
         specie new_species;
         new_species.id = species.size(); 
-        std::vector<int> new_gt = cell.species.genotype;
-        double br = cell.species.b;
+        std::vector<int> new_gt = cell_species.genotype;
+        double br = cell_species.b;
         for(int i = 0; i < nmuts; ++i) {
             ++total_mutations;
             new_gt.push_back(total_mutations); 
 
-            phylo_tree[0].push_back(cell.species.genotype.back());
+            phylo_tree[0].push_back(cell_species.genotype.back());
             phylo_tree[1].push_back(total_mutations); 
 
             if((int)R::rbinom(1,du) == 1) {
@@ -60,16 +60,13 @@ cell birth_cell(cell &cell, const int key, std::vector<specie> &species, const d
         }
 
         species.push_back(new_species);
-        new_cell.species = new_species;
+        new_cell.id = new_species.id;
             
     }
     else {
         //If no mutation, the cell inherits all of the qualities of its parent
-        new_cell.species.b = cell.species.b;
-        new_cell.species.d = cell.species.d;
-        new_cell.species.id = cell.species.id;
-        new_cell.species.genotype = cell.species.genotype; 
-        ++species[cell.species.id].count;
+        new_cell.id = cell_species.id; 
+        ++species[cell.id].count;
     }
 
     //original cell may mutate as well
@@ -77,14 +74,14 @@ cell birth_cell(cell &cell, const int key, std::vector<specie> &species, const d
     if(nmuts > 0) {
         specie new_species;
         new_species.id = species.size(); 
-        std::vector<int> new_gt = cell.species.genotype;
+        std::vector<int> new_gt = cell_species.genotype;
             
-        double br = cell.species.b;
+        double br = cell_species.b;
         for(int i = 0; i < nmuts; ++i) {
             ++total_mutations;
             new_gt.push_back(total_mutations); 
 
-            phylo_tree[0].push_back(cell.species.genotype.back());
+            phylo_tree[0].push_back(cell_species.genotype.back());
             phylo_tree[1].push_back(total_mutations); 
 
             if((int)R::rbinom(1,du) == 1) {
@@ -103,10 +100,10 @@ cell birth_cell(cell &cell, const int key, std::vector<specie> &species, const d
             p_max = new_species.b + wt_dr;
         }
 
-        species[cell.species.id].count--;
+        species[cell_species.id].count--;
 
         species.push_back(new_species);
-        cell.species = new_species;
+        cell.id = new_species.id;
     }
 
     return new_cell;
@@ -122,6 +119,10 @@ void gillespie_step(std::vector<cell> &cells, std::vector<specie> &species, cons
 
     //Randomly selected cell (from previous step)
     cell cell = cells[index];
+
+    //Find the allele of the chosen cell 
+    specie cell_species = species[cell.id];
+
     //Look at the neighbors of the cell and find a (random) neighbor
     //If no random neighbor, key = 0
     int key = random_neighbor(cell, lattice, perms);
@@ -129,12 +130,11 @@ void gillespie_step(std::vector<cell> &cells, std::vector<specie> &species, cons
     {
         //key != 0 so there is at least one free neighbor
         //Probability of birth event
-        int bd = R::rbinom(1,cell.species.b/(cell.species.b + cell.species.d));
-        //std::bernoulli_distribution dist(cell.species.b/(cell.species.b + cell.species.d));
+        int bd = R::rbinom(1,cell_species.b/(cell_species.b + cell_species.d));
         if(bd == 1) {
             //Birth
             update_lattice(cell, key, lattice);
-            struct cell new_cell = birth_cell(cells[index], key, species, wt_dr, u, du, s, phylo_tree);
+            struct cell new_cell = birth_cell(cells[index], key, cell_species, species, wt_dr, u, du, s, phylo_tree);
             cells.push_back(new_cell);         
         }
         else
@@ -146,7 +146,7 @@ void gillespie_step(std::vector<cell> &cells, std::vector<specie> &species, cons
                 //remove cell from list
                 std::swap(cells[index], cells.back());
                 cells.pop_back();   
-                --species[cell.species.id].count;    
+                --species[cell.id].count;    
             }
         }
     }
@@ -154,8 +154,7 @@ void gillespie_step(std::vector<cell> &cells, std::vector<specie> &species, cons
     {
         //Key = 0 and the cell has no free neighbors
         //No birth can occur, but the cell could still die
-        int bd = R::rbinom(1,cell.species.b/(cell.species.b + cell.species.d));
-        //std::bernoulli_distribution dist(cell.species.b/(cell.species.b + cell.species.d));
+        int bd = R::rbinom(1,cell_species.b/(cell_species.b + cell_species.d));
         if(bd == 0)
         {
             //Death
@@ -165,7 +164,7 @@ void gillespie_step(std::vector<cell> &cells, std::vector<specie> &species, cons
                 lattice[cell.x][cell.y][cell.z] = 0;
                 std::swap(cells[index], cells.back());
                 cells.pop_back();
-                --species[cell.species.id].count;
+                --species[cell.id].count;
             }        
         }
     }

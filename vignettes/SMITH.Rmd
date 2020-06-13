@@ -147,7 +147,7 @@ rgl::setupKnitr()
 The function `simulateTumor()` implements the lattice based model of tumor growth and mutation. $N$ (population size) $b,d,u,du,s$ are all inputs to the function, although they all have default values (see user manual). 
 
 ```{r}
-out <- simulateTumor(N = 250000, verbose = F)
+out <- simulateTumor(N = 250000, verbose = FALSE)
 ```
 
 `simulateTumor()` returns a list containing useful information for analyzing the results of the model.
@@ -163,6 +163,11 @@ There is other useful information contained in `out` such as a phylogenetic tree
 
 ## Visualization 
 `SMITH` provides functions to visualize the simulated tumor. It is **strongly** recommended that the user has installed the `rgl` package. With `rgl`, the function `visualizeTumor()` will generate an interactive 3D plot of the simulated tumor. If `rgl` is not installed, then a static plot will be made with `scatterplot3d()`. 
+
+```{r, echo = FALSE, results = "hide"}
+visualizeTumor(out, background = "white")
+```
+
 
 ```{r, rgl = TRUE, fig.width = 7, fig.height = 5, echo = -2}
 visualizeTumor(out, background = "white")
@@ -239,7 +244,8 @@ There is currently no function allowing the user to select the location of the u
 ### The simulation algorithm 
 The model is simulated using a Gillespie algorithm [@gillespie1977]. Given a population of $N$ cells at time $t$, cell $i$ is chosen to replicate with probability $b_i/\sum_{j=1}^N (b_j + d_j)$ (provided a free space is available) and die with probability $d_i/\sum_{j=1}^N(b_j + d_j)$. After an event is seleceted, the time is updated to be $t + X$, where 
 $$ X \sim Expo \left( \sum_{j \in V} b_j + \sum_{j=1}^N d_j \right)$$
-and $V$ is the subset of cells which are able to replicate (i.e, they have an unoccupied neighbor). Maintaining the list of cells with a free neighbor can be expensive, so our simulation algorithm approximates the parameter of the exponential distribution with $ p_{max} = N \max_j (b_j + d_j)$. 
+and $V$ is the subset of cells which are able to replicate (i.e, they have an unoccupied neighbor). Maintaining the list of cells with a free neighbor can be expensive, so our simulation algorithm approximates the parameter of the exponential distribution with 
+$p_{max} = N \max_j (b_j + d_j)$. 
 
 A standard approach is to use inverse transform sampling to select a cell for replication or death. However, this requires computing a cumulative sum over the birth and death rates for all unique alleles in the population, which is likely to scale linearly with $N$. We circumvent this issue by using rejection sampling. On each iteration, a random cell $i$ is selected uniformly from the population. Next, we obtain a sample $u$ from the distribution over $[0, p_{max}]$, where $p_{max}$ is as above. If $u < b_i + d_i$, then cell $i$ is selected to replicate or die. Otherwise, we proceed to the next iteration. Although there are contrived examples where rejection sampling is inefficient, the expected run-time is nearly constant for reasonable parameter values. 
 

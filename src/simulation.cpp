@@ -77,6 +77,7 @@ Rcpp::List simulate_tumor(Rcpp::List input) {
 
     end = clock();
     if(verbose) {Rcpp::Rcout << "Simulation completed in " << (double)(end - start)/CLOCKS_PER_SEC << " s.\n";}
+    if(verbose) {Rcpp::Rcout << "Saving results ... ...\n";}
 
     //save the data and write them to R objects 
     Rcpp::NumericMatrix cell_coords(cells.size(), 6);
