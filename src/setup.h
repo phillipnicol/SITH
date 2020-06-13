@@ -8,15 +8,10 @@
 #include<Rcpp.h> 
 
 
-//define dimensions of lattice
-//memory required: (x_dim * y_dim * z_dim) bits
-#define x_dim 500
-#define y_dim 500
-#define z_dim 500
-
 //How often to print to screen? 
 #define interval 2000000
 
+//For randomly choosing colors 
 #define rgb_ub 0.91
 #define rgb_lb 0.09
 
@@ -39,6 +34,7 @@ struct cell {
 double p_max;
 std::vector<int> drivers; 
 int total_mutations;
+int x_dim, y_dim, z_dim; //Size of the lattice (set at the start of simulation to accomodate num of cells)
 
 bool*** init_lattice(void)
 {
@@ -126,6 +122,20 @@ void gv_init(const int N, const double wt_br, const double wt_dr, const double u
     if(u < 0) {Rcpp::stop("u must be non-negative");}
     if(du < 0.0 || du > 1.0) {Rcpp::stop("du must be in [0,1]");}
     if(s < 0) {Rcpp::stop("s must be non-negative");}
+
+    //set lattice dims 
+    if(N > 100000000) {
+        //very large lattice dims
+        x_dim = 2000; y_dim = 2000; z_dim = 2000;
+    }
+    else if(N > 10000000) {
+        //decently large
+        x_dim = 1000; y_dim = 1000; z_dim = 1000;
+    }
+    else {
+        //This should handle most cases
+        x_dim = 500; y_dim = 500; z_dim = 500;
+    }
 }
 
 //Store all permutations 
