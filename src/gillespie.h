@@ -116,6 +116,10 @@ void gillespie_step(std::vector<cell> &cells, std::vector<specie> &species, cons
               const double wt_dr, const double u, const double du, const double s, std::vector<std::vector<int> > &phylo_tree,
               std::vector<std::vector<int> > &perms) {
 
+    //Update time--approximate 
+    double lambda = 1/(cells.size()*p_max);
+    time += R::rexp(lambda);
+
     //Randomly selected cell (from previous step)
     cell cell = cells[index];
     //Look at the neighbors of the cell and find a (random) neighbor
@@ -127,12 +131,7 @@ void gillespie_step(std::vector<cell> &cells, std::vector<specie> &species, cons
         //Probability of birth event
         int bd = R::rbinom(1,cell.species.b/(cell.species.b + cell.species.d));
         //std::bernoulli_distribution dist(cell.species.b/(cell.species.b + cell.species.d));
-        if(bd == 1)
-        {
-            //Update time (approximate)
-            double lambda = 1/(cells.size()*p_max);
-            time += R::rexp(lambda);   
-
+        if(bd == 1) {
             //Birth
             update_lattice(cell, key, lattice);
             struct cell new_cell = birth_cell(cells[index], key, species, wt_dr, u, du, s, phylo_tree);
@@ -141,12 +140,7 @@ void gillespie_step(std::vector<cell> &cells, std::vector<specie> &species, cons
         else
         {
             //Death
-            if(cells.size() > 1)
-            {
-                //update time(approximate)
-                double lambda = 1/(cells.size()*p_max);
-                time += R::rexp(lambda);       
-
+            if(cells.size() > 1) {
                 //Free up the space in the lattice
                 lattice[cell.x][cell.y][cell.z] = 0;
                 //remove cell from list
@@ -167,10 +161,6 @@ void gillespie_step(std::vector<cell> &cells, std::vector<specie> &species, cons
             //Death
             if(cells.size() > 1)
             {
-                //Update time--approximate 
-                double lambda = 1/(cells.size()*p_max);
-                time += R::rexp(lambda);
-
                 //procedure same as above
                 lattice[cell.x][cell.y][cell.z] = 0;
                 std::swap(cells[index], cells.back());

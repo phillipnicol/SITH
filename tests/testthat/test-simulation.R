@@ -14,11 +14,11 @@ test_that("Simulation is reproducible", {
   out <- simulateTumor(N = 200, verbose = FALSE, du = 0.5)
   
   expect_equal(nrow(out$cell_ids), 200)
-  expect_equal(mean(out$cell_ids$nmuts), 1.675)
-  expect_equal(length(out$drivers), 12)
-  expect_equal(nrow(out$muts), 19)
+  expect_equal(mean(out$cell_ids$nmuts), 1.11)
+  expect_equal(length(out$drivers), 10)
+  expect_equal(nrow(out$muts), 18)
   expect_equal(out$muts$MAF[5], 0)
-  expect_equal(out$time, 43.879, tolerance = 0.1)
+  expect_equal(out$time, 105.7691, tolerance = 0.1)
   
   out <- simulateTumor(N = 200, verbose = F, du = 1.0)
   expect_equal(nrow(out$muts) - 1, length(out$drivers))
