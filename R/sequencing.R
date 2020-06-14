@@ -109,9 +109,9 @@ singleCell <- function(tumor, pos, noise = 0.0) {
   return(df)
 }
 
-#' Simulate bulk sampling 
+#' Simulate multi-region bulk sampling 
 #' 
-#' @description Simulate bulk sequencing data by takign a local sample from the tumor
+#' @description Simulate bulk sequencing data by taking a local sample from the tumor
 #' and computing the variant allele frequencies of the various mutations. 
 #' 
 #' @param tumor A list which is the output of \code{\link{simulateTumor}}.
@@ -213,6 +213,10 @@ bulkSample <- function(tumor, pos, cube.length = 5, threshold = 0.05) {
     stop("Position must be a vector of length 3.")
   }
   
+  if(cube.length %% 2 == 0 | cube.length < 1) {
+    stop("cube.length must be an odd positive integer.")
+  }
+  
   cx <- pos[1]; cy <- pos[2]; cz <- pos[3]
   bulk_size <- cube.length^3
   cube.length <- cube.length - 1
@@ -254,7 +258,7 @@ return(as.data.frame(df))
 
 
 
-#' Simulate needle sequencing data
+#' Simulate fine needle aspiration 
 #' 
 #' @description Simulate a sampling procedure which takes a fine needle through the simulated tumor and
 #' reports the mutation allele frequency of the sampled cells. 
@@ -265,7 +269,8 @@ return(as.data.frame(df))
 #' 
 #' @author Phillip B. Nicol
 #' 
-#' @details This sampling procedure is inspired by Chkhaidze et. al. (2019). A random one-dimensional cross-section 
+#' @details This sampling procedure is inspired by Chkhaidze et. al. (2019) and simulates 
+#' fine needle aspiration. A random one-dimensional cross-section 
 #' of the tumor is chosen, and the cells within this cross section are sampled, reporting mutation allele frequency. 
 #' 
 #' @examples 

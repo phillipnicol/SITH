@@ -152,7 +152,3 @@ std::vector<std::vector<int> > get_perms(std::vector<int> v) {
 
     return perms;
 }
-
-void cleanup(std::vector<cell> &cells, std::vector<specie> &species) {
-    
-}
