@@ -2,7 +2,7 @@
 % Please edit documentation in R/sequencing.R
 \name{randomNeedles}
 \alias{randomNeedles}
-\title{Simulate needle sequencing data}
+\title{Simulate fine needle aspiration}
 \usage{
 randomNeedles(tumor, nsamples, threshold = 0.05)
 }
@@ -18,7 +18,8 @@ Simulate a sampling procedure which takes a fine needle through the simulated tu
 reports the mutation allele frequency of the sampled cells.
 }
 \details{
-This sampling procedure is inspired by Chkhaidze et. al. (2019). A random one-dimensional cross-section 
+This sampling procedure is inspired by Chkhaidze et. al. (2019) and simulates 
+fine needle aspiration. A random one-dimensional cross-section 
 of the tumor is chosen, and the cells within this cross section are sampled, reporting mutation allele frequency.
 }
 \examples{

@@ -4,7 +4,8 @@
 #' 
 #' @param tumor A list which is the output of \code{\link{simulateTumor}}.
 #' @param ncells The number of cells to sample.
-#' @param noise The false negative rate. 
+#' @param fpr The false positive rate
+#' @param fnr The false negative rate 
 #' 
 #' @return A data frame with sample names on the row and mutation ID on the column. 
 #' A 1 indicates that the mutation is present in the cell and a 0 indicates the mutation is not present. 
@@ -16,9 +17,9 @@
 #' 
 #' @examples
 #' out <- simulateTumor(N = 1000)
-#' df <- randomSingleCells(tumor = out, ncells = 5, noise = 0.10) 
+#' df <- randomSingleCells(tumor = out, ncells = 5, fnr = 0.1) 
 
-randomSingleCells <- function(tumor, ncells, noise = 0.0) {
+randomSingleCells <- function(tumor, ncells, fpr = 0.0, fnr = 0.0) {
   cells <- sample(1:nrow(tumor$cell_ids), ncells, replace = F)
   
   df <- data.frame(matrix(nrow = ncells, ncol = 0))
@@ -37,22 +38,27 @@ randomSingleCells <- function(tumor, ncells, noise = 0.0) {
       #put cell into matrix 
       if(sprintf("mutID-%d", j) %in% colnames(df)) {
         key <- which(colnames(df) == sprintf("mutID-%d", j))
-        if(rbinom(1,1,noise) == 0) {
-          df[counter, key] <- 1
-        }
+        df[counter,key] <- 1
       }
       else {
         df <- cbind(df, 0)
         colnames(df)[ncol(df)] <- sprintf("mutID-%d", j)
-        if(rbinom(1,1,noise) == 0) {
-          df[counter, ncol(df)] <- 1          
-        }
+        df[counter,ncol(df)] <- 1
       }
     }
     counter <- counter + 1
   }
   
+  #add noise to df
+  df[] <- data.frame(apply(df, c(1,2), function(x) add_noise(x,fpr,fnr)))
+  
   return(df)
+}
+
+add_noise <- function(x, fpr, fnr) {
+  if(x == 1 & rbinom(1,1,fnr) == 1) {return(0)}
+  else if(rbinom(1,1,fpr) == 1) {return(1)}
+  else {return(x)}
 }
 
 #' Simulate single cell sequencing data 
@@ -103,9 +109,10 @@ singleCell <- function(tumor, pos, noise = 0.0) {
     
     df <- cbind(df, 0)
     colnames(df)[ncol(df)] <- sprintf("mutID-%d", j)
-    if(rbinom(1,1,noise) == 0) {df[1, ncol(df)] <- 1}
+    if(rbinom(1,1,noise) == 0) {
+      df[,ncol(df)] <- 1          
+    }   
   }
-  
   return(df)
 }
 

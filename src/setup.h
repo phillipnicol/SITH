@@ -26,7 +26,7 @@ struct specie {
 
 //A cell is specified by its coordinates and specie type
 struct cell {
-    int x,y,z;
+    short int x,y,z;
     int id;
 };
 

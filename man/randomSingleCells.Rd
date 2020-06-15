@@ -4,14 +4,16 @@
 \alias{randomSingleCells}
 \title{Simulate single cell sequencing data}
 \usage{
-randomSingleCells(tumor, ncells, noise = 0)
+randomSingleCells(tumor, ncells, fpr = 0, fnr = 0)
 }
 \arguments{
 \item{tumor}{A list which is the output of \code{\link{simulateTumor}}.}
 
 \item{ncells}{The number of cells to sample.}
 
-\item{noise}{The false negative rate.}
+\item{fpr}{The false positive rate}
+
+\item{fnr}{The false negative rate}
 }
 \value{
 A data frame with sample names on the row and mutation ID on the column. 
@@ -26,7 +28,7 @@ to be sequenced at once (chosen randomly throughout the entire tumor).
 }
 \examples{
 out <- simulateTumor(N = 1000)
-df <- randomSingleCells(tumor = out, ncells = 5, noise = 0.10) 
+df <- randomSingleCells(tumor = out, ncells = 5, fnr = 0.1) 
 }
 \author{
 Phillip B. Nicol <philnicol740@gmail.com>

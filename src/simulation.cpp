@@ -45,7 +45,7 @@ Rcpp::List simulate_tumor(Rcpp::List input) {
     bool*** lattice = init_lattice();
 
     //initialize vector of cells:
-    std::vector<cell> cells;
+    std::vector<cell> cells; 
     std::vector<specie> species;
     cells.push_back(initial_cell(species, wt_br, wt_dr));
 

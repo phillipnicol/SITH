@@ -2,7 +2,7 @@
 % Please edit documentation in R/sequencing.R
 \name{randomBulkSamples}
 \alias{randomBulkSamples}
-\title{Simulate bulk sampling}
+\title{Simulate multi-region bulk sampling}
 \usage{
 randomBulkSamples(tumor, nsamples, cube.length = 5, threshold = 0.05)
 }
@@ -20,7 +20,7 @@ A data frame with \code{nsamples} rows and columns corresponding to the mutation
 The entries are the mutation allele frequency.
 }
 \description{
-Simulate bulk sequencing data by takign a local sample from the tumor
+Simulate bulk sequencing data by taking a local sample from the tumor
 and computing the variant allele frequencies of the various mutations.
 }
 \details{
