@@ -1,10 +1,10 @@
 ---
-title: "Creating and visualizing spatial simulations of tumor growth using SMITH" 
+title: "Creating and visualizing spatial simulations of tumor growth using SITH" 
 author: "Phillip B. Nicol"
 date: "June 5 2020" 
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{SMITH-introduction}
+  %\VignetteIndexEntry{SITH-introduction}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 references:
@@ -124,7 +124,7 @@ The cells within a cancerous tumor are usually highly diverse. An average tumor 
 
 Tumor growth is inherently a three-dimensional process. For this reason, the most accurate models of intratumor heterogeneity will factor in the effects that spatial growth has on the diversity of the tumor. One of the most popular models was introduced by @waclaw2015, which models spatial tumor growth as a multi-type branching process where cells occupy sites on a 3D lattice. Similar models have been studied in more recent literature (See @chkhaidze2019, @opasic2019). However, the software is either unavailable or designed to run at the command line, which is inconvenient for `R` users. 
 
-This package, a Spatial Model of IntraTumor Heterogeneity (SMITH), implements a 3D lattice-based model of tumor growth (see Model details) that can be used entirely from the `R` console. The package allows for 3D interactive visualizations of the tumor, as well as a comprehensive summary of the spatial distribution of mutants within the tumor. `SMITH` also contains functions allowing users to create simulated datasets from the generated tumor. 
+This package, a Spatial model of Intra-tumor Heterogeneity (SITH), implements a 3D lattice-based model of tumor growth (see Model details) that can be used entirely from the `R` console. The package allows for 3D interactive visualizations of the tumor, as well as a comprehensive summary of the spatial distribution of mutants within the tumor. `SITH` also contains functions allowing users to create simulated datasets from the generated tumor. 
 
 
 ### Model details 
@@ -140,7 +140,7 @@ As always, we begin by loading the package and setting a seed.
 
 ```{r setup, echo = -3}
 set.seed(1126490984)
-library(SMITH)
+library(SITH)
 rgl::setupKnitr()
 ```
 
@@ -162,7 +162,7 @@ As we can see, the `cell_ids` data frame contains the $(x,y,z)$ coordinates of t
 There is other useful information contained in `out` such as a phylogenetic tree so that an "order of mutations" can be defined. See the user manual for the details on all the returned components. 
 
 ## Visualization 
-`SMITH` provides functions to visualize the simulated tumor. It is **strongly** recommended that the user has installed the `rgl` package. With `rgl`, the function `visualizeTumor()` will generate an interactive 3D plot of the simulated tumor. If `rgl` is not installed, then a static plot will be made with `scatterplot3d()`. 
+`SITH` provides functions to visualize the simulated tumor. It is **strongly** recommended that the user has installed the `rgl` package. With `rgl`, the function `visualizeTumor()` will generate an interactive 3D plot of the simulated tumor. If `rgl` is not installed, then a static plot will be made with `scatterplot3d()`. 
 
 ```{r, echo = FALSE, results = "hide"}
 visualizeTumor(out, background = "white")
@@ -190,7 +190,7 @@ plotSlice(tumor = out, plot.type = "heat")
 ```
 
 ## Spatial distribution of mutants
-One of the main reasons for using a spatial simulation of tumor growth is to investigate biases in the distribution of mutants throughout the tumor. There are countless questions that can be asked, and hopefully the return value of `simulateTumor()` will give enough information to answer most of these. To get a quick summary of the spatial distribution of mutations, `SMITH` includes `spatialDistribution()`. This includes a plot of the number of mutations as a function of Euclidean distance, a histogram of the number of mutations, and the mutations with the largest MAF. We can compare the similarity of two cells $A$ and $B$ by viewing their genotypes as a binary vector (with component $i$ on if mutation $i$ is present in the cell) and computing the *jaccard index* $J(A,B) = |A \cap B|/|A \cup B|$. `spatialDistribution()` also estimates the average Jaccard index of cells as a function of the Euclidean distance between them. 
+One of the main reasons for using a spatial simulation of tumor growth is to investigate biases in the distribution of mutants throughout the tumor. There are countless questions that can be asked, and hopefully the return value of `simulateTumor()` will give enough information to answer most of these. To get a quick summary of the spatial distribution of mutations, `SITH` includes `spatialDistribution()`. This includes a plot of the number of mutations as a function of Euclidean distance, a histogram of the number of mutations, and the mutations with the largest MAF. We can compare the similarity of two cells $A$ and $B$ by viewing their genotypes as a binary vector (with component $i$ on if mutation $i$ is present in the cell) and computing the *jaccard index* $J(A,B) = |A \cap B|/|A \cup B|$. `spatialDistribution()` also estimates the average Jaccard index of cells as a function of the Euclidean distance between them. 
 
 ```{r, fig.width = 7.5, fig.height = 6}
 sp <- spatialDistribution(tumor = out)
@@ -208,7 +208,7 @@ An exciting application of the spatial models of intratumor heterogeneity is to 
 
 Recently, there have been a myriad of algorithms designed to infer clonal composition or tumor phylogeny from single cell sequencing or bulk sequencing data sets (for example, @kuipers2016). It is not well understood what the impact of spatially biased sampling methods will have on these methods. Using simulated data sets from spatial models could be helpful in determining which inference algorithms are likely to be useful in practice. 
 
-`SMITH` contains several functions that simulate single cell sequencing and bulk sampling, allowing the user to get simulated sequencing datasets from the tumor. 
+`SITH` contains several functions that simulate single cell sequencing and bulk sampling, allowing the user to get simulated sequencing datasets from the tumor. 
 
 
 ### Single cell sequencing 
@@ -243,8 +243,8 @@ There is currently no function allowing the user to select the location of the u
 ## Appendix
 ### The simulation algorithm 
 The model is simulated using a Gillespie algorithm [@gillespie1977]. Given a population of $N$ cells at time $t$, cell $i$ is chosen to replicate with probability $b_i/\sum_{j=1}^N (b_j + d_j)$ (provided a free space is available) and die with probability $d_i/\sum_{j=1}^N(b_j + d_j)$. After an event is seleceted, the time is updated to be $t + X$, where 
-$$ X \sim Expo \left( \sum_{j \in V} b_j + \sum_{j=1}^N d_j \right)$$
-and $V$ is the subset of cells which are able to replicate (i.e, they have an unoccupied neighbor). Maintaining the list of cells with a free neighbor can be expensive, so our simulation algorithm approximates the parameter of the exponential distribution with 
+$$ X \sim Expo \left( \sum_{j=1}^N b_j + d_j \right)$$
+Our simulation algorithm approximates the parameter of the exponential distribution with 
 $p_{max} = N \max_j (b_j + d_j)$. 
 
 A standard approach is to use inverse transform sampling to select a cell for replication or death. However, this requires computing a cumulative sum over the birth and death rates for all unique alleles in the population, which is likely to scale linearly with $N$. We circumvent this issue by using rejection sampling. On each iteration, a random cell $i$ is selected uniformly from the population. Next, we obtain a sample $u$ from the distribution over $[0, p_{max}]$, where $p_{max}$ is as above. If $u < b_i + d_i$, then cell $i$ is selected to replicate or die. Otherwise, we proceed to the next iteration. Although there are contrived examples where rejection sampling is inefficient, the expected run-time is nearly constant for reasonable parameter values. 

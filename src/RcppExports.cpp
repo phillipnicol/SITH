@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // simulate_tumor
 Rcpp::List simulate_tumor(Rcpp::List input);
-RcppExport SEXP _SMITH_simulate_tumor(SEXP inputSEXP) {
+RcppExport SEXP _SITH_simulate_tumor(SEXP inputSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -18,11 +18,11 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_SMITH_simulate_tumor", (DL_FUNC) &_SMITH_simulate_tumor, 1},
+    {"_SITH_simulate_tumor", (DL_FUNC) &_SITH_simulate_tumor, 1},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_SMITH(DllInfo *dll) {
+RcppExport void R_init_SITH(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

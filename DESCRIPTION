@@ -1,6 +1,6 @@
-Package: SMITH
+Package: SITH
 Type: Package
-Title: A Spatial Model of IntraTumor Heterogeneity
+Title: A 3D model of intra-tumor heterogeneity
 Version: 0.0.0.9000
 Date: 2020-05-26
 Author: Phillip B. Nicol
@@ -23,5 +23,5 @@ LinkingTo: Rcpp
 RoxygenNote: 7.1.0
 VignetteBuilder: knitr
 Encoding: UTF-8
-URL: https://github.com/phillipnicol/SMITH
-BugReports: https://github.com/phillipnicol/SMITH/issues
+URL: https://github.com/phillipnicol/3dITH
+BugReports: https://github.com/phillipnicol/3dITH/issues

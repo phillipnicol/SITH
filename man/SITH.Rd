@@ -1,16 +1,16 @@
-\name{SMITH-package}
-\alias{SMITH-package}
-\alias{SMITH}
+\name{SITH-package}
+\alias{SITH-package}
+\alias{SITH}
 \docType{package}
 \title{Visualize and analyze intratumor heterogeneity using a spatial model of tumor growth}
-\description{The \pkg{SMITH} (spatial model of intratumor heterogeneity) package implements a lattice based spatial model
-of tumor growth and mutation. Interactive 3D visualization of the tumor are possible using \pkg{rgl}. Additional functions for visualization and investigating the spatial distribution of mutants are provided. \pkg{SMITH} also
+\description{The \pkg{SITH} (spatial model of intratumor heterogeneity) package implements a lattice based spatial model
+of tumor growth and mutation. Interactive 3D visualization of the tumor are possible using \pkg{rgl}. Additional functions for visualization and investigating the spatial distribution of mutants are provided. \pkg{SITH} also
 provides functions to simulate single cell sequencing and bulk sampling data sets from the simulated tumor. 
 }
 \section{Background}{
   On-lattice models of tumor growth and mutation are computationally efficient and provide a simple setting to study how spatially constrained growth impacts intratumor heterogeneity. While this model has been studied extensively in literature (see Waclaw (2015), Chkhaidze (2019), Opasic (2019)), existing software is either not publicly available or inconvenient to use with \R. 
   
-  The motivation for creating the \pkg{SMITH} package was to provide a spatial simulator that is both easy to use and can be used entirely with \R. The core function in the package is \code{\link{simulateTumor}}, which wraps a C++ implementation of the model into \R using the \pkg{Rcpp} package. Once the results of the simulation are saved as an \R object, \pkg{SMITH} provides several other useful functions for studying this model. 
+  The motivation for creating the \pkg{SITH} package was to provide a spatial simulator that is both easy to use and can be used entirely with \R. The core function in the package is \code{\link{simulateTumor}}, which wraps a C++ implementation of the model into \R using the \pkg{Rcpp} package. Once the results of the simulation are saved as an \R object, \pkg{SITH} provides several other useful functions for studying this model. 
   
   See the package vignette for more information on the model and the algorithm used. 
 }
