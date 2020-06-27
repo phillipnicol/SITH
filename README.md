@@ -17,7 +17,7 @@ See the package documentation (LINK) for a complete list of dependencies.
     
 TODO: CRAN INSTALLATION
 
-Alternatively, the package can be installed directly from this repository by first installing `devtools` (run `install.packages(devtools)`) and then running `install.packages("phillipnicol/SITH")` from the console. 
+Alternatively, the package can be installed directly from this repository by first installing `devtools` (run `install.packages(devtools)`) and then running `install_github("phillipnicol/SITH")` from the console. 
 
 ## Features
 
