@@ -204,16 +204,16 @@ names(sp)
 
 
 ## Simulating sequencing data 
-An exciting application of the spatial models of intratumor heterogeneity is to use them to generate simulated sequencing data sets. 
+An exciting application of the spatial models of intratumor heterogeneity is to use them to generate synthetic sequencing data sets. 
 
 Recently, there have been a myriad of algorithms designed to infer clonal composition or tumor phylogeny from single cell sequencing or bulk sequencing data sets (for example, @kuipers2016). It is not well understood what the impact of spatially biased sampling methods will have on these methods. Using simulated data sets from spatial models could be helpful in determining which inference algorithms are likely to be useful in practice. 
 
-`SITH` contains several functions that simulate single cell sequencing and bulk sampling, allowing the user to get simulated sequencing datasets from the tumor. 
+`SITH` contains several functions that simulate single cell sequencing and bulk sampling, allowing the user to get synthetic sequencing data sets from the tumor. 
 
 
 ### Single cell sequencing 
 
-`randomSingleCells()` will take random cells from the tumor, reporting the list of mutations present in each cell. Due to artifacts of sequencing technology, it is expected that there are a large number of false negatives. To account for this, the `noise` parameter introduces false negatives into the data set at the specified rate. The function returns a binary matrix, where a $1$ indicates that a mutation is present. 
+`randomSingleCells()` will take random cells from the tumor and report the list of mutations present in each cell. Due to artifacts of sequencing technology, it is expected that there are a large number of false negatives. To account for this, the `fnr` parameter introduces false negatives into the data set at the specified rate (there is also a `fpr` parameter for false positives). The function returns a binary matrix, where a $1$ indicates that a mutation is present. 
 ```{r}
 Scs <- randomSingleCells(tumor = out, ncells = 5, fnr = 0.1)
 head(Scs)
