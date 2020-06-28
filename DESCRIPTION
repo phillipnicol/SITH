@@ -5,7 +5,7 @@ Version: 0.0.0.9000
 Date: 2020-05-26
 Author: Phillip B. Nicol
 Maintainer: Phillip B. Nicol <philnicol740@gmail.com>
-Description: Implements a three-dimensional stochastic model of cancer growth and mutation. Allows for interactive 3D visualizations of the simulated tumor. Provides a comprehensive summary on the spatial distribution of mutants within the tumor. Contains functions which create simulated sequencing datasets from the generated tumor. 
+Description: Implements a three-dimensional stochastic model of cancer growth and mutation. Allows for interactive 3D visualizations of the simulated tumor. Provides a comprehensive summary of the spatial distribution of mutants within the tumor. Contains functions which create synthetic sequencing datasets from the generated tumor. 
 License: GPL (>= 2)
 Depends: R (>= 4.0.0)
 Imports: 
