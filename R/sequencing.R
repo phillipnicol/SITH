@@ -2,7 +2,7 @@
 #' 
 #' @description Simulate single cell sequencing data by random selecting cells from the tumor. 
 #' 
-#' @param tumor A list which is the output of \code{\link{simulateTumor}}.
+#' @param tumor A list which is the output of \code{\link{simulateTumor}()}.
 #' @param ncells The number of cells to sample.
 #' @param fpr The false positive rate
 #' @param fnr The false negative rate 
@@ -10,7 +10,7 @@
 #' @return A data frame with sample names on the row and mutation ID on the column. 
 #' A 1 indicates that the mutation is present in the cell and a 0 indicates the mutation is not present. 
 #' 
-#' @details The procedure is exactly the same as \code{\link{singleCell}} except that it allows multiple cells
+#' @details The procedure is exactly the same as \code{\link{singleCell}()} except that it allows multiple cells
 #' to be sequenced at once (chosen randomly throughout the entire tumor). 
 #' 
 #' @author Phillip B. Nicol <philnicol740@gmail.com>
@@ -65,7 +65,7 @@ add_noise <- function(x, fpr, fnr) {
 #' 
 #' @description Simulate single cell sequencing data by selecting a cell at a specified position 
 #' 
-#' @param tumor A list which is the output of \code{\link{simulateTumor}}.
+#' @param tumor A list which is the output of \code{\link{simulateTumor}()}.
 #' @param pos A vector of length 3 giving the (x,y,z) coordinates of the cell to sample. 
 #' @param noise The false negative rate. 
 #' 
@@ -86,6 +86,7 @@ add_noise <- function(x, fpr, fnr) {
 #' 
 #' @references 
 #' K. Jahn, J. Kupiers and N. Beerenwinkel. Tree inference for single-cell data. Genome Biology, volume 17, 2016. 
+#' https://doi.org/10.1186/s13059-016-0936-x. 
 #' 
 #' 
 singleCell <- function(tumor, pos, noise = 0.0) {
@@ -121,7 +122,7 @@ singleCell <- function(tumor, pos, noise = 0.0) {
 #' @description Simulate bulk sequencing data by taking a local sample from the tumor
 #' and computing the variant allele frequencies of the various mutations. 
 #' 
-#' @param tumor A list which is the output of \code{\link{simulateTumor}}.
+#' @param tumor A list which is the output of \code{\link{simulateTumor}()}.
 #' @param nsamples The number of bulk samples to take. 
 #' @param cube.length The side length of the cube of cells to be sampled. 
 #' @param threshold Only mutations with an allele frequency greater than the threshold will be included in the sample.
@@ -129,7 +130,7 @@ singleCell <- function(tumor, pos, noise = 0.0) {
 #' @return A data frame with \code{nsamples} rows and columns corresponding to the mutations. 
 #' The entries are the mutation allele frequency.
 #' 
-#' @details This is the same as \code{\link{bulkSample}}, except multiple samples are taken 
+#' @details This is the same as \code{\link{bulkSample}()}, except multiple samples are taken 
 #' with random center points. 
 #' 
 #' @examples 
@@ -190,7 +191,7 @@ randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05
 #' @description Simulate bulk sequencing data by takign a local sample from the tumor
 #' and computing the variant allele frequencies of the various mutations. 
 #' 
-#' @param tumor A list which is the output of \code{\link{simulateTumor}}.
+#' @param tumor A list which is the output of \code{\link{simulateTumor}()}.
 #' @param pos The center point of the sample.
 #' @param cube.length The side length of the cube of cells to be sampled. 
 #' @param threshold Only mutations with an allele frequency greater than the threshold will be included in the sample.
@@ -215,6 +216,7 @@ randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05
 #' K. Chkhaidze, T. Heide, B. Werner, M. Williams, W. Huang, G. Caravagna, T. Graham, and 
 #' A. Sottoriva. Spatially con- strained tumour growth affects the 
 #' patterns of clonal selection and neutral drift in cancer genomic data. PLOS Computational Biology, 2019.
+#'  https://doi.org/10.1371/journal.pcbi.1007243.
 bulkSample <- function(tumor, pos, cube.length = 5, threshold = 0.05) {
   if(length(pos) != 3) {
     stop("Position must be a vector of length 3.")
@@ -270,7 +272,7 @@ return(as.data.frame(df))
 #' @description Simulate a sampling procedure which takes a fine needle through the simulated tumor and
 #' reports the mutation allele frequency of the sampled cells. 
 #' 
-#' @param tumor A list which is the output of \code{\link{simulateTumor}}.
+#' @param tumor A list which is the output of \code{\link{simulateTumor}()}.
 #' @param nsamples The number of samples to take.
 #' @param threshold Only mutations with an allele frequency greater than the threshold will be included in the sample.
 #' 
@@ -288,6 +290,7 @@ return(as.data.frame(df))
 #' K. Chkhaidze, T. Heide, B. Werner, M. Williams, W. Huang, G. Caravagna, T. Graham, and 
 #' A. Sottoriva. Spatially con- strained tumour growth affects the 
 #' patterns of clonal selection and neutral drift in cancer genomic data. PLOS Computational Biology, 2019.
+#'  https://doi.org/10.1371/journal.pcbi.1007243.
 randomNeedles <- function(tumor, nsamples, threshold = 0.05) {
   cells <- sample(1:nrow(tumor$cell_ids), nsamples, replace = F)
   

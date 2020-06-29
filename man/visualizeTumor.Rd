@@ -7,7 +7,7 @@
 visualizeTumor(tumor, plot.type = "normal", background = "black", axes = FALSE)
 }
 \arguments{
-\item{tumor}{A list which is the output of \code{\link{simulateTumor}}.}
+\item{tumor}{A list which is the output of \code{\link{simulateTumor}()}.}
 
 \item{plot.type}{Which type of plot to draw. "Normal" assigns a random rgb value to each allele while
 "heat" colors cells with more mutations red and cells with fewer mutations blue.}
@@ -23,9 +23,9 @@ None.
 Interactive visualization of the simulated tumor using the \code{rgl} package (if available).
 }
 \details{
-If \code{rgl} is installed, then the plots will be interactive. If \code{rgl} is unavailable, static plots will
-be created with \code{scatterplot3d}. Since plotting performance with \code{scatterplot3d} is reduced, it is strongly
-recommended that \code{rgl} is installed for optimal use of this function.
+If \pkg{rgl} is installed, then the plots will be interactive. If \pkg{rgl} is unavailable, static plots will
+be created with \pkg{scatterplot3d}. Since plotting performance with \pkg{scatterplot3d} is reduced, it is strongly
+recommended that \pkg{rgl} is installed for optimal use of this function.
 }
 \author{
 Phillip B. Nicol

@@ -7,7 +7,7 @@
 bulkSample(tumor, pos, cube.length = 5, threshold = 0.05)
 }
 \arguments{
-\item{tumor}{A list which is the output of \code{\link{simulateTumor}}.}
+\item{tumor}{A list which is the output of \code{\link{simulateTumor}()}.}
 
 \item{pos}{The center point of the sample.}
 
@@ -40,6 +40,7 @@ df <- bulkSample(tumor = out, pos = c(0,0,0))
 K. Chkhaidze, T. Heide, B. Werner, M. Williams, W. Huang, G. Caravagna, T. Graham, and 
 A. Sottoriva. Spatially con- strained tumour growth affects the 
 patterns of clonal selection and neutral drift in cancer genomic data. PLOS Computational Biology, 2019.
+ https://doi.org/10.1371/journal.pcbi.1007243.
 }
 \author{
 Phillip B. Nicol

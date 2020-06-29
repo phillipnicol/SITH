@@ -10,16 +10,16 @@ provides functions to simulate single cell sequencing and bulk sampling data set
 \section{Background}{
   On-lattice models of tumor growth and mutation are computationally efficient and provide a simple setting to study how spatially constrained growth impacts intratumor heterogeneity. While this model has been studied extensively in literature (see Waclaw (2015), Chkhaidze (2019), Opasic (2019)), existing software is either not publicly available or inconvenient to use with \R. 
   
-  The motivation for creating the \pkg{SITH} package was to provide a spatial simulator that is both easy to use and can be used entirely with \R. The core function in the package is \code{\link{simulateTumor}}, which wraps a C++ implementation of the model into \R using the \pkg{Rcpp} package. Once the results of the simulation are saved as an \R object, \pkg{SITH} provides several other useful functions for studying this model. 
+  The motivation for creating the \pkg{SITH} package was to provide a spatial simulator that is both easy to use and can be used entirely with \R. The core function in the package is \code{\link{simulateTumor}()}, which wraps a C++ implementation of the model into \R using the \pkg{Rcpp} package. Once the results of the simulation are saved as an \R object, \pkg{SITH} provides several other useful functions for studying this model. 
   
   See the package vignette for more information on the model and the algorithm used. 
 }
 
 \author{Phillip B. Nicol}
 \references{
-B. Waclaw, I. Bozic, M. Pittman, R. Hruban, B. Vogelstein and M. Nowak. A spatial model predicts that dispersal and cell turnover limit intratumor heterogeneity. \emph{Nature}, pages 261-264, 2015. 
+B. Waclaw, I. Bozic, M. Pittman, R. Hruban, B. Vogelstein and M. Nowak. A spatial model predicts that dispersal and cell turnover limit intratumor heterogeneity. \emph{Nature}, pages 261-264, 2015. https://doi.org/10.1038/nature14971. 
 
-K. Chkhaidze, T. Heide, B. Werner, M. Williams, W. Huang, G. Caravagna, T. Graham, and A. Sottoriva. Spatially constrained tumour growth affects the patterns of clonal selection and neutral drift in cancer genomic data. \emph{PLOS Computational Biology}, 2019.
+K. Chkhaidze, T. Heide, B. Werner, M. Williams, W. Huang, G. Caravagna, T. Graham, and A. Sottoriva. Spatially constrained tumour growth affects the patterns of clonal selection and neutral drift in cancer genomic data. \emph{PLOS Computational Biology}, 2019. https://doi.org/10.1371/journal.pcbi.1007243. 
 
 L. Opasic, D. Zhou, B. Wener, D. Dingli and A. Traulsen. How many samples are needed to infer truly clonal mutations
 from heterogenous tumours? \emph{BMC Cancer}, https://doi.org/10.1186/s12885-019-5597-1. 

@@ -7,7 +7,7 @@
 spatialDistribution(tumor, N = 500, cutoff = 0.01, make.plot = TRUE)
 }
 \arguments{
-\item{tumor}{A list which is the output of \code{\link{simulateTumor}}.}
+\item{tumor}{A list which is the output of \code{\link{simulateTumor}()}.}
 
 \item{N}{The number of pairs to sample.}
 

@@ -7,7 +7,7 @@
 randomSingleCells(tumor, ncells, fpr = 0, fnr = 0)
 }
 \arguments{
-\item{tumor}{A list which is the output of \code{\link{simulateTumor}}.}
+\item{tumor}{A list which is the output of \code{\link{simulateTumor}()}.}
 
 \item{ncells}{The number of cells to sample.}
 
@@ -23,7 +23,7 @@ A 1 indicates that the mutation is present in the cell and a 0 indicates the mut
 Simulate single cell sequencing data by random selecting cells from the tumor.
 }
 \details{
-The procedure is exactly the same as \code{\link{singleCell}} except that it allows multiple cells
+The procedure is exactly the same as \code{\link{singleCell}()} except that it allows multiple cells
 to be sequenced at once (chosen randomly throughout the entire tumor).
 }
 \examples{

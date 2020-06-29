@@ -7,7 +7,7 @@
 randomBulkSamples(tumor, nsamples, cube.length = 5, threshold = 0.05)
 }
 \arguments{
-\item{tumor}{A list which is the output of \code{\link{simulateTumor}}.}
+\item{tumor}{A list which is the output of \code{\link{simulateTumor}()}.}
 
 \item{nsamples}{The number of bulk samples to take.}
 
@@ -24,7 +24,7 @@ Simulate bulk sequencing data by taking a local sample from the tumor
 and computing the variant allele frequencies of the various mutations.
 }
 \details{
-This is the same as \code{\link{bulkSample}}, except multiple samples are taken 
+This is the same as \code{\link{bulkSample}()}, except multiple samples are taken 
 with random center points.
 }
 \examples{

@@ -4,7 +4,7 @@
 #' @description Provides a summary the spatial distribution of mutants within the simulated
 #' tumor. 
 #' 
-#' @param tumor A list which is the output of \code{\link{simulateTumor}}.
+#' @param tumor A list which is the output of \code{\link{simulateTumor}()}.
 #' @param N The number of pairs to sample. 
 #' @param cutoff For a plot of clone sizes, all mutations with a MAF below \code{cutoff} are ignored. 
 #' @param make.plot Whether or not to make plots. 

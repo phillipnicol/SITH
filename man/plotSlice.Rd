@@ -7,7 +7,7 @@
 plotSlice(tumor, slice.dim = "x", level = 0, plot.type = "normal")
 }
 \arguments{
-\item{tumor}{A list which is the output of \code{\link{simulateTumor}}.}
+\item{tumor}{A list which is the output of \code{\link{simulateTumor}()}.}
 
 \item{slice.dim}{One of "x", "y" or "z", which denotes the dimension which will be fixed to obtain a 2D cross section.}
 

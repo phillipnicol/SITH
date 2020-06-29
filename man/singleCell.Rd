@@ -7,7 +7,7 @@
 singleCell(tumor, pos, noise = 0)
 }
 \arguments{
-\item{tumor}{A list which is the output of \code{\link{simulateTumor}}.}
+\item{tumor}{A list which is the output of \code{\link{simulateTumor}()}.}
 
 \item{pos}{A vector of length 3 giving the (x,y,z) coordinates of the cell to sample.}
 
@@ -33,7 +33,8 @@ df <- singleCell(tumor = out, pos = c(0,0,0), noise = 0.1)
 
 }
 \references{
-K. Jahn, J. Kupiers and N. Beerenwinkel. Tree inference for single-cell data. Genome Biology, volume 17, 2016.
+K. Jahn, J. Kupiers and N. Beerenwinkel. Tree inference for single-cell data. Genome Biology, volume 17, 2016. 
+https://doi.org/10.1186/s13059-016-0936-x.
 }
 \author{
 Phillip B. Nicol <philnicol740@gmail.com>

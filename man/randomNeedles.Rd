@@ -7,7 +7,7 @@
 randomNeedles(tumor, nsamples, threshold = 0.05)
 }
 \arguments{
-\item{tumor}{A list which is the output of \code{\link{simulateTumor}}.}
+\item{tumor}{A list which is the output of \code{\link{simulateTumor}()}.}
 
 \item{nsamples}{The number of samples to take.}
 
@@ -31,6 +31,7 @@ df <- randomNeedles(tumor = out, nsamples = 5)
 K. Chkhaidze, T. Heide, B. Werner, M. Williams, W. Huang, G. Caravagna, T. Graham, and 
 A. Sottoriva. Spatially con- strained tumour growth affects the 
 patterns of clonal selection and neutral drift in cancer genomic data. PLOS Computational Biology, 2019.
+ https://doi.org/10.1371/journal.pcbi.1007243.
 }
 \author{
 Phillip B. Nicol

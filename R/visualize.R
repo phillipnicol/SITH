@@ -3,15 +3,15 @@
 #' 
 #' @description Interactive visualization of the simulated tumor using the \code{rgl} package (if available). 
 #' 
-#' @param tumor A list which is the output of \code{\link{simulateTumor}}.
+#' @param tumor A list which is the output of \code{\link{simulateTumor}()}.
 #' @param plot.type Which type of plot to draw. "Normal" assigns a random rgb value to each allele while
 #' "heat" colors cells with more mutations red and cells with fewer mutations blue. 
 #' @param background If rgl is installed, this will set the color of the background
 #' @param axes Will include axes (rgl only). 
 #' 
-#' @details If \code{rgl} is installed, then the plots will be interactive. If \code{rgl} is unavailable, static plots will
-#' be created with \code{scatterplot3d}. Since plotting performance with \code{scatterplot3d} is reduced, it is strongly
-#' recommended that \code{rgl} is installed for optimal use of this function. 
+#' @details If \pkg{rgl} is installed, then the plots will be interactive. If \pkg{rgl} is unavailable, static plots will
+#' be created with \pkg{scatterplot3d}. Since plotting performance with \pkg{scatterplot3d} is reduced, it is strongly
+#' recommended that \pkg{rgl} is installed for optimal use of this function. 
 #' 
 #' @return None. 
 #' 
@@ -56,7 +56,7 @@ visualizeTumor <- function(tumor, plot.type = "normal", background = "black", ax
 #' 
 #' @description 2D cross section of the simulated tumor.
 #' 
-#' @param tumor A list which is the output of \code{\link{simulateTumor}}.
+#' @param tumor A list which is the output of \code{\link{simulateTumor}()}.
 #' @param slice.dim One of "x", "y" or "z", which denotes the dimension which will be fixed to obtain a 2D cross section.
 #' @param level Which value will the dimension given in \code{slice.dim} be fixed at? 
 #' @param plot.type Which type of plot to draw. "Normal" assigns a random rgb value to each allele while
