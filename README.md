@@ -21,6 +21,13 @@ Alternatively, the package can be installed directly from this repository by fir
 
 ## Features
 
-TODO
-
-## Snapshots
+  - Contains a 3D simulator of spatial tumor growth and mutation, similar to the model described in [this paper](https://www.nature.com/articles/nature14971).
+    - The simulator is written in C++ since it is computationally expensive. 
+    - A tumor with 1 million cells can be simulated in under a minute on a standard desktop computer.
+  - 3D interactive visualizations of the simulated tumor using `rgl`. 
+    - Option to color regions with high mutation red and regions with low mutation blue. 
+    - 2D cross section
+  - Summary of the spatial distrbution of mutations throughout the tumor.
+    - Creates graphs that show how genetic diversity changes in different spatial regions.
+  - Create synthetic bulk and single-cell sequencing data from the simulated tumor.
+    - Users can specify what part of the tumor the samples are taken from. 
