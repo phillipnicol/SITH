@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/phillipnicol/SMITH.svg?branch=master)](https://travis-ci.org/phillipnicol/SMITH)
 
-# SITH
+# A Spatial model of Intra-Tumor Heterogeneity (SITH) 
 
 **An R package for visualizing and analyzing a spatial model of intratumor heterogeneity**
 
