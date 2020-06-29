@@ -52,7 +52,7 @@ references:
     year: 2018
 
 - id: opasic2019
-  title: How many samples are needed to infer truly clonam mutations from heterogenous tumours?
+  title: How many samples are needed to infer truly clonal mutations from heterogenous tumours?
   author: 
   - family: Opasic et. al. 
   container-title: BMC Cancer
@@ -242,7 +242,7 @@ There is currently no function allowing the user to select the location of the u
 
 ## Appendix
 ### The simulation algorithm 
-The model is simulated using a Gillespie algorithm [@gillespie1977]. Given a population of $N$ cells at time $t$, cell $i$ is chosen to replicate with probability $b_i/\sum_{j=1}^N (b_j + d_j)$ (provided a free space is available) and die with probability $d_i/\sum_{j=1}^N(b_j + d_j)$. After an event is seleceted, the time is updated to be $t + X$, where 
+The model is simulated using a Gillespie algorithm [@gillespie1977]. Given a population of $N$ cells at time $t$, cell $i$ is chosen to replicate with probability $b_i/\sum_{j=1}^N (b_j + d_j)$ (provided a free space is available) and die with probability $d_i/\sum_{j=1}^N(b_j + d_j)$. After an event is selected, the time is updated to be $t + X$, where 
 $$ X \sim Expo \left( \sum_{j=1}^N b_j + d_j \right)$$
 Our simulation algorithm approximates the parameter of the exponential distribution with 
 $p_{max} = N \max_j (b_j + d_j)$. 

@@ -22,7 +22,7 @@ B. Waclaw, I. Bozic, M. Pittman, R. Hruban, B. Vogelstein and M. Nowak. A spatia
 K. Chkhaidze, T. Heide, B. Werner, M. Williams, W. Huang, G. Caravagna, T. Graham, and A. Sottoriva. Spatially constrained tumour growth affects the patterns of clonal selection and neutral drift in cancer genomic data. \emph{PLOS Computational Biology}, 2019. https://doi.org/10.1371/journal.pcbi.1007243. 
 
 L. Opasic, D. Zhou, B. Wener, D. Dingli and A. Traulsen. How many samples are needed to infer truly clonal mutations
-from heterogenous tumours? \emph{BMC Cancer}, https://doi.org/10.1186/s12885-019-5597-1. 
+from heterogeneous tumours? \emph{BMC Cancer}, https://doi.org/10.1186/s12885-019-5597-1. 
 }
 \examples{
 \dontrun{                  

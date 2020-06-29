@@ -13,7 +13,7 @@ The following is required for installing the package:
   - Package `rgl` is **strongly recommended** for visualizations can be downloaded from CRAN by running `install.packages(rgl)` from the console. 
     - macOS users may have to install [Xquartz](https://www.xquartz.org) before installing `rgl`. 
     
-See the package documentation (LINK) for a complete list of dependencies.
+See the package documentation for a complete list of dependencies.
     
 As the package is on CRAN, it can be installed by running `install.packages(SITH)` from the command line. 
 

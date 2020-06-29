@@ -19,7 +19,7 @@ bulkSample(tumor, pos, cube.length = 5, threshold = 0.05)
 A data frame with 1 row and columns corresponding to the mutations. The entries are the mutation allele frequency.
 }
 \description{
-Simulate bulk sequencing data by takign a local sample from the tumor
+Simulate bulk sequencing data by taking a local sample from the tumor
 and computing the variant allele frequencies of the various mutations.
 }
 \details{

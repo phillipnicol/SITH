@@ -22,7 +22,7 @@ A list with the following components
 as a function of Euclidean distance from the lattice origin (Euclid. distance rounded to nearest integer). 
 \item \code{mean_driver} - The same as \code{mean_mutant} except for driver mutations only. Will be \code{NULL} if 
 no drivers are present in the simulated tumor. 
-\item \code{jaccard} A data farme with two columns giving mean jaccard index as a function of Euclidean distance 
+\item \code{jaccard} A data frame with two columns giving mean jaccard index as a function of Euclidean distance 
 between pairs of cells (rounded to nearest integer). 
 }
 }
