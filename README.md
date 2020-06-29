@@ -27,7 +27,7 @@ Alternatively, the package can be installed directly from this repository by fir
   - 3D interactive visualizations of the simulated tumor using `rgl`. 
     - Option to color regions with high mutation red and regions with low mutation blue. 
     - 2D cross section
-  - Summary of the spatial distrbution of mutations throughout the tumor.
+  - Summary of the spatial distribution of mutations throughout the tumor.
     - Creates graphs that show how genetic diversity changes in different spatial regions.
   - Create synthetic bulk and single-cell sequencing data from the simulated tumor.
     - Users can specify what part of the tumor the samples are taken from. 
