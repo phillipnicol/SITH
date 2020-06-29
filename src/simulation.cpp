@@ -1,12 +1,7 @@
 /*
-filename: simulation.cpp
-project: TumorGenerator R package
-author: Phillip B. Nicol
-license: GPL v3 
-date: June 4, 2020
-
-summary: simulation.cpp holds the main procedure for the 
-simulation of tumor growth
+SITH: An R package for visualizing and analyzing a spatial model of intra-tumor heterogeneity
+Author: Phillip Nicol
+License: GPL-2 
 */
 
 #include"setup.h"

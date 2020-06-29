@@ -1,12 +1,7 @@
 /*
-filename: gillespie.h
-project: TumorGenerator R package
-author: Phillip B. Nicol
-license: GPL v3 
-date: June 4, 2020
-
-summary: contains functions that perform cell division, cell death, 
-mutation, and updates time. 
+SITH: An R package for visualizing and analyzing a spatial model of intra-tumor heterogeneity
+Author: Phillip Nicol
+License: GPL-2 
 */
 
 cell birth_cell(cell &cell, const int key, const specie cell_species, std::vector<specie> &species, const double wt_dr, const double u, const double du, 

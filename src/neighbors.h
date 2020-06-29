@@ -1,3 +1,8 @@
+/*
+SITH: An R package for visualizing and analyzing a spatial model of intra-tumor heterogeneity
+Author: Phillip Nicol
+License: GPL-2 
+*/
 
 //free_neighbor returns true if there is an open space at the neighbor position specified by key
 bool free_neighbor(cell cell, bool*** lattice, int key)

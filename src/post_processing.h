@@ -1,4 +1,8 @@
-
+/*
+SITH: An R package for visualizing and analyzing a spatial model of intra-tumor heterogeneity
+Author: Phillip Nicol
+License: GPL-2 
+*/
 
 void write_results(std::vector<cell> &cells, std::vector<specie> &species, Rcpp::NumericMatrix &cell_coords, Rcpp::IntegerMatrix &species_dict, Rcpp::IntegerVector &muts) {
     for(int i = 0; i < cells.size(); ++i) {
