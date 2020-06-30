@@ -25,6 +25,7 @@ L. Opasic, D. Zhou, B. Wener, D. Dingli and A. Traulsen. How many samples are ne
 from heterogeneous tumours? \emph{BMC Cancer}, https://doi.org/10.1186/s12885-019-5597-1. 
 }
 \examples{
+\donttest{
 #Simulate tumor growth
 out <- simulateTumor()
   
@@ -41,4 +42,5 @@ Scs <- randomSingleCells(tumor = out, ncells = 5, fnr = 0.1)
   
 #simulate bulk sampling
 Bulks <- randomBulkSamples(tumor = out, nsamples = 5)
+}
 }
