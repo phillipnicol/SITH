@@ -95,6 +95,10 @@ spatialDistribution <- function(tumor, N = 500, cutoff = 0.01, make.plot = TRUE)
 }
 
 make_plot <- function(out.spatial, tumor, cutoff) {
+  #Ensure that user options are restored when function exits
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
+  
   par(mfrow=c(2,2))
   
   plot(out.spatial$mean_mutant[,1], out.spatial$mean_mutant[,2], pch = 4, col = "blue", xlab = "Euclid. distance from origin",

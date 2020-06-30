@@ -25,22 +25,20 @@ L. Opasic, D. Zhou, B. Wener, D. Dingli and A. Traulsen. How many samples are ne
 from heterogeneous tumours? \emph{BMC Cancer}, https://doi.org/10.1186/s12885-019-5597-1. 
 }
 \examples{
-\dontrun{                  
-  #Simulate tumor growth
-  out <- simulateTumor()
+#Simulate tumor growth
+out <- simulateTumor()
   
-  #3d interactive visualization using rgl 
-  visualizeTumor(out)
-  #or see regions with lots of mutants
-  visualizeTumor(out, plot.type = "heat")
+#3d interactive visualization using rgl 
+visualizeTumor(out)
+#or see regions with lots of mutants
+visualizeTumor(out, plot.type = "heat")
   
-  #get a summary on the spatial dist. of mutants
-  sp <- spatialDistribution(out)
+#get a summary on the spatial dist. of mutants
+sp <- spatialDistribution(out)
   
-  #simulate single cell sequencing
-  Scs <- randomSingleCells(tumor = out, ncells = 5, noise = 0.1)
+#simulate single cell sequencing
+Scs <- randomSingleCells(tumor = out, ncells = 5, fnr = 0.1)
   
-  #simulate bulk sampling
-  Bulks <- randomBulkSamples(tumor = out, nsamples = 5)
-}
+#simulate bulk sampling
+Bulks <- randomBulkSamples(tumor = out, nsamples = 5)
 }
