@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/phillipnicol/SMITH.svg?branch=master)](https://travis-ci.org/phillipnicol/SMITH)
+[![Build Status](https://travis-ci.org/phillipnicol/SITH.svg?branch=master)](https://travis-ci.org/phillipnicol/SITH)
 
 # A Spatial model of Intra-Tumor Heterogeneity (SITH) 
 
