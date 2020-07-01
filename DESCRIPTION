@@ -1,8 +1,8 @@
 Package: SITH
 Type: Package
 Title: A Spatial Model of Intra-Tumor Heterogeneity
-Version: 1.0.0.9000
-Date: 2020-06-29
+Version: 1.0.1
+Date: 2020-07-01
 Author: Phillip B. Nicol
 Maintainer: Phillip B. Nicol <philnicol740@gmail.com>
 Description: Implements a three-dimensional stochastic model of cancer growth and mutation similar to the one described in Waclaw et al. (2015) <doi:10.1038/nature14971>. Allows for interactive 3D visualizations of the simulated tumor. Provides a comprehensive summary of the spatial distribution of mutants within the tumor. Contains functions which create synthetic sequencing datasets from the generated tumor. 
