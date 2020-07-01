@@ -11,7 +11,7 @@ void write_results(std::vector<cell> &cells, std::vector<specie> &species, Rcpp:
         cell_coords(i, 2) = cells[i].z - z_dim/2;
         cell_coords(i, 3) = cells[i].id;
         cell_coords(i, 4) = species[cells[i].id].genotype.size(); 
-        cell_coords(i, 5) = sqrt(pow(cells[i].x - x_dim/2, 2) + pow(cells[i].y - y_dim/2, 2) + pow(cells[i].z - z_dim/2,2));
+        cell_coords(i, 5) = sqrt(cell_coords(i,0)*cell_coords(i,0) + cell_coords(i,1)*cell_coords(i,1) + cell_coords(i,2)*cell_coords(i,2));
     }    
 
     //Write species results
