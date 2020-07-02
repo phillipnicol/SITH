@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/phillipnicol/SITH.svg?branch=dev)](https://travis-ci.org/phillipnicol/SITH)
+[![Build Status](https://travis-ci.org/phillipnicol/SITH.svg?branch=master)](https://travis-ci.org/phillipnicol/SITH)
+[![CRAN](http://www.r-pkg.org/badges/version/SITH)](https://cran.r-project.org/package=SITH)
 
 # A Spatial model of Intra-Tumor Heterogeneity (SITH) 
 
