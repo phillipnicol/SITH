@@ -5,11 +5,13 @@
 
 **An R package for visualizing and analyzing a spatial model of intratumor heterogeneity**
 
+This is the **cran-release** branch which is equal to the version currently published on CRAN. 
+
 ## Installation 
 
 The following is required for installing the package:
 
-  - `R` version 4.0.0 or newer.
+  - `R` version 3.6.0 or newer.
   - Package `Rcpp` which can be downloaded from CRAN by running `install.packages("Rcpp")` from the console.
   - Package `rgl` is **strongly recommended** for visualizations can be downloaded from CRAN by running `install.packages(rgl)` from the console. 
     - macOS users may have to install [Xquartz](https://www.xquartz.org) before installing `rgl`. 
