@@ -36,17 +36,22 @@ Alternatively, the package can be installed directly from this repository by fir
   - Create synthetic bulk and single-cell sequencing data from the simulated tumor.
     - Users can specify what part of the tumor the samples are taken from. 
     
-## Snapshots
-
-```{r, echo  = FALSE}
+## Demo 
+```{r}
 set.seed(1126490984)
 library(SITH)
 library(rgl)
+```
+
+```{r, echo  = FALSE}
 rgl::setupKnitr()
+```
 
-out <- simulateTumor(N = 250000, verbose = FALSE)
+Generate a tumor with $10^6$ cells:
 
 
+```{r, echo}
+out <- simulateTumor(N = 1000000, verbose = FALSE)
 ```
 
 
@@ -54,12 +59,12 @@ out <- simulateTumor(N = 250000, verbose = FALSE)
 visualizeTumor(out, background = "white")
 ```
 
-```{r, rgl = TRUE, fig.width = 7, fig.height = 5, echo = FALSE}
+```{r, rgl = TRUE, fig.width = 7, fig.height = 5}
 visualizeTumor(out, background = "white")
 rgl::view3d(zoom = 0.66)
 ```
 
-```{r, rgl = TRUE, fig.width = 7, fig.height = 5, echo = FALSE}
+```{r, rgl = TRUE, fig.width = 7, fig.height = 5}
 visualizeTumor(out, background = "white", plot.type = "heat")
 rgl::view3d(zoom = 0.66)
 ```
