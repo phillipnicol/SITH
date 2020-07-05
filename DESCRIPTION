@@ -1,7 +1,7 @@
 Package: SITH
 Type: Package
 Title: A Spatial Model of Intra-Tumor Heterogeneity
-Version: 1.0.1
+Version: 1.0.1.9000
 Date: 2020-07-01
 Author: Phillip B. Nicol
 Maintainer: Phillip B. Nicol <philnicol740@gmail.com>
