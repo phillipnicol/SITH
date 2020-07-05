@@ -20,10 +20,9 @@ The following is required for installing the package:
 
 See the package documentation for a complete list of dependencies.
 
-As the package is on CRAN, it can be installed by running
-`install.packages(SITH)` from the command line.
+The official release is on CRAN, and can be installed by running `install.packages(SITH)` from the command line. 
 
-Alternatively, the package can be installed directly from this
+The newest version of the package can be installed directly from this
 repository by first installing `devtools` (run
 `install.packages(devtools)`) and then running
 `install_github("phillipnicol/SITH")` from the console.
