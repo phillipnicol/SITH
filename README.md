@@ -35,8 +35,7 @@ Refer to the [official CRAN page](https://CRAN.R-project.org/package=SITH) to vi
   - Contains a 3D simulator of spatial tumor growth and mutation,
     similar to the model described in [this
     paper](https://www.nature.com/articles/nature14971).
-      - The simulator is written in C++ since it is computationally
-        expensive.
+      - The main simulations are in C++ for performance. 
       - A tumor with 1 million cells can be simulated in under a minute
         on a standard desktop computer.
   - 3D interactive visualizations of the simulated tumor using `rgl`.
