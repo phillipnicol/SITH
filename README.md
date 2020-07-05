@@ -61,7 +61,7 @@ library(SITH)
 library(rgl)
 ```
 
-Generate a tumor with \(10^6\) cells:
+Generate a tumor with 1000000 cells:
 
 ``` r
 out <- simulateTumor(N = 1000000, verbose = FALSE)
