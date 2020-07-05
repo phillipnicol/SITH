@@ -1,12 +1,15 @@
-A Spatial Model of Intratumor Heterogeneity
+[![Build Status](https://travis-ci.org/phillipnicol/SITH.svg?branch=master)](https://travis-ci.org/phillipnicol/SITH)
+[![CRAN](http://www.r-pkg.org/badges/version/SITH)](https://cran.r-project.org/package=SITH)
+
+A Spatial Model of Intratumor Heterogeneity (SITH)
 ================
-R package version 1.0.1
+R package version 1.0.1.9000
 
 ## Installation
 
 The following is required for installing the package:
 
-  - `R` version 4.0.0 or newer.
+  - `R` version 3.6.0 or newer.
   - Package `Rcpp` which can be downloaded from CRAN by running
     `install.packages("Rcpp")` from the console.
   - Package `rgl` is **strongly recommended** for visualizations can be
@@ -24,6 +27,9 @@ Alternatively, the package can be installed directly from this
 repository by first installing `devtools` (run
 `install.packages(devtools)`) and then running
 `install_github("phillipnicol/SITH")` from the console.
+
+## Reference manual and vignette 
+Refer to the [official CRAN page](https://CRAN.R-project.org/package=SITH) to view the package vignette and reference manual.  
 
 ## Features
 
@@ -55,11 +61,13 @@ library(SITH)
 library(rgl)
 ```
 
-Generate a tumor with \(10^6\) cells:
+Generate a tumor with 1000000 cells:
 
 ``` r
 out <- simulateTumor(N = 1000000, verbose = FALSE)
 ```
+
+Visualize the tumor with each unique allele colored differently:
 
 ``` r
 visualizeTumor(out, background = "white")
@@ -68,9 +76,13 @@ rgl::view3d(zoom = 0.66)
 
 ![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
+Color regions of low mutation blue and regions of high mutation red:
+
 ``` r
 visualizeTumor(out, background = "white", plot.type = "heat")
 rgl::view3d(zoom = 0.66)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+
