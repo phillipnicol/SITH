@@ -50,6 +50,12 @@ Refer to the [official CRAN page](https://CRAN.R-project.org/package=SITH) to vi
     simulated tumor.
       - Users can specify what part of the tumor the samples are taken
         from.
+        
+## Planned extensions 
+
+  - Metastatic seeding.
+  - Simulation of therapeutic and surgical procedures.
+  - Multi-type branching process on the lattice 
 
 ## Demo
 
