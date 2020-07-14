@@ -17,7 +17,12 @@ This obtains the correct sampling probabilities, and for our purposes can be exp
 to almost always accept a cell in very few iterations. 
 *******************************************************/
 
-int random_index(std::vector<cell> &cells, std::vector<specie> &species)
+#ifndef SAMPLER_H_INCLUDED
+#define SAMPLER_H_INCLUDED
+
+extern double p_max;
+
+inline int selectIndexRS(std::vector<cell> &cells, std::vector<specie> &species)
 {
     int index, trial;
     double u_trial;
@@ -39,3 +44,5 @@ int random_index(std::vector<cell> &cells, std::vector<specie> &species)
     }
     return index;
 }
+
+#endif 
