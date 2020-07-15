@@ -4,7 +4,7 @@
 
 A Spatial Model of Intra-Tumor Heterogeneity (SITH)
 ================
-R package version 1.0.1.9000
+R package version 1.0.1.0 (1.0.1 on CRAN). 
 
 ## Installation
 
