@@ -15,7 +15,7 @@ void Gillespie::gillespieIA(std::vector<cell> &cells, std::vector<specie> &speci
 
     //Look at the neighbors of the cell and find a (random) neighbor
     //If no random neighbor, key = 0
-    int key = random_neighbor(cell, lattice, perms);
+    int key = random_neighbor(cell);
     if(key != 0)
     {
         //key != 0 so there is at least one free neighbor
@@ -60,7 +60,66 @@ void Gillespie::gillespieIA(std::vector<cell> &cells, std::vector<specie> &speci
     }
 }
 
-cell Gillespie::birth_cellIA(cell &cell, const int key, const specie cell_species, std::vector<specie> &species, 
+void Gillespie::gillespieMTBP(std::vector<cell> &cells, std::vector<specie> &species, const int index, double &time) {
+
+    //Update time--approximate 
+    double lambda = 1/(cells.size()*p_max);
+    time += R::rexp(lambda);
+
+    //Randomly selected cell (from previous step)
+    cell cell = cells[index];
+
+    //Find the allele of the chosen cell 
+    specie cell_species = species[cell.id];
+
+    //Look at the neighbors of the cell and find a (random) neighbor
+    //If no random neighbor, key = 0
+    int key = random_neighbor(cell);
+    if(key != 0)
+    {
+        //key != 0 so there is at least one free neighbor
+        //Probability of birth event
+        int bd = R::rbinom(1,cell_species.b/(cell_species.b + cell_species.d));
+        if(bd == 1) {
+            //Birth
+            update_lattice(cell, key, lattice);
+            struct cell new_cell = birth_cellMTBP(cells[index], key, cell_species, species);
+            cells.push_back(new_cell);         
+        }
+        else
+        {
+            //Death
+            if(cells.size() > 1) {
+                //Free up the space in the lattice
+                lattice[cell.x][cell.y][cell.z] = 0;
+                //remove cell from list
+                std::swap(cells[index], cells.back());
+                cells.pop_back();   
+                --species[cell.id].count;    
+            }
+        }
+    }
+    else
+    {
+        //Key = 0 and the cell has no free neighbors
+        //No birth can occur, but the cell could still die
+        int bd = R::rbinom(1,cell_species.b/(cell_species.b + cell_species.d));
+        if(bd == 0)
+        {
+            //Death
+            if(cells.size() > 1)
+            {
+                //procedure same as above
+                lattice[cell.x][cell.y][cell.z] = 0;
+                std::swap(cells[index], cells.back());
+                cells.pop_back();
+                --species[cell.id].count;
+            }        
+        }
+    }
+}
+
+cell birth_cellIA(cell &cell, const int key, const specie cell_species, std::vector<specie> &species, 
                             const double wt_dr, const double u, const double du, const double s) {
     //form new cell 
     struct cell new_cell;
@@ -158,4 +217,126 @@ cell Gillespie::birth_cellIA(cell &cell, const int key, const specie cell_specie
     }
 
     return new_cell;
+}
+
+cell birth_cellMTBP(cell &cell, const int key, specie cell_species, std::vector<specie> &species) {
+    //form new cell 
+    struct cell new_cell;
+    new_cell.x = cell.x;
+    new_cell.y = cell.y;
+    new_cell.z = cell.z;
+
+    //Check for which coordinate to update 
+    switch(key) {
+        case 1: ++new_cell.x; break;
+        case 2: --new_cell.x; break; 
+        case 3: ++new_cell.y; break; 
+        case 4: --new_cell.y; break; 
+        case 5: ++new_cell.z; break; 
+        case 6: --new_cell.z; break; 
+        default: Rcpp::stop("Algorithm internal error.");
+    }
+
+    bool mutflag = false; 
+
+    for(std::vector<int>::iterator it = cell_species.genotype.begin(); it != cell_species.genotype.end(); ++it) {
+        for(int j = 0; j < G[*it].size(); ++j) {
+            if((int)R::rbinom(1,G[*it][j].u)) {
+                //Mutation event 
+                if((int)R::rbinom(1,0.5)) {
+                    //New daughter cell mutates
+                    std::vector<int> gtype = cell_species.genotype;
+                    if(vin(gtype, G[*it][j].head)) {
+                        continue; 
+                    }
+                    mutflag = true; 
+
+                    gtype.push_back(G[*it][j].head);
+                    int sp_id = find_gtype(species, gtype);
+                    if(sp_id == -1) {
+                        //New genotype
+                        specie new_specie;
+                        new_specie.b = species[cell.id].b*G[*it][j].s;
+                        new_specie.d = species[cell.id].d;
+                        if(new_specie.b + new_specie.d > p_max) {p_max = new_specie.b + new_specie.d;}
+                        new_specie.id = species.size(); 
+                        new_specie.genotype = gtype;
+                        new_specie.count = 1; 
+
+                        new_cell.id = new_specie.id; 
+
+                        species.push_back(new_specie); 
+                    }
+                    else {
+                        new_cell.id = sp_id; 
+                        ++species[cell.id].count; 
+                    }
+                }
+                else {
+                    //Original cell mutates 
+                    std::vector<int> gtype = cell_species.genotype;
+
+                    if(vin(gtype, G[*it][j].head)) {
+                        continue; 
+                    }
+                    mutflag = true; 
+
+                    //the daughter gets what the original cell had
+                    new_cell.id = cell.id;
+                    ++species[cell.id].count; 
+
+                    gtype.push_back(G[*it][j].head);
+
+                    int sp_id = find_gtype(species, gtype);
+                    if(sp_id == -1) {
+                        //New genotype
+                        specie new_specie;
+                        new_specie.b = species[cell.id].b*G[*it][j].s;
+                        new_specie.d = species[cell.id].d;
+                        if(new_specie.b + new_specie.d > p_max) {p_max = new_specie.b + new_specie.d;}
+                        new_specie.id = species.size(); 
+                        new_specie.genotype = gtype;
+                        new_specie.count = 1; 
+
+                        --species[cell.id].count;
+
+                        cell.id = new_specie.id; 
+
+                        species.push_back(new_specie); 
+                    }
+                    else {
+                        --species[cell.id].count;
+                        cell.id = sp_id; 
+                        ++species[cell.id].count; 
+                    }
+                }
+            }
+            if(mutflag) {
+                return new_cell; 
+            }
+        }
+    }
+    //No mutation occurred
+    new_cell.id = cell.id;
+    ++species[cell.id].count;
+
+    return new_cell;
+}
+
+int find_gtype(std::vector<specie> &species, std::vector<int> gtype) {
+    for(int i = 0; i < species.size(); ++i) {
+        if(species[i].genotype == gtype) {
+            return i;
+        }
+    }
+    return -1; 
+}
+
+bool vin(std::vector<int> v, int a) {
+    for(int i = 0; i < v.size(); ++i) {
+        if(v[i] == a) {
+            return true;
+        }
+    }
+    return false; 
 }

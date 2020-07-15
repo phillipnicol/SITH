@@ -16,9 +16,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// simulateTumorMTBPcpp
+Rcpp::List simulateTumorMTBPcpp(Rcpp::List input);
+RcppExport SEXP _SITH_simulateTumorMTBPcpp(SEXP inputSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type input(inputSEXP);
+    rcpp_result_gen = Rcpp::wrap(simulateTumorMTBPcpp(input));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_SITH_simulate_tumor", (DL_FUNC) &_SITH_simulate_tumor, 1},
+    {"_SITH_simulateTumorMTBPcpp", (DL_FUNC) &_SITH_simulateTumorMTBPcpp, 1},
     {NULL, NULL, 0}
 };
 

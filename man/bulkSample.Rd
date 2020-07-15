@@ -4,7 +4,7 @@
 \alias{bulkSample}
 \title{Simulate bulk sampling}
 \usage{
-bulkSample(tumor, pos, cube.length = 5, threshold = 0.05)
+bulkSample(tumor, pos, cube.length = 5, threshold = 0.05, depth = 0)
 }
 \arguments{
 \item{tumor}{A list which is the output of \code{\link{simulateTumor}()}.}
@@ -14,6 +14,8 @@ bulkSample(tumor, pos, cube.length = 5, threshold = 0.05)
 \item{cube.length}{The side length of the cube of cells to be sampled.}
 
 \item{threshold}{Only mutations with an allele frequency greater than the threshold will be included in the sample.}
+
+\item{depth}{If non-zero then deep sequencing is simulated.}
 }
 \value{
 A data frame with 1 row and columns corresponding to the mutations. The entries are the mutation allele frequency.
@@ -27,6 +29,9 @@ A local region of the tumor is sampled by constructing a cube with side length \
 the center point \code{pos}. Each cell within the cube is sampled, and the reported quantity is variant (or mutation) 
 allele frequency. Lattice sites without cells are assumed to be normal tissue, and thus the reported MAF may be less than
 1.0 even if the mutation is present in all cancerous cells. 
+
+If \code{depth} is non-zero then deep sequencing can be simulated. If \eqn{d} is the chosen depth and \eqn{p} is the
+true variant allele frequency in the bulk sample, then the estimated VAF is drawn from \eqn{Bin(d,p)/d}. 
 
 Note that \code{cube.length} is required to be an odd integer (in order to have a well-defined center point).
 }

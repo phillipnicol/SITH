@@ -8,6 +8,7 @@ int x_dim, y_dim, z_dim; //Size of the lattice (set at the start of simulation t
 bool*** lattice; 
 std::vector<std::vector<int> > phylo_tree(2, std::vector<int>());
 std::vector<std::vector<int> > perms;
+std::vector<std::vector<Edge> > G; 
 
 void SimUtils::initIA(Rcpp::List input) {
     //Read input list (from R)
@@ -22,9 +23,6 @@ void SimUtils::initIA(Rcpp::List input) {
 
     if(verbose) {Rcpp::Rcout << "Initializing structures ... ...\n";}
 
-    //Init time 
-    double time = 0; 
-
     //Initialize global variables
     gv_init(tumor_size, wt_br, wt_dr, u, du, s);
 
@@ -34,6 +32,32 @@ void SimUtils::initIA(Rcpp::List input) {
     std::vector<int> v;
     v.push_back(1); v.push_back(2); v.push_back(3); v.push_back(4); v.push_back(5); v.push_back(6);
     perms = get_perms(v);
+}
+
+void SimUtils::initMTBP(Rcpp::List input) {
+    //Read input list (from R)
+    std::vector<double> params = input["params"]; 
+    int tumor_size = params[0]; 
+    double wt_br = params[1]; 
+    double wt_dr = params[2]; 
+    bool verbose = params[3];
+
+    Rcpp::NumericMatrix Gv = input["G"];
+
+    if(verbose) {Rcpp::Rcout << "Initializing structures ... ...\n";}
+
+    //Initialize global variables
+    gv_init(tumor_size, wt_br, wt_dr, 0.0, 0.0, 1.0);
+
+    //initialize empty lattice 
+    lattice = init_lattice();
+
+    std::vector<int> v;
+    v.push_back(1); v.push_back(2); v.push_back(3); v.push_back(4); v.push_back(5); v.push_back(6);
+    perms = get_perms(v);
+
+    //Process G
+    G = processG(Gv);       
 }
 
 cell SimUtils::initial_cell(std::vector<specie> &species, double wt_br, double wt_dr)
@@ -144,17 +168,19 @@ std::vector<std::vector<int> > get_perms(std::vector<int> v) {
 }
 
 
-std::vector<std::vector<Edge > > processG(Rcpp::NumericMatrix G) {
-    std::vector<std::vector<Edge> > Gvec(G.nrow(), std::vector<Edge> ()); 
+std::vector<std::vector<Edge > > processG(Rcpp::NumericMatrix Gr) {
+    Rcpp::NumericVector v = Gr( Rcpp::_ , 1);
+    int max_type = Rcpp::max(v) + 1; 
 
-    for(int i = 0; i < G.nrow(); ++i) {
+    std::vector<std::vector<Edge > > Gvec(max_type, std::vector<Edge> ()); 
+
+    for(int i = 0; i < Gr.nrow(); ++i) {
         Edge edge;
-        edge.head = G[i,1];
-        edge.u = G[i,2];
-        edge.s = G[i,3]; 
+        edge.head = Gr(i,1);
+        edge.u = Gr(i,2);
+        edge.s = Gr(i,3); 
 
-        Gvec[i].push_back(edge); 
+        Gvec[Gr(i,0)].push_back(edge); 
     }
-
     return Gvec; 
 }

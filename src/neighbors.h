@@ -80,7 +80,7 @@ inline bool free_neighbor(cell cell, bool*** lattice, int key)
     return false;
 }
 
-inline int random_neighbor(cell cell, bool*** lattice, std::vector<std::vector<int> > &perms) {
+inline int random_neighbor(cell cell) {
     //randomly permute an array of keys
     //std::random_shuffle(nbhd.begin(), nbhd.end(), randWrapper);
     //nbhd = Rcpp::sample(nbhd,6);

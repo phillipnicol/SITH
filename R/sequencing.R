@@ -126,6 +126,7 @@ singleCell <- function(tumor, pos, noise = 0.0) {
 #' @param nsamples The number of bulk samples to take. 
 #' @param cube.length The side length of the cube of cells to be sampled. 
 #' @param threshold Only mutations with an allele frequency greater than the threshold will be included in the sample.
+#' @param depth If nonzero then deep sequencing is simulated.
 #' 
 #' @return A data frame with \code{nsamples} rows and columns corresponding to the mutations. 
 #' The entries are the mutation allele frequency.
@@ -138,7 +139,7 @@ singleCell <- function(tumor, pos, noise = 0.0) {
 #' df <- randomBulkSamples(tumor = out, nsamples = 5, cube.length = 5, threshold = 0.05)
 #' 
 #' @author Phillip B. Nicol 
-randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05) {
+randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05, depth = 0) {
   if(cube.length %% 2 == 0 | cube.length < 1) {
     stop("cube.length must be an odd positive integer.")
   }
@@ -183,6 +184,11 @@ randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05
     counter <- counter + 1
   }
   
+  #if depth non-zero, simulate NGS
+  if(depth != 0) {
+    df <- apply(df, c(1,2), function(x) return(rbinom(1,depth,x)))/depth
+  }
+  
   return(as.data.frame(df))
 }
 
@@ -195,6 +201,7 @@ randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05
 #' @param pos The center point of the sample.
 #' @param cube.length The side length of the cube of cells to be sampled. 
 #' @param threshold Only mutations with an allele frequency greater than the threshold will be included in the sample.
+#' @param depth If non-zero then deep sequencing is simulated.
 #' 
 #' @return A data frame with 1 row and columns corresponding to the mutations. The entries are the mutation allele frequency.
 #' 
@@ -202,6 +209,9 @@ randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05
 #' the center point \code{pos}. Each cell within the cube is sampled, and the reported quantity is variant (or mutation) 
 #' allele frequency. Lattice sites without cells are assumed to be normal tissue, and thus the reported MAF may be less than
 #' 1.0 even if the mutation is present in all cancerous cells. 
+#' 
+#' If \code{depth} is non-zero then deep sequencing can be simulated. If \eqn{d} is the chosen depth and \eqn{p} is the
+#' true variant allele frequency in the bulk sample, then the estimated VAF is drawn from \eqn{Bin(d,p)/d}. 
 #' 
 #' Note that \code{cube.length} is required to be an odd integer (in order to have a well-defined center point). 
 #' 
@@ -217,7 +227,7 @@ randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05
 #' A. Sottoriva. Spatially con- strained tumour growth affects the 
 #' patterns of clonal selection and neutral drift in cancer genomic data. PLOS Computational Biology, 2019.
 #'  https://doi.org/10.1371/journal.pcbi.1007243.
-bulkSample <- function(tumor, pos, cube.length = 5, threshold = 0.05) {
+bulkSample <- function(tumor, pos, cube.length = 5, threshold = 0.05, depth = 0) {
   if(length(pos) != 3) {
     stop("Position must be a vector of length 3.")
   }
@@ -261,8 +271,14 @@ bulkSample <- function(tumor, pos, cube.length = 5, threshold = 0.05) {
       df[1, ncol(df)] <- total_sqnc[1,j]
     }
   }
+  
+  #if depth non-zero, simulate NGS
+  if(depth != 0) {
+    df <- apply(df, c(1,2), function(x) return(rbinom(1,depth,x)))/depth
+  }
+  
 
-return(as.data.frame(df))
+  return(as.data.frame(df))
 }
 
 
@@ -275,7 +291,7 @@ return(as.data.frame(df))
 #' @param tumor A list which is the output of \code{\link{simulateTumor}()}.
 #' @param nsamples The number of samples to take.
 #' @param threshold Only mutations with an allele frequency greater than the threshold will be included in the sample.
-#' 
+#' @param depth If non-zero then deep sequencing is simulated.
 #' @author Phillip B. Nicol
 #' 
 #' @details This sampling procedure is inspired by Chkhaidze et. al. (2019) and simulates 
@@ -291,7 +307,7 @@ return(as.data.frame(df))
 #' A. Sottoriva. Spatially con- strained tumour growth affects the 
 #' patterns of clonal selection and neutral drift in cancer genomic data. PLOS Computational Biology, 2019.
 #'  https://doi.org/10.1371/journal.pcbi.1007243.
-randomNeedles <- function(tumor, nsamples, threshold = 0.05) {
+randomNeedles <- function(tumor, nsamples, threshold = 0.05, depth = 0) {
   cells <- sample(1:nrow(tumor$cell_ids), nsamples, replace = F)
   
   df <- data.frame(matrix(nrow = nsamples, ncol = 0))
@@ -326,6 +342,12 @@ randomNeedles <- function(tumor, nsamples, threshold = 0.05) {
     }
     counter <- counter + 1
   }
+  
+  #if depth non-zero, simulate NGS
+  if(depth != 0) {
+    df <- apply(df, c(1,2), function(x) return(rbinom(1,depth,x)))/depth
+  }
+  
   
   return(as.data.frame(df))
 }

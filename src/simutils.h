@@ -46,6 +46,7 @@ std::vector<std::vector<Edge > > processG(Rcpp::NumericMatrix G);
 
 namespace SimUtils {
     void initIA(Rcpp::List input);
+    void initMTBP(Rcpp::List input);
 
     cell initial_cell(std::vector<specie> &species, double wt_br, double wt_dr);    
 

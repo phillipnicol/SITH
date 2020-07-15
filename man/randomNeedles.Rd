@@ -4,7 +4,7 @@
 \alias{randomNeedles}
 \title{Simulate fine needle aspiration}
 \usage{
-randomNeedles(tumor, nsamples, threshold = 0.05)
+randomNeedles(tumor, nsamples, threshold = 0.05, depth = 0)
 }
 \arguments{
 \item{tumor}{A list which is the output of \code{\link{simulateTumor}()}.}

@@ -5,3 +5,7 @@ simulate_tumor <- function(input) {
     .Call(`_SITH_simulate_tumor`, input)
 }
 
+simulateTumorMTBPcpp <- function(input) {
+    .Call(`_SITH_simulateTumorMTBPcpp`, input)
+}
+
