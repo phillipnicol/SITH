@@ -12,6 +12,8 @@ randomNeedles(tumor, nsamples, threshold = 0.05, depth = 0)
 \item{nsamples}{The number of samples to take.}
 
 \item{threshold}{Only mutations with an allele frequency greater than the threshold will be included in the sample.}
+
+\item{depth}{If non-zero then deep sequencing is simulated.}
 }
 \description{
 Simulate a sampling procedure which takes a fine needle through the simulated tumor and

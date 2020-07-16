@@ -8,7 +8,9 @@ bulkSample,
 randomBulkSamples, 
 singleCell, 
 randomSingleCells, 
-randomNeedles)
+randomNeedles,
+progressionChain,
+progressionDAG_from_igraph)
 importFrom(Rcpp, evalCpp)
 importFrom("grDevices", "colorRampPalette", "rgb")
 importFrom("graphics", "hist", "par", "plot")

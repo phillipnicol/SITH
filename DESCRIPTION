@@ -16,6 +16,7 @@ Imports:
     grDevices      
 Suggests: 
     rgl,
+    igraph, 
     knitr,
     rmarkdown,
     testthat

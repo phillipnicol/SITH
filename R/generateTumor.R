@@ -61,7 +61,7 @@ simulateTumor <- function(N = 250000, b = 0.25, d = 0.18, u = 0.01, du = 0.003, 
   input$params <- c(N, b, d, u, du, s, verbose)
   
   #call Rcpp function
-  tumor <- simulate_tumor(input)
+  tumor <- simulateTumorcpp(input)
   
   out <- list()
   
@@ -100,7 +100,38 @@ simulateTumor <- function(N = 250000, b = 0.25, d = 0.18, u = 0.01, du = 0.003, 
 }
 
 
-simulateTumorMTBP <- function(N = 250000, b = 0.25, d = 0.18, G, verbose = TRUE) {
+#' @title Spatial simulation of tumor growth with user-defined types 
+#' 
+#' @description Simulate a multi-type branching process on the 3D integer lattice. 
+#' Control the types of mutations which can occur. 
+#' 
+#' @param N Number of cells in the tumor.
+#' @param b Baseline cell division rate.
+#' @param d Baseline cell death rate. 
+#' @param G Edge list for a directed acyclic graph describing possible transitions between states. See
+#'  \code{\link{progressionChain}()} for an example of a valid input matrix. 
+#' @param verbose Whether or not to print simulation details to the R console.
+#' 
+#' @return A list which is exactly the same as the one returned by \code{\link{simulateTumor}()}.
+#' 
+#' @details This function implements the simulation of tumor growth without the infinite alleles
+#' hypothesis which insists that each mutation occurs only once. In particular, this function allows
+#' the user to define a directed acyclic graph describing the progression between different "states" that
+#' the cell can be in.
+#' 
+#' For example, a chain of length 3 could be used to model loss of function, where both copies of the gene must be mutated.
+#' State 1 could be the wild-type, state 2 could be the presence of one copy mutated, and state 3 could be the presence
+#' of both copies mutated. Run \code{progressionChain(3)} to get a valid \code{G} for this model. 
+#' 
+#' @author Phillip B. Nicol <philnicol740@gmail.com>
+#' 
+#' @examples 
+#' G <- progressionChain(3)
+#' out <- simulateTumorMTBP(N=1000,G=G,verbose=FALSE)
+#' 
+simulateTumorMTBP <- function(N = 250000, b = 0.25, d = 0.18, G = progressionChain(3), verbose = TRUE) {
+  checkG(G)
+  
   #create input list
   input <- list()
   input$params <- c(N, b, d, verbose)
