@@ -63,4 +63,19 @@ inline int max_mut(std::vector<specie> &species) {
     return max;
 }
 
+//obviously C++17 has std::sort, which implements quick or merge sort.
+//However, I think it is dangerous to use C++17 functionality since the package
+//is tested on a wide range of operating systems... so let's just write bubblesort.
+//Probably no difference between bubble and merge for our purposes. 
+inline std::vector<int> bubblesort(std::vector<int> a) {
+    for(int i = 0; i < a.size(); ++i) {
+        for(int j = i+1; j < a.size(); ++j) {
+            if(a[j] < a[i]) {
+                std::swap(a[i],a[j]);
+            }
+        }
+    }
+    return a;
+}
+
 #endif 

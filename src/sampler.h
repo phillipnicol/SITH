@@ -27,8 +27,6 @@ inline int selectIndexRS(std::vector<cell> &cells, std::vector<specie> &species)
     int index, trial;
     double u_trial;
 
-    //std::uniform_int_distribution<int> rand_int(0,cells.size() - 1);
-    //std::uniform_real_distribution<double> rand_real(0, p_max);
     while(true)
     {
         trial = R::runif(0, cells.size());

@@ -114,13 +114,6 @@ Rcpp::List Sims::simulateMTBP(Rcpp::List input) {
         }
     }
 
-    for(auto sp : species) {
-        for(int j = 0; j < sp.genotype.size(); ++j) {
-            std::cout << sp.genotype[j] << " ";
-        }
-        std::cout << std::endl;
-    }
-
     //Print summary of simulation
     if(verbose) {Rcpp::Rcout << "Simulation complete. Releasing memory ... ... \n";}
     SimUtils::trashcan(lattice);   
@@ -137,7 +130,7 @@ Rcpp::List Sims::simulateMTBP(Rcpp::List input) {
     int maximum_mut = max_mut(species);
     Rcpp::IntegerMatrix species_dict(species.size(), maximum_mut+1); 
 
-    Rcpp::IntegerVector muts(maximum_mut+1);
+    Rcpp::IntegerVector muts(maximum_mut);
     PostProcessing::write_results(cells, species, cell_coords, species_dict, muts);
 
     Rcpp::IntegerVector driver_muts = Rcpp::wrap(drivers);

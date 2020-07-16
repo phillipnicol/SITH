@@ -69,7 +69,7 @@ void Gillespie::gillespieMTBP(std::vector<cell> &cells, std::vector<specie> &spe
     //Randomly selected cell (from previous step)
     cell cell = cells[index];
 
-    //Find the allele of the chosen cell 
+    //Find the type of the chosen cell 
     specie cell_species = species[cell.id];
 
     //Look at the neighbors of the cell and find a (random) neighbor
@@ -246,12 +246,15 @@ cell birth_cellMTBP(cell &cell, const int key, specie cell_species, std::vector<
                 if((int)R::rbinom(1,0.5)) {
                     //New daughter cell mutates
                     std::vector<int> gtype = cell_species.genotype;
+                    gtype = bubblesort(gtype);
                     if(vin(gtype, G[*it][j].head)) {
                         continue; 
                     }
                     mutflag = true; 
 
                     gtype.push_back(G[*it][j].head);
+                    gtype = bubblesort(gtype); 
+
                     int sp_id = find_gtype(species, gtype);
                     if(sp_id == -1) {
                         //New genotype
@@ -269,12 +272,13 @@ cell birth_cellMTBP(cell &cell, const int key, specie cell_species, std::vector<
                     }
                     else {
                         new_cell.id = sp_id; 
-                        ++species[cell.id].count; 
+                        ++species[sp_id].count; 
                     }
                 }
                 else {
                     //Original cell mutates 
                     std::vector<int> gtype = cell_species.genotype;
+                    gtype = bubblesort(gtype);
 
                     if(vin(gtype, G[*it][j].head)) {
                         continue; 
@@ -283,9 +287,10 @@ cell birth_cellMTBP(cell &cell, const int key, specie cell_species, std::vector<
 
                     //the daughter gets what the original cell had
                     new_cell.id = cell.id;
-                    ++species[cell.id].count; 
+                    //no need to update count since we will subtract it from original cell 
 
                     gtype.push_back(G[*it][j].head);
+                    gtype = bubblesort(gtype); 
 
                     int sp_id = find_gtype(species, gtype);
                     if(sp_id == -1) {
@@ -298,14 +303,11 @@ cell birth_cellMTBP(cell &cell, const int key, specie cell_species, std::vector<
                         new_specie.genotype = gtype;
                         new_specie.count = 1; 
 
-                        --species[cell.id].count;
-
                         cell.id = new_specie.id; 
 
                         species.push_back(new_specie); 
                     }
                     else {
-                        --species[cell.id].count;
                         cell.id = sp_id; 
                         ++species[cell.id].count; 
                     }
