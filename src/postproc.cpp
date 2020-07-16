@@ -1,10 +1,8 @@
-/*
-SITH: An R package for visualizing and analyzing a spatial model of intra-tumor heterogeneity
-Author: Phillip Nicol
-License: GPL-2 
-*/
+#include"postproc.h" 
 
-void write_results(std::vector<cell> &cells, std::vector<specie> &species, Rcpp::NumericMatrix &cell_coords, Rcpp::IntegerMatrix &species_dict, Rcpp::IntegerVector &muts) {
+
+void PostProcessing::write_results(std::vector<cell> &cells, std::vector<specie> &species, 
+                                    Rcpp::NumericMatrix &cell_coords, Rcpp::IntegerMatrix &species_dict, Rcpp::IntegerVector &muts) {
     for(int i = 0; i < cells.size(); ++i) {
         cell_coords(i, 0) = cells[i].x - x_dim/2;
         cell_coords(i, 1) = cells[i].y - y_dim/2;
@@ -29,14 +27,14 @@ void write_results(std::vector<cell> &cells, std::vector<specie> &species, Rcpp:
     }
 }
 
-void write_phylo_tree(std::vector<std::vector<int> > &phylo_tree, Rcpp::IntegerMatrix &rphylo_tree) {
+void PostProcessing::write_phylo_tree(std::vector<std::vector<int> > &phylo_tree, Rcpp::IntegerMatrix &rphylo_tree) {
     for(int i = 0; i < phylo_tree[0].size(); ++i) {
         rphylo_tree(i,0) = phylo_tree[0][i];
         rphylo_tree(i,1) = phylo_tree[1][i];
     }
 }
 
-Rcpp::NumericMatrix get_color_scheme(std::vector<specie> &species) {
+Rcpp::NumericMatrix PostProcessing::get_color_scheme(std::vector<specie> &species) {
     Rcpp::NumericMatrix color_scheme(3, species.size());
 
     color_scheme(0,0) = 0.5; color_scheme(1,0) = 0.5; color_scheme(2,0) = 0.5; 

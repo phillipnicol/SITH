@@ -4,8 +4,18 @@ Author: Phillip Nicol
 License: GPL-2 
 */
 
+#ifndef NEIGHBORS_H_INCLUDED
+#define NEIGHBORS_H_INCLUDED 
+
+#include"simutils.h"
+
+extern bool*** lattice; 
+extern std::vector<std::vector<int> > perms;
+
+extern int x_dim, y_dim, z_dim;
+
 //free_neighbor returns true if there is an open space at the neighbor position specified by key
-bool free_neighbor(cell cell, bool*** lattice, int key)
+inline bool free_neighbor(cell cell, bool*** lattice, int key)
 {
     if(key == 1)
     {
@@ -70,7 +80,7 @@ bool free_neighbor(cell cell, bool*** lattice, int key)
     return false;
 }
 
-int random_neighbor(cell cell, bool*** lattice, std::vector<std::vector<int> > &perms) {
+inline int random_neighbor(cell cell) {
     //randomly permute an array of keys
     //std::random_shuffle(nbhd.begin(), nbhd.end(), randWrapper);
     //nbhd = Rcpp::sample(nbhd,6);
@@ -88,7 +98,7 @@ int random_neighbor(cell cell, bool*** lattice, std::vector<std::vector<int> > &
 }
 
 //update_lattice puts a 1 in the location where a new cell is born
-void update_lattice(cell cell, int key, bool*** lattice)
+inline void update_lattice(cell cell, int key, bool*** lattice)
 {
     if(key == 1)
     {
@@ -115,3 +125,5 @@ void update_lattice(cell cell, int key, bool*** lattice)
         lattice[cell.x][cell.y][cell.z-1] = 1;
     }
 }
+
+#endif 

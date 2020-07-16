@@ -4,7 +4,13 @@
 \alias{randomBulkSamples}
 \title{Simulate multi-region bulk sampling}
 \usage{
-randomBulkSamples(tumor, nsamples, cube.length = 5, threshold = 0.05)
+randomBulkSamples(
+  tumor,
+  nsamples,
+  cube.length = 5,
+  threshold = 0.05,
+  depth = 0
+)
 }
 \arguments{
 \item{tumor}{A list which is the output of \code{\link{simulateTumor}()}.}
@@ -14,6 +20,8 @@ randomBulkSamples(tumor, nsamples, cube.length = 5, threshold = 0.05)
 \item{cube.length}{The side length of the cube of cells to be sampled.}
 
 \item{threshold}{Only mutations with an allele frequency greater than the threshold will be included in the sample.}
+
+\item{depth}{If nonzero then deep sequencing is simulated.}
 }
 \value{
 A data frame with \code{nsamples} rows and columns corresponding to the mutations. 
