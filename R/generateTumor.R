@@ -22,7 +22,7 @@
 #' \item \code{phylo_tree} - A data frame giving all of the information necessary to determine the order of mutations. The parent
 #' of a mutation is defined to be the most recent mutation that precedes it. Since the ID 0 corresponds to the initial mutation,
 #' 0 does not have any parents and is thus the root of the tree. 
-#' \item \code{alleles} - A data frame containing the information about the mutations that make up each allele. The \eqn{i}-th 
+#' \item \code{genotypes} - A data frame containing the information about the mutations that make up each allele. The \eqn{i}-th 
 #' row of this data frame corresponds to the allele ID \eqn{i-1}. The positive numbers in each row correspond to the IDs of the 
 #' mutations present in that allele, while a -1 is simply a placeholder and indicates no mutation. The count column gives
 #' the number of cells which have the specific allele. 
@@ -67,11 +67,11 @@ simulateTumor <- function(N = 250000, b = 0.25, d = 0.18, u = 0.01, du = 0.003, 
   
   #position data for the N cells 
   out$cell_ids <- data.frame(tumor[[1]])
-  colnames(out$cell_ids) <- c("x", "y", "z", "allele", "nmuts", "distance")
+  colnames(out$cell_ids) <- c("x", "y", "z", "genotype", "nmuts", "distance")
   
-  #record the information for the uniqe alleles
-  out$alleles <- data.frame(tumor[[2]]); nc <- ncol(out$alleles)
-  colnames(out$alleles)[ncol(out$alleles)] <- "count"
+  #record the information for the uniqe genotypes
+  out$genotypes <- data.frame(tumor[[2]]); nc <- ncol(out$genotypes)
+  colnames(out$genotypes)[ncol(out$genotypes)] <- "count"
 
   #get mutation ID and MAF 
   df <-  as.data.frame(tumor[[3]])
@@ -144,11 +144,11 @@ simulateTumorMTBP <- function(N = 250000, b = 0.25, d = 0.18, G = progressionCha
   
   #position data for the N cells 
   out$cell_ids <- data.frame(tumor[[1]])
-  colnames(out$cell_ids) <- c("x", "y", "z", "allele", "nmuts", "distance")
+  colnames(out$cell_ids) <- c("x", "y", "z", "genotype", "nmuts", "distance")
   
-  #record the information for the uniqe alleles
-  out$alleles <- data.frame(tumor[[2]]); nc <- ncol(out$alleles)
-  colnames(out$alleles)[ncol(out$alleles)] <- "count"
+  #record the information for the uniqe genotypes
+  out$genotypes <- data.frame(tumor[[2]]); nc <- ncol(out$genotypes)
+  colnames(out$genotypes)[ncol(out$genotypes)] <- "count"
   
   #get mutation ID and MAF 
   df <-  as.data.frame(tumor[[3]])
@@ -167,7 +167,7 @@ simulateTumorMTBP <- function(N = 250000, b = 0.25, d = 0.18, G = progressionCha
   })
   
   #record a list of drivers and the simulated time (in days)
-  out$drivers <- tumor[[7]]
+  out$drivers <- c()
   out$time <- tumor[[8]]
   
   #return parameters used for simulation 

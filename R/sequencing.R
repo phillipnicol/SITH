@@ -27,7 +27,7 @@ randomSingleCells <- function(tumor, ncells, fpr = 0.0, fnr = 0.0) {
   counter <- 1
   for(i in cells) {
     allele <- tumor$cell_ids[i,4] + 1
-    row <- tumor$alleles[allele,]
+    row <- tumor$genotypes[allele,]
     df[counter,] <- rep(0, ncol(df))
     rownames(df)[counter] <- sprintf("SC-%d", counter)
     for(j in row) {
@@ -101,7 +101,7 @@ singleCell <- function(tumor, pos, noise = 0.0) {
   df <- data.frame(matrix(nrow = 1, ncol = 0))
 
   allele <- cell_df[,4] + 1
-  row <- tumor$alleles[allele,]
+  row <- tumor$genotypess[allele,]
   
   for(j in row) {
     if(j == -1) {
@@ -161,7 +161,7 @@ randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05
     
     input <- list()
     input$cell_ids <- cell_subset
-    input$alleles <- tumor$alleles
+    input$genotypes <- tumor$genotypes
     total_sqnc <- as.data.frame(randomSingleCells(input, nrow(cell_subset)))
     total_sqnc <- colSums(total_sqnc)/bulk_size
     total_sqnc <- total_sqnc[total_sqnc > threshold]
@@ -258,7 +258,7 @@ bulkSample <- function(tumor, pos, cube.length = 5, threshold = 0.05, coverage =
   
   input <- list()
   input$cell_ids <- cell_subset
-  input$alleles <- tumor$alleles
+  input$genotypes <- tumor$genotypes
   total_sqnc <- as.data.frame(randomSingleCells(input, nrow(cell_subset)))
   total_sqnc <- colSums(total_sqnc)/bulk_size
   total_sqnc <- total_sqnc[total_sqnc > threshold]
@@ -326,7 +326,7 @@ randomNeedles <- function(tumor, nsamples, threshold = 0.05, coverage = 0) {
       
     input <- list()
     input$cell_ids <- cell_subset
-    input$alleles <- tumor$alleles
+    input$genotypes <- tumor$genotypes
     total_sqnc <- as.data.frame(randomSingleCells(input, nrow(cell_subset)))
     total_sqnc <- colSums(total_sqnc)/nrow(cell_subset)
     total_sqnc <- total_sqnc[total_sqnc > threshold]

@@ -49,7 +49,7 @@ spatialDistribution <- function(tumor, N = 500, cutoff = 0.01, make.plot = TRUE)
   
   #Repeat process for drivers
   if(length(tumor$drivers) > 0) {
-    driver_ids <- tumor$cell_ids[which(tumor$cell_ids$allele %in% tumor$drivers),]
+    driver_ids <- tumor$cell_ids[which(tumor$cell_ids$genotype %in% tumor$drivers),]
     vals <- c(0:max(driver_ids$distance))
     mean_driver <- as.data.frame(sapply(vals, function(x) {
       return(nrow(driver_ids[driver_ids$distance == x,])/nrow(tumor$cell_ids[tumor$cell_ids$distance == x,]) )
@@ -68,11 +68,11 @@ spatialDistribution <- function(tumor, N = 500, cutoff = 0.01, make.plot = TRUE)
     dist <- dist + (tumor$cell_ids$z[s[1]] - tumor$cell_ids$z[s[2]])^2
     dist <- sqrt(dist)
     
-    allele1 <- tumor$cell_ids$allele[s[1]] + 1
-    allele2 <- tumor$cell_ids$allele[s[2]] + 1
+    allele1 <- tumor$cell_ids$genotype[s[1]] + 1
+    allele2 <- tumor$cell_ids$genotype[s[2]] + 1
     
-    row1 <- tumor$alleles[allele1,-ncol(tumor$alleles)]
-    row2 <- tumor$alleles[allele2,-ncol(tumor$alleles)]
+    row1 <- tumor$genotypes[allele1,-ncol(tumor$genotypes)]
+    row2 <- tumor$genotypes[allele2,-ncol(tumor$genotypes)]
 
     v1 <- row1[row1 != -1]
     v2 <- row2[row2 != -1]

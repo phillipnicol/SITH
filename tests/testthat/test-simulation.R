@@ -24,10 +24,10 @@ test_that("Simulation is reproducible", {
   expect_equal(nrow(out$muts) - 1, length(out$drivers))
 })
 
-test_that("The alleles data frame is properly constructed", {
+test_that("The genotypes data frame is properly constructed", {
   out <- simulateTumor(N = 50, verbose = F)
   
-  expect_equal(50, sum(out$alleles$count))
+  expect_equal(50, sum(out$genotypes$count))
 })
 
 test_that("The wild type allele is grey", {

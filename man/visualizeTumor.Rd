@@ -9,7 +9,7 @@ visualizeTumor(tumor, plot.type = "normal", background = "black", axes = FALSE)
 \arguments{
 \item{tumor}{A list which is the output of \code{\link{simulateTumor}()}.}
 
-\item{plot.type}{Which type of plot to draw. "Normal" assigns a random rgb value to each allele while
+\item{plot.type}{Which type of plot to draw. "Normal" assigns a random rgb value to each genotype while
 "heat" colors cells with more mutations red and cells with fewer mutations blue.}
 
 \item{background}{If rgl is installed, this will set the color of the background}

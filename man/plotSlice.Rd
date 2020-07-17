@@ -13,7 +13,7 @@ plotSlice(tumor, slice.dim = "x", level = 0, plot.type = "normal")
 
 \item{level}{Which value will the dimension given in \code{slice.dim} be fixed at?}
 
-\item{plot.type}{Which type of plot to draw. "Normal" assigns a random rgb value to each allele while
+\item{plot.type}{Which type of plot to draw. "Normal" assigns a random rgb value to each genotype while
 "heat" colors cells with more mutations red and cells with fewer mutations blue. This is exactly the same as \code{plot.type}
 in \code{visualizeTumor}.}
 }

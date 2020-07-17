@@ -41,7 +41,7 @@ and the mutation allele frequency (which is the count divided by N).
 \item \code{phylo_tree} - A data frame giving all of the information necessary to determine the order of mutations. The parent
 of a mutation is defined to be the most recent mutation that precedes it. Since the ID 0 corresponds to the initial mutation,
 0 does not have any parents and is thus the root of the tree. 
-\item \code{alleles} - A data frame containing the information about the mutations that make up each allele. The \eqn{i}-th 
+\item \code{genotypes} - A data frame containing the information about the mutations that make up each allele. The \eqn{i}-th 
 row of this data frame corresponds to the allele ID \eqn{i-1}. The positive numbers in each row correspond to the IDs of the 
 mutations present in that allele, while a -1 is simply a placeholder and indicates no mutation. The count column gives
 the number of cells which have the specific allele. 

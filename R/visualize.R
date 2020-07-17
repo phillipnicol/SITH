@@ -4,7 +4,7 @@
 #' @description Interactive visualization of the simulated tumor using the \code{rgl} package (if available). 
 #' 
 #' @param tumor A list which is the output of \code{\link{simulateTumor}()}.
-#' @param plot.type Which type of plot to draw. "Normal" assigns a random rgb value to each allele while
+#' @param plot.type Which type of plot to draw. "Normal" assigns a random rgb value to each genotype while
 #' "heat" colors cells with more mutations red and cells with fewer mutations blue. 
 #' @param background If rgl is installed, this will set the color of the background
 #' @param axes Will include axes (rgl only). 
@@ -59,7 +59,7 @@ visualizeTumor <- function(tumor, plot.type = "normal", background = "black", ax
 #' @param tumor A list which is the output of \code{\link{simulateTumor}()}.
 #' @param slice.dim One of "x", "y" or "z", which denotes the dimension which will be fixed to obtain a 2D cross section.
 #' @param level Which value will the dimension given in \code{slice.dim} be fixed at? 
-#' @param plot.type Which type of plot to draw. "Normal" assigns a random rgb value to each allele while
+#' @param plot.type Which type of plot to draw. "Normal" assigns a random rgb value to each genotype while
 #' "heat" colors cells with more mutations red and cells with fewer mutations blue. This is exactly the same as \code{plot.type}
 #' in \code{visualizeTumor}. 
 #' 
@@ -80,7 +80,7 @@ plotSlice <- function(tumor, slice.dim = "x", level = 0, plot.type = "normal") {
     
   }
   else if(plot.type == "normal") {
-    plot(df_slice[,1], df_slice[,2], col = tumor$color_scheme[df_slice$allele+1], pch = 16,
+    plot(df_slice[,1], df_slice[,2], col = tumor$color_scheme[df_slice$genotype+1], pch = 16,
          xlab = NA, ylab = NA)
   }    
 }
