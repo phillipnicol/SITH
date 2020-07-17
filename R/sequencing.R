@@ -126,7 +126,7 @@ singleCell <- function(tumor, pos, noise = 0.0) {
 #' @param nsamples The number of bulk samples to take. 
 #' @param cube.length The side length of the cube of cells to be sampled. 
 #' @param threshold Only mutations with an allele frequency greater than the threshold will be included in the sample.
-#' @param depth If nonzero then deep sequencing is simulated.
+#' @param coverage If nonzero then deep sequencing with specified coverage is performed. 
 #' 
 #' @return A data frame with \code{nsamples} rows and columns corresponding to the mutations. 
 #' The entries are the mutation allele frequency.
@@ -139,7 +139,7 @@ singleCell <- function(tumor, pos, noise = 0.0) {
 #' df <- randomBulkSamples(tumor = out, nsamples = 5, cube.length = 5, threshold = 0.05)
 #' 
 #' @author Phillip B. Nicol 
-randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05, depth = 0) {
+randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05, coverage = 0) {
   if(cube.length %% 2 == 0 | cube.length < 1) {
     stop("cube.length must be an odd positive integer.")
   }
@@ -185,7 +185,8 @@ randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05
   }
   
   #if depth non-zero, simulate NGS
-  if(depth != 0) {
+  if(coverage != 0) {
+    depth <- rpois(1,coverage)
     df <- apply(df, c(1,2), function(x) return(rbinom(1,depth,x)))/depth
   }
   
@@ -201,7 +202,7 @@ randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05
 #' @param pos The center point of the sample.
 #' @param cube.length The side length of the cube of cells to be sampled. 
 #' @param threshold Only mutations with an allele frequency greater than the threshold will be included in the sample.
-#' @param depth If non-zero then deep sequencing is simulated.
+#' @param coverage If nonzero then deep sequencing with specified coverage is performed. 
 #' 
 #' @return A data frame with 1 row and columns corresponding to the mutations. The entries are the mutation allele frequency.
 #' 
@@ -210,8 +211,10 @@ randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05
 #' allele frequency. Lattice sites without cells are assumed to be normal tissue, and thus the reported MAF may be less than
 #' 1.0 even if the mutation is present in all cancerous cells. 
 #' 
-#' If \code{depth} is non-zero then deep sequencing can be simulated. If \eqn{d} is the chosen depth and \eqn{p} is the
-#' true variant allele frequency in the bulk sample, then the estimated VAF is drawn from \eqn{Bin(d,p)/d}. 
+#' If \code{coverage} is non-zero then deep sequencing can be simulated. For a chosen coverage \eqn{C}, it is known
+#' that the number of times the base is read follows a \eqn{Pois(C)} distribution (see Illumina's website). 
+#' Let \eqn{d} be the true coverage
+#' sampled from this distribution. Then the estimated VAF is drawn from a \eqn{Bin(d,p)/d} distribution. 
 #' 
 #' Note that \code{cube.length} is required to be an odd integer (in order to have a well-defined center point). 
 #' 
@@ -227,7 +230,9 @@ randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05
 #' A. Sottoriva. Spatially con- strained tumour growth affects the 
 #' patterns of clonal selection and neutral drift in cancer genomic data. PLOS Computational Biology, 2019.
 #'  https://doi.org/10.1371/journal.pcbi.1007243.
-bulkSample <- function(tumor, pos, cube.length = 5, threshold = 0.05, depth = 0) {
+#'  Lander ES, Waterman MS.(1988) Genomic mapping by fingerprinting random clones: 
+#'  a mathematical analysis, Genomics 2(3): 231-239.
+bulkSample <- function(tumor, pos, cube.length = 5, threshold = 0.05, coverage = 0) {
   if(length(pos) != 3) {
     stop("Position must be a vector of length 3.")
   }
@@ -272,8 +277,9 @@ bulkSample <- function(tumor, pos, cube.length = 5, threshold = 0.05, depth = 0)
     }
   }
   
-  #if depth non-zero, simulate NGS
-  if(depth != 0) {
+  #if coverage non-zero, simulate NGS
+  if(coverage != 0) {
+    depth <- rpois(1,coverage)
     df <- apply(df, c(1,2), function(x) return(rbinom(1,depth,x)))/depth
   }
   
@@ -343,11 +349,11 @@ randomNeedles <- function(tumor, nsamples, threshold = 0.05, depth = 0) {
     counter <- counter + 1
   }
   
-  #if depth non-zero, simulate NGS
-  if(depth != 0) {
+  #if coverage non-zero, simulate NGS
+  if(coverage != 0) {
+    depth <- rpois(1,coverage)
     df <- apply(df, c(1,2), function(x) return(rbinom(1,depth,x)))/depth
   }
-  
   
   return(as.data.frame(df))
 }
