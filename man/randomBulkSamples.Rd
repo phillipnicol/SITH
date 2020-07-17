@@ -9,7 +9,7 @@ randomBulkSamples(
   nsamples,
   cube.length = 5,
   threshold = 0.05,
-  depth = 0
+  coverage = 0
 )
 }
 \arguments{
@@ -21,7 +21,7 @@ randomBulkSamples(
 
 \item{threshold}{Only mutations with an allele frequency greater than the threshold will be included in the sample.}
 
-\item{depth}{If nonzero then deep sequencing is simulated.}
+\item{coverage}{If nonzero then deep sequencing with specified coverage is performed.}
 }
 \value{
 A data frame with \code{nsamples} rows and columns corresponding to the mutations. 

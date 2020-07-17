@@ -4,7 +4,7 @@
 \alias{bulkSample}
 \title{Simulate bulk sampling}
 \usage{
-bulkSample(tumor, pos, cube.length = 5, threshold = 0.05, depth = 0)
+bulkSample(tumor, pos, cube.length = 5, threshold = 0.05, coverage = 0)
 }
 \arguments{
 \item{tumor}{A list which is the output of \code{\link{simulateTumor}()}.}
@@ -15,7 +15,7 @@ bulkSample(tumor, pos, cube.length = 5, threshold = 0.05, depth = 0)
 
 \item{threshold}{Only mutations with an allele frequency greater than the threshold will be included in the sample.}
 
-\item{depth}{If non-zero then deep sequencing is simulated.}
+\item{coverage}{If nonzero then deep sequencing with specified coverage is performed.}
 }
 \value{
 A data frame with 1 row and columns corresponding to the mutations. The entries are the mutation allele frequency.
@@ -30,8 +30,10 @@ the center point \code{pos}. Each cell within the cube is sampled, and the repor
 allele frequency. Lattice sites without cells are assumed to be normal tissue, and thus the reported MAF may be less than
 1.0 even if the mutation is present in all cancerous cells. 
 
-If \code{depth} is non-zero then deep sequencing can be simulated. If \eqn{d} is the chosen depth and \eqn{p} is the
-true variant allele frequency in the bulk sample, then the estimated VAF is drawn from \eqn{Bin(d,p)/d}. 
+If \code{coverage} is non-zero then deep sequencing can be simulated. For a chosen coverage \eqn{C}, it is known
+that the number of times the base is read follows a \eqn{Pois(C)} distribution (see Illumina's website). 
+Let \eqn{d} be the true coverage
+sampled from this distribution. Then the estimated VAF is drawn from a \eqn{Bin(d,p)/d} distribution. 
 
 Note that \code{cube.length} is required to be an odd integer (in order to have a well-defined center point).
 }
@@ -46,6 +48,8 @@ K. Chkhaidze, T. Heide, B. Werner, M. Williams, W. Huang, G. Caravagna, T. Graha
 A. Sottoriva. Spatially con- strained tumour growth affects the 
 patterns of clonal selection and neutral drift in cancer genomic data. PLOS Computational Biology, 2019.
  https://doi.org/10.1371/journal.pcbi.1007243.
+ Lander ES, Waterman MS.(1988) Genomic mapping by fingerprinting random clones: 
+ a mathematical analysis, Genomics 2(3): 231-239.
 }
 \author{
 Phillip B. Nicol

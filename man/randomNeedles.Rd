@@ -4,7 +4,7 @@
 \alias{randomNeedles}
 \title{Simulate fine needle aspiration}
 \usage{
-randomNeedles(tumor, nsamples, threshold = 0.05, depth = 0)
+randomNeedles(tumor, nsamples, threshold = 0.05, coverage = 0)
 }
 \arguments{
 \item{tumor}{A list which is the output of \code{\link{simulateTumor}()}.}
@@ -13,7 +13,7 @@ randomNeedles(tumor, nsamples, threshold = 0.05, depth = 0)
 
 \item{threshold}{Only mutations with an allele frequency greater than the threshold will be included in the sample.}
 
-\item{depth}{If non-zero then deep sequencing is simulated.}
+\item{coverage}{If nonzero then deep sequencing with specified coverage is performed.}
 }
 \description{
 Simulate a sampling procedure which takes a fine needle through the simulated tumor and

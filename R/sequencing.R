@@ -297,7 +297,7 @@ bulkSample <- function(tumor, pos, cube.length = 5, threshold = 0.05, coverage =
 #' @param tumor A list which is the output of \code{\link{simulateTumor}()}.
 #' @param nsamples The number of samples to take.
 #' @param threshold Only mutations with an allele frequency greater than the threshold will be included in the sample.
-#' @param depth If non-zero then deep sequencing is simulated.
+#' @param coverage If nonzero then deep sequencing with specified coverage is performed.
 #' @author Phillip B. Nicol
 #' 
 #' @details This sampling procedure is inspired by Chkhaidze et. al. (2019) and simulates 
@@ -313,7 +313,7 @@ bulkSample <- function(tumor, pos, cube.length = 5, threshold = 0.05, coverage =
 #' A. Sottoriva. Spatially con- strained tumour growth affects the 
 #' patterns of clonal selection and neutral drift in cancer genomic data. PLOS Computational Biology, 2019.
 #'  https://doi.org/10.1371/journal.pcbi.1007243.
-randomNeedles <- function(tumor, nsamples, threshold = 0.05, depth = 0) {
+randomNeedles <- function(tumor, nsamples, threshold = 0.05, coverage = 0) {
   cells <- sample(1:nrow(tumor$cell_ids), nsamples, replace = F)
   
   df <- data.frame(matrix(nrow = nsamples, ncol = 0))
