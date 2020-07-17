@@ -222,10 +222,10 @@ head(Scs)
 The user can also sequence a single cell at a specified $(x,y,z)$ location using the `singleCell()` function with argument `pos = (x,y,z)`. See the user manual for details. 
 
 ### Bulk sampling 
-One can also simulate bulk sampling by taking a collection of cells and calculating the variant allele frequency (VAF) of each mutation. One way to define a collection of cells is to take a $n \times n \times n$ cube. Function `randomBulkSamples` will choose random locations for the cubes. Note that argument `cube.length` must be odd in order for the cube to have a well-defined center. In practice, mutations that fall a certain VAF ($\approx 0.05$) are either ignored or undetected due to technological artifacts. To account for this, the `threshold` argument will ignore mutations below a certain VAF. The return of the function is a matrix of VAFs. 
+One can also simulate bulk sampling by taking a collection of cells and calculating the variant allele frequency (VAF) of each mutation. One way to define a collection of cells is to take a $n \times n \times n$ cube. Function `randomBulkSamples` will choose random locations for the cubes. Note that argument `cube.length` must be odd in order for the cube to have a well-defined center. In practice, mutations that fall a certain VAF ($\approx 0.05$) are either ignored or undetected due to technological artifacts. To account for this, the `threshold` argument will ignore mutations below a certain VAF. The user can also specify a desired sequencing depth by adjusting the `coverage` parameter. If a coverage of $C$ is specified, then the number of reads for each base is sampled $M \sim Pois(C)$. Then the number of variant calls is sampled from a binomial where the number of trials is $M$ and the probability of success is equal to the true VAF of the sample. If you don't want to simulate deep sequencing then leave `coverage` blank or set it to $0$.  The return of the function is a matrix of VAFs. 
 
 ```{r}
-Bulks <- randomBulkSamples(tumor = out, nsamples = 5, cube.length = 7, threshold = 0.05)
+Bulks <- randomBulkSamples(tumor = out, nsamples = 5, cube.length = 7, coverage=100, threshold = 0.05)
 head(Bulks)
 ```
 
