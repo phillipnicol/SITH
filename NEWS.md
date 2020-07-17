@@ -4,7 +4,10 @@
 
   * `simulateTumorMTBP()`, where MTBP = multi-type branching process, implements the spatial growth model without the infinite alleles hypothesis. In 
   particular, the user can define the mutations, mutation rates, and selective advantages conferred to a cell acquiring each mutation. To avoid an exponential
-  number of parameters, the transitions between mutations must be described as a directed acyclic graph. 
+  number of parameters, the transitions between mutations must be described as a directed acyclic graph (DAG). A vignette will accompany this possibly confusing 
+  explaination. There are also helper functions included so that the user can easily define a DAG of mutations from an `igraph` object. 
+  * The bulk sequencing functions (including `randomNeedles()`) now allow the user to input coverage to be more realistic. The number of reads is sampled from a 
+  poisson with parameter equal to expected coverage and the number of variant calls are sampled from a binomial with probability of success equal to the true VAF. 
 
 **Changes to existing functionality:**
 
