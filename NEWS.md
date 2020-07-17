@@ -12,6 +12,10 @@
 **Changes to existing functionality:**
 
   * The `alleles` data frame which was returned by `simulateTumor()` has been renamed to `genotypes` to be biologically correct. 
+  
+**Internal changes:**
+
+ * The `C++` code has been completely refactored for organization. 
 
 ## Version 1.0.1 July 1, 2020 
 
