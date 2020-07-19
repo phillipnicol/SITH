@@ -1,0 +1,131 @@
+---
+title: "Spatial multi-type branching processes with user defined types" 
+author: "Phillip B. Nicol"
+date: "July 19 2020" 
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Spatial multi-type branching processes with user defined types}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+options(width = 800)
+options(rmarkdown.html_vignette.check_title = FALSE)
+```
+
+## Introduction 
+
+Recall that `simulateTumor()` assumes the "infinite alleles hypothesis." This means that each mutation only occurs once (so that every new mutation is unique). While this is useful for investigating how genetic diversity is organized within an *individual* tumor, it doesn't allow the user any control over what mutations can occur and at what rate. For example, the user may want to simulate a population of tumors according to an underlying disease model. 
+
+To give users more control over which mutations can occur, we define a new function `simulateTumorMTBP()`. For reasons discussed below, using this function is slightly more complicated than `simulateTumor()`, but it can handle simple situations quite effectively. 
+
+At the end of the document we show an example of how `simulateTumorMTBP()` can be used to model loss-of-function mutations. 
+
+
+## Defining a disease model 
+
+Suppose that there are $n$ genetic mutations of interests. A fully expressive model would need to define $2^n$ birth rates corresponding to each possible subsets of mutations that can be present in a cell's genome. While this is possible for small $n$, it quickly becomes intractable. For this reason, we choose a more restricting parameterization. 
+
+Our model assumes that there is a directed acyclic graph (DAG) $G$ governing the order in which mutations can occur. The vertices of $G$ are the mutations and the edges constrain the order in which the mutations occur. In particular, suppose that a cell's genotype contains mutations $V' \subset V$. During division, we assume that a cell can acquire any mutation $m$ for which there is an edge $(v',m) \in E$ such that $v' \in V'$. Furthermore, we assume that each edge $e = (v,w)$ has a mutation rate $u_e$ which gives the probability that a cell with mutation $v$ acquires mutation $w$ during division. When crossing edge $e$, the birth rate of the cell multiplied by $s_e$ (the selective advantage). 
+
+To summarize the above paragraph, we require a DAG $G$, probabilities for cross each edge $u_e$, and selective advantages for crossing each edge $s_e$. 
+
+The simplest way to encode the above information is with a matrix with $|E|$ rows and $4$ columns. Function `progressionChain()` generates a simple example where $G$ is a linear chain with $n$ vertices:
+
+```{r}
+library(SITH)
+set.seed(278115205)
+
+n <- 5
+G <- progressionChain(5) 
+G
+```
+
+The matrix returned by `progressionChain()` is the input that is required to `simulateTumorMTBP()`. Of course, the user can change `head` and `tail` to create more complicated DAGs. 
+
+Once we have obtained a matrix of the desired form, we can plug it right into `simulateTumorMTBP()`. 
+
+```{r}
+G[,3] <- rep(0.02, nrow(G))
+out <- simulateTumorMTBP(N = 1000, G=G)
+```
+
+The `out` list is exactly the same as the returned by `simulateTumor()`. In particular all of the downstream functions described in the first vignette apply to the output of `simulateTumorMTBP()`. 
+
+We defined the disease model `G` to be a linear chain with $5$ vertices. We should thus expect mutation $0$ to be less frequent than mutation $1$, since $0$ is required for $1$ to occur. 
+
+```{r}
+out$muts 
+```
+
+Let's also take a look at a 2D cross section 
+
+```{r}
+plotSlice(out) 
+```
+
+## Converting from igraph
+
+To define complicated networks, it is probably easier to obtain the matrix `G` from an `igraph` object. We provide functionality to do this. Let's start by whipping up a simple DAG:
+
+```{r}
+library(igraph)
+
+el <- matrix(as.character(c(0,1,0,2,2,3,3,4,2,5,1,5)), ncol = 2, byrow = TRUE)
+iG <- graph_from_edgelist(el)
+plot(iG)
+```
+We'll assume that $0$ is the initial mutation (similar to the original model). 
+
+Now we can convert this object into a matrix that can be used by `simulateTumorMTBP()` using `progressionDAG_from_igraph()`.
+
+```{r}
+G <- progressionDAG_from_igraph(iG)
+G
+```
+
+And now we can simulate a tumor according to these constraints:
+
+```{r}
+out <- simulateTumorMTBP(N=5000,G=G, verbose = FALSE)
+out$genotypes 
+```
+
+
+## Modeling loss-of-function mutations 
+
+We can model mutations in *TP53* as follows: state $0$ corresponds to the wild-type allele, state $1$ corresponds to a cell with $1$ copy of *TP53*, and cell $2$ corresponds to a cell with both copies of *TP53* mutated. Furthermore, we will assume that a cell with only $1$ mutated copy of *TP53* has a selective disadvantage. However, a cell with mutations in both copies of *TP53* has a selective advantage. For simplicity, let's assume that both copies can't be lost in a single event, so that state $2$ cells can only arise from state $1$ cells. Using the functionality described above, we can simulate this model in just a few lines of code. 
+
+```{r}
+# Make a chain: 0 -> 1 -> 2
+G <- progressionChain(2)
+
+#Give a disadvantage to a cell in state 1 and an advantage to a cell in state 2 
+G[1,4] <- 0.9; G[2,4] <- 1.4
+G
+
+#Simulate the model with N = 250000 cells
+out <- simulateTumorMTBP(G=G)
+```
+
+Let's see what a cross section looks like:
+```{r}
+plotSlice(out)
+```
+
+
+### Session information
+```{r}
+sessionInfo()
+```
+
+
+
+
+# References 
