@@ -129,7 +129,7 @@ simulateTumor <- function(N = 250000, b = 0.25, d = 0.18, u = 0.01, du = 0.003, 
 #' G <- progressionChain(3)
 #' out <- simulateTumorMTBP(N=1000,G=G,verbose=FALSE)
 #' 
-simulateTumorMTBP <- function(N = 250000, b = 0.25, d = 0.18, G = progressionChain(3), verbose = TRUE) {
+simulateTumorUDT <- function(N = 250000, b = 0.25, d = 0.18, G = progressionChain(3), verbose = TRUE) {
   checkG(G)
   
   #create input list
@@ -138,7 +138,7 @@ simulateTumorMTBP <- function(N = 250000, b = 0.25, d = 0.18, G = progressionCha
   input$G <- G
   
   #call Rcpp function
-  tumor <- simulateTumorMTBPcpp(input)
+  tumor <- simulateTumorUDTcpp(input)
   
   out <- list()
   

@@ -10,7 +10,7 @@ extern std::vector<int> drivers;
 
 namespace Sims {
     Rcpp::List simulateIA(Rcpp::List input); 
-    Rcpp::List simulateMTBP(Rcpp::List input);
+    Rcpp::List simulateUDT(Rcpp::List input);
 }
 
 

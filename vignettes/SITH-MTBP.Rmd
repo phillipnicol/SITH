@@ -1,10 +1,10 @@
 ---
-title: "Spatial multi-type branching processes with user defined types" 
+title: "Spatial multi-type branching processes with user-defined types" 
 author: "Phillip B. Nicol"
 date: "July 19 2020" 
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Spatial multi-type branching processes with user defined types}
+  %\VignetteIndexEntry{Spatial multi-type branching processes with user-defined types}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -23,9 +23,9 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 
 Recall that `simulateTumor()` assumes the "infinite alleles hypothesis." This means that each mutation only occurs once (so that every new mutation is unique). While this is useful for investigating how genetic diversity is organized within an *individual* tumor, it doesn't allow the user any control over what mutations can occur and at what rate. For example, the user may want to simulate a population of tumors according to an underlying disease model. 
 
-To give users more control over which mutations can occur, we define a new function `simulateTumorMTBP()`. For reasons discussed below, using this function is slightly more complicated than `simulateTumor()`, but it can handle simple situations quite effectively. 
+To give users more control over which mutations can occur, we define a new function `simulateTumorUDT()`. For reasons discussed below, using this function is slightly more complicated than `simulateTumor()`, but it can handle simple situations quite effectively. 
 
-At the end of the document we show an example of how `simulateTumorMTBP()` can be used to model loss-of-function mutations. 
+At the end of the document we show an example of how `simulateTumorUDT()` can be used to model loss-of-function mutations. 
 
 
 ## Defining a disease model 
@@ -47,16 +47,16 @@ G <- progressionChain(5)
 G
 ```
 
-The matrix returned by `progressionChain()` is the input that is required to `simulateTumorMTBP()`. Of course, the user can change `head` and `tail` to create more complicated DAGs. 
+The matrix returned by `progressionChain()` is the input that is required to `simulateTumorUDT()`. Of course, the user can change `head` and `tail` to create more complicated DAGs. 
 
-Once we have obtained a matrix of the desired form, we can plug it right into `simulateTumorMTBP()`. 
+Once we have obtained a matrix of the desired form, we can plug it right into `simulateTumorUDT()`. 
 
 ```{r}
 G[,3] <- rep(0.02, nrow(G))
-out <- simulateTumorMTBP(N = 1000, G=G)
+out <- simulateTumorUDT(N = 1000, G=G)
 ```
 
-The `out` list is exactly the same as the returned by `simulateTumor()`. In particular all of the downstream functions described in the first vignette apply to the output of `simulateTumorMTBP()`. 
+The `out` list is exactly the same as the returned by `simulateTumor()`. In particular all of the downstream functions described in the first vignette apply to the output of `simulateTumorUDT()`. 
 
 We defined the disease model `G` to be a linear chain with $5$ vertices. We should thus expect mutation $0$ to be less frequent than mutation $1$, since $0$ is required for $1$ to occur. 
 
@@ -83,7 +83,7 @@ plot(iG)
 ```
 We'll assume that $0$ is the initial mutation (similar to the original model). 
 
-Now we can convert this object into a matrix that can be used by `simulateTumorMTBP()` using `progressionDAG_from_igraph()`.
+Now we can convert this object into a matrix that can be used by `simulateTumorUDT()` using `progressionDAG_from_igraph()`.
 
 ```{r}
 G <- progressionDAG_from_igraph(iG)
@@ -93,7 +93,7 @@ G
 And now we can simulate a tumor according to these constraints:
 
 ```{r}
-out <- simulateTumorMTBP(N=5000,G=G, verbose = FALSE)
+out <- simulateTumorUDT(N=5000,G=G, verbose = FALSE)
 out$genotypes 
 ```
 
@@ -102,7 +102,7 @@ out$genotypes
 
 A loss-of-function mutation usually requires both copies of the gene to be mutated. A tumor cell may gain a selective advantage if a loss-of-function mutation occurs in the tumor suppressor gene *TP53*. However, it is possible that the cell is at a disadvantage if only one of the two copies are mutated. This might be referred to as "crossing the fitness valley." 
 
-`simulateTumorMTBP()` is well-suited for studying a models of loss-of-function mutations. 
+`simulateTumorUDT()` is well-suited for studying a models of loss-of-function mutations. 
 
 We can model mutations in *TP53* as follows: state $0$ corresponds to the wild-type allele, state $1$ corresponds to a cell with $1$ copy of *TP53*, and cell $2$ corresponds to a cell with both copies of *TP53* mutated. Furthermore, we will assume that a cell with only $1$ mutated copy of *TP53* has a selective disadvantage. However, a cell with mutations in both copies of *TP53* has a selective advantage. For simplicity, let's assume that both copies can't be lost in a single event, so that state $2$ cells can only arise from state $1$ cells. Using the functionality described above, we can simulate this model in just a few lines of code. 
 
@@ -116,7 +116,7 @@ G[,3] <- c(0.005,0.005)
 G
 
 #Simulate the model with N = 250000 cells
-out <- simulateTumorMTBP(G=G)
+out <- simulateTumorUDT(G=G)
 ```
 
 Let's see what a cross section looks like:

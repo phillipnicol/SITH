@@ -34,7 +34,7 @@ void SimUtils::initIA(Rcpp::List input) {
     perms = get_perms(v);
 }
 
-void SimUtils::initMTBP(Rcpp::List input) {
+void SimUtils::initUDT(Rcpp::List input) {
     //Read input list (from R)
     std::vector<double> params = input["params"]; 
     int tumor_size = params[0]; 

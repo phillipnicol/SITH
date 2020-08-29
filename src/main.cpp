@@ -8,8 +8,8 @@ Rcpp::List simulateTumorcpp(Rcpp::List input) {
 }
 
 // [[Rcpp::export]] 
-Rcpp::List simulateTumorMTBPcpp(Rcpp::List input) {
-    SimUtils::initMTBP(input); 
-    Rcpp::List out = Sims::simulateMTBP(input);
+Rcpp::List simulateTumorUDTcpp(Rcpp::List input) {
+    SimUtils::initUDT(input); 
+    Rcpp::List out = Sims::simulateUDT(input);
     return out; 
 }

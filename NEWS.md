@@ -2,7 +2,7 @@
 
 **New functionality:**
 
-  * `simulateTumorMTBP()`, where MTBP = multi-type branching process, implements the spatial growth model without the infinite alleles hypothesis. In 
+  * `simulateTumorUDT()`, where UDT = user-defined types, implements the spatial growth model without the infinite alleles hypothesis. In 
   particular, the user can define the mutations, mutation rates, and selective advantages conferred to a cell acquiring each mutation. To avoid an exponential
   number of parameters, the transitions between mutations must be described as a directed acyclic graph (DAG). A vignette will accompany this possibly confusing 
   explaination. There are also helper functions included so that the user can easily define a DAG of mutations from an `igraph` object. 

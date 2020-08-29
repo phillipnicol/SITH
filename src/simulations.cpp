@@ -78,7 +78,7 @@ Rcpp::List Sims::simulateIA(Rcpp::List input) {
     return(out);
 }
 
-Rcpp::List Sims::simulateMTBP(Rcpp::List input) {
+Rcpp::List Sims::simulateUDT(Rcpp::List input) {
     //Read input list (from R)
     std::vector<double> params = input["params"]; 
     int tumor_size = params[0]; 
@@ -105,7 +105,7 @@ Rcpp::List Sims::simulateMTBP(Rcpp::List input) {
     while(cells.size() < tumor_size)
     {
         index = selectIndexRS(cells, species);
-        Gillespie::gillespieMTBP(cells, species, index, time);
+        Gillespie::gillespieUDT(cells, species, index, time);
         ++iteration;
         if(iteration % interval == 0)
         {

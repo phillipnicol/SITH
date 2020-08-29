@@ -60,7 +60,7 @@ void Gillespie::gillespieIA(std::vector<cell> &cells, std::vector<specie> &speci
     }
 }
 
-void Gillespie::gillespieMTBP(std::vector<cell> &cells, std::vector<specie> &species, const int index, double &time) {
+void Gillespie::gillespieUDT(std::vector<cell> &cells, std::vector<specie> &species, const int index, double &time) {
 
     //Update time--approximate 
     double lambda = 1/(cells.size()*p_max);
@@ -83,7 +83,7 @@ void Gillespie::gillespieMTBP(std::vector<cell> &cells, std::vector<specie> &spe
         if(bd == 1) {
             //Birth
             update_lattice(cell, key, lattice);
-            struct cell new_cell = birth_cellMTBP(cells[index], key, cell_species, species);
+            struct cell new_cell = birth_cellUDT(cells[index], key, cell_species, species);
             cells.push_back(new_cell);         
         }
         else
@@ -219,7 +219,7 @@ cell birth_cellIA(cell &cell, const int key, const specie cell_species, std::vec
     return new_cell;
 }
 
-cell birth_cellMTBP(cell &cell, const int key, specie cell_species, std::vector<specie> &species) {
+cell birth_cellUDT(cell &cell, const int key, specie cell_species, std::vector<specie> &species) {
     //form new cell 
     struct cell new_cell;
     new_cell.x = cell.x;

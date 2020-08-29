@@ -4,7 +4,7 @@ author: "Phillip B. Nicol"
 date: "June 5 2020" 
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{SITH-introduction}
+  %\VignetteIndexEntry{Simulating spatial tumor growth with SITH}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 references:
