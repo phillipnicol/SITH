@@ -1,13 +1,13 @@
 
 #' @title Create a linear chain graph to describe the order of mutations
 #' 
-#' @description A helper function for \code{\link{simulateTumorMTBP}()} which returns to the user
+#' @description A helper function for \code{\link{simulateTumorUDT}()} which returns to the user
 #' the edge list for a linear chain. 
 #' 
 #' @param n Number of vertices in the chain
 #' 
 #' @return A matrix with 4 columns and n-1 rows which will be accepted as input to
-#' \code{\link{simulateTumorMTBP}()}.
+#' \code{\link{simulateTumorUDT}()}.
 #' 
 #' @author Phillip B. Nicol <philnicol740@gmail.com>
 #' 
@@ -27,7 +27,7 @@ progressionChain <- function(n) {
 
 #' @title Define the progression of mutations from an \code{igraph} object 
 #' 
-#' @description A helper function for \code{\link{simulateTumorMTBP}()} which returns to the user
+#' @description A helper function for \code{\link{simulateTumorUDT}()} which returns to the user
 #' the edge list for a DAG which is defined as an \code{igraph} object.
 #' 
 #' @param iG An igraph object for a directed acyclic graph. 

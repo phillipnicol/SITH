@@ -127,7 +127,7 @@ simulateTumor <- function(N = 250000, b = 0.25, d = 0.18, u = 0.01, du = 0.003, 
 #' 
 #' @examples 
 #' G <- progressionChain(3)
-#' out <- simulateTumorMTBP(N=1000,G=G,verbose=FALSE)
+#' out <- simulateTumorUDT(N=1000,G=G,verbose=FALSE)
 #' 
 simulateTumorUDT <- function(N = 250000, b = 0.25, d = 0.18, G = progressionChain(3), verbose = TRUE) {
   checkG(G)
