@@ -11,10 +11,10 @@ progressionChain(n)
 }
 \value{
 A matrix with 4 columns and n-1 rows which will be accepted as input to
-\code{\link{simulateTumorMTBP}()}.
+\code{\link{simulateTumorUDT}()}.
 }
 \description{
-A helper function for \code{\link{simulateTumorMTBP}()} which returns to the user
+A helper function for \code{\link{simulateTumorUDT}()} which returns to the user
 the edge list for a linear chain.
 }
 \examples{

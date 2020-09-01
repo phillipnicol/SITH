@@ -14,7 +14,7 @@ A matrix with 4 columns which contains the edges of the graph as well as the rat
 crossing each edge and the selective advantage/disadvantage obtained by crossing each edge.
 }
 \description{
-A helper function for \code{\link{simulateTumorMTBP}()} which returns to the user
+A helper function for \code{\link{simulateTumorUDT}()} which returns to the user
 the edge list for a DAG which is defined as an \code{igraph} object.
 }
 \author{
