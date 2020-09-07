@@ -76,7 +76,7 @@ Generate a tumor with 1000000 cells:
 out <- simulateTumor(N = 1000000, verbose = FALSE)
 ```
 
-Visualize the tumor with each unique allele colored differently:
+Visualize the tumor with each unique genotype colored differently:
 
 ``` r
 visualizeTumor(out, background = "white")
