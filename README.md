@@ -83,7 +83,7 @@ visualizeTumor(out, background = "white")
 rgl::view3d(zoom = 0.66)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](README_files/normal_color_tumor.png)<!-- -->
 
 Color regions of low mutation blue and regions of high mutation red:
 
@@ -92,6 +92,6 @@ visualizeTumor(out, background = "white", plot.type = "heat")
 rgl::view3d(zoom = 0.66)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](README_files/heat_color_tumor.png)<!-- -->
 
 
