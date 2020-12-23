@@ -40,7 +40,7 @@ cell initial_cell(std::vector<specie> &species, double wt_br, double wt_dr);
 
 bool*** init_lattice(void); 
 
-void gv_init(const int N, const double wt_br, const double wt_dr, const double u, const double du, const double s);
+void gv_init(const int N, const double wt_br, const double wt_dr, const double u, const double du, const double s, const double ul);
 std::vector<std::vector<int> > get_perms(std::vector<int> v);
 std::vector<std::vector<Edge > > processG(Rcpp::NumericMatrix G);
 

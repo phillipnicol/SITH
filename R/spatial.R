@@ -48,8 +48,8 @@ spatialDistribution <- function(tumor, N = 500, cutoff = 0.01, make.plot = TRUE)
   colnames(out$mean_mutant) <- c("Distance", "Mean # mutations")
   
   #Repeat process for drivers
-  if(length(tumor$drivers) > 0) {
-    driver_ids <- tumor$cell_ids[which(tumor$cell_ids$genotype %in% tumor$drivers),]
+  driver_ids <- tumor$cell_ids[which(tumor$cell_ids$genotype %in% tumor$drivers),]
+  if(length(driver_ids) > 0) {
     vals <- c(0:max(driver_ids$distance))
     mean_driver <- as.data.frame(sapply(vals, function(x) {
       return(nrow(driver_ids[driver_ids$distance == x,])/nrow(tumor$cell_ids[tumor$cell_ids$distance == x,]) )

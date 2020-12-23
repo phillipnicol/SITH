@@ -19,12 +19,13 @@ void SimUtils::initIA(Rcpp::List input) {
     double u = params[3]; 
     double du = params[4]; 
     double s = params[5]; 
-    bool verbose = params[6];
+    double ul = params[6];
+    bool verbose = params[7];
 
     if(verbose) {Rcpp::Rcout << "Initializing structures ... ...\n";}
 
     //Initialize global variables
-    gv_init(tumor_size, wt_br, wt_dr, u, du, s);
+    gv_init(tumor_size, wt_br, wt_dr, u, du, s, ul);
 
     //initialize empty lattice 
     lattice = init_lattice();
@@ -47,7 +48,7 @@ void SimUtils::initUDT(Rcpp::List input) {
     if(verbose) {Rcpp::Rcout << "Initializing structures ... ...\n";}
 
     //Initialize global variables
-    gv_init(tumor_size, wt_br, wt_dr, 0.0, 0.0, 1.0);
+    gv_init(tumor_size, wt_br, wt_dr, 0.0, 0.0, 1.0, 0.0);
 
     //initialize empty lattice 
     lattice = init_lattice();
@@ -124,7 +125,7 @@ bool*** init_lattice()
     return lattice;
 }
 
-void gv_init(const int N, const double wt_br, const double wt_dr, const double u, const double du, const double s) {
+void gv_init(const int N, const double wt_br, const double wt_dr, const double u, const double du, const double s, const double ul) {
     total_mutations = 0; 
     drivers.clear(); 
     p_max = wt_br + wt_dr;
@@ -133,9 +134,10 @@ void gv_init(const int N, const double wt_br, const double wt_dr, const double u
     if(N < 1) {Rcpp::stop("N must be at least 2.");}
     if(wt_dr > wt_br) {Rcpp::stop("Death rate can not be greater than birth rate.");}
     if((wt_br < 0) || (wt_dr < 0)) {Rcpp::stop("Birth and death rates must be non-negative.");}
-    if(u < 0) {Rcpp::stop("u must be non-negative");}
-    if(du < 0.0 || du > 1.0) {Rcpp::stop("du must be in [0,1]");}
-    if(s < 0) {Rcpp::stop("s must be non-negative");}
+    if(u < 0) {Rcpp::stop("Mutation must be non-negative");}
+    if(du < 0.0 || du > 1.0) {Rcpp::stop("Driver probability must be in [0,1]");}
+    if(s < 0) {Rcpp::stop("Driver selctive advantage must be non-negative");}
+    if(ul < 0) {Rcpp::stop("Mutation loss rate must be non-negative.");}
 
     //set lattice dims 
     if(N > 100000000) {

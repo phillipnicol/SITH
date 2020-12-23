@@ -179,6 +179,9 @@ cell birth_cellIA(cell &cell, const int key, const specie cell_species, std::vec
         ++species[cell.id].count;
     }
 
+    //Back mutation 
+    
+
     //original cell may mutate as well
     nmuts = R::rpois(u);
     if(nmuts > 0) {

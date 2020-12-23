@@ -3,13 +3,14 @@
 #' @description Simulate the spatial growth of a tumor with a multi-type branching
 #' process on the three-dimensional integer lattice.
 #' 
-#' @param N Number of cells in the tumor.
-#' @param b Cell division rate.
-#' @param d Cell death rate.
-#' @param u Mutation rate. When a cell divides, both daughter cell acquire \eqn{Pois(u)} genetic alterations
-#' @param du The probability that a genetic alteration is a driver mutation.
-#' @param s The selective advantage conferred to a driver mutation. A cell with k
+#' @param max_pop Number of cells in the tumor.
+#' @param div_rate Cell division rate.
+#' @param death_rate Cell death rate.
+#' @param mut_rate Mutation rate. When a cell divides, both daughter cell acquire \eqn{Pois(u)} genetic alterations
+#' @param driver_prob The probability that a genetic alteration is a driver mutation.
+#' @param driver_adv The selective advantage conferred to a driver mutation. A cell with k
 #' driver mutations is given birth rate \eqn{bs^k}.
+#' @param mut_loss The probability that a mutation is lost during a replication event. 
 #' @param verbose Whether or not to print simulation details to the R console.
 #' 
 #' @return A list with components 
@@ -45,7 +46,7 @@
 #' @author Phillip B. Nicol <philnicol740@gmail.com>
 #' 
 #' @examples 
-#' out <- simulateTumor(N = 1000)
+#' out <- simulateTumor(max_pop = 1000)
 #' #Take a look at mutants in order of decreasing MAF
 #' sig_muts <- out$muts[order(out$muts$MAF, decreasing = TRUE),]
 #' 
@@ -55,10 +56,12 @@
 #' D. Gillespie. Exact stochastic simulation of coupled chemical reactions. \emph{The Journal of Physical Chemistry},
 #' volume 81, pages 2340-2361, 1970.
 #' 
-simulateTumor <- function(N = 250000, b = 0.25, d = 0.18, u = 0.01, du = 0.003, s = 1.05, verbose = TRUE) {
+simulateTumor <- function(max_pop = 250000, div_rate = 0.25, death_rate = 0.18, 
+                          mut_rate = 0.01, driver_prob = 0.003, driver_adv = 1.05, 
+                          mut_loss = 0.0, verbose = TRUE) {
   #create input list
   input <- list()
-  input$params <- c(N, b, d, u, du, s, verbose)
+  input$params <- c(max_pop, div_rate, death_rate, mut_rate, driver_prob, driver_adv, verbose)
   
   #call Rcpp function
   tumor <- simulateTumorcpp(input)
@@ -76,7 +79,7 @@ simulateTumor <- function(N = 250000, b = 0.25, d = 0.18, u = 0.01, du = 0.003, 
   #get mutation ID and MAF 
   df <-  as.data.frame(tumor[[3]])
   ix <- as.data.frame(0:(nrow(df)-1))
-  out$muts <- cbind(ix, df[,1], df[,1]/N)
+  out$muts <- cbind(ix, df[,1], df[,1]/max_pop)
   colnames(out$muts) <- c("id", "count", "MAF")
   
   #record phylogenetic tree 
@@ -106,8 +109,8 @@ simulateTumor <- function(N = 250000, b = 0.25, d = 0.18, u = 0.01, du = 0.003, 
 #' Control the types of mutations which can occur. 
 #' 
 #' @param N Number of cells in the tumor.
-#' @param b Baseline cell division rate.
-#' @param d Baseline cell death rate. 
+#' @param div_rate Baseline cell division rate.
+#' @param death_rate Baseline cell death rate. 
 #' @param G Edge list for a directed acyclic graph describing possible transitions between states. See
 #'  \code{\link{progressionChain}()} for an example of a valid input matrix. 
 #' @param verbose Whether or not to print simulation details to the R console.
@@ -127,14 +130,14 @@ simulateTumor <- function(N = 250000, b = 0.25, d = 0.18, u = 0.01, du = 0.003, 
 #' 
 #' @examples 
 #' G <- progressionChain(3)
-#' out <- simulateTumorUDT(N=1000,G=G,verbose=FALSE)
+#' out <- simulateTumorUDT(max_pop=1000,G=G,verbose=FALSE)
 #' 
-simulateTumorUDT <- function(N = 250000, b = 0.25, d = 0.18, G = progressionChain(3), verbose = TRUE) {
+simulateTumorUDT <- function(max_pop = 250000, div_rate = 0.25, death_rate = 0.18, G = progressionChain(3), verbose = TRUE) {
   checkG(G)
   
   #create input list
   input <- list()
-  input$params <- c(N, b, d, verbose)
+  input$params <- c(max_pop, div_rate, death_rate, verbose)
   input$G <- G
   
   #call Rcpp function

@@ -85,16 +85,14 @@ inline int random_neighbor(cell cell) {
     //std::random_shuffle(nbhd.begin(), nbhd.end(), randWrapper);
     //nbhd = Rcpp::sample(nbhd,6);
     //int ix = floor(unif_rand()*720); 
-    int ix = R::runif(0,720);
+    int ix = R::runif(1,7);
 
-    for(int j = 0; j < 6; ++j) {
-        if(free_neighbor(cell, lattice, perms[ix][j]) == true) {
-            //if a free neighbor is found, this is the key
-            return perms[ix][j]; 
-        }
+    if(free_neighbor(cell, lattice, ix)) {
+        return ix;
     }
-    //otherwise, no free neighbors, and key is 0
-    return 0;
+    else {
+        return 0;
+    }
 }
 
 //update_lattice puts a 1 in the location where a new cell is born

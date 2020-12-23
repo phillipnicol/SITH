@@ -51,7 +51,6 @@ randomSingleCells <- function(tumor, ncells, fpr = 0.0, fnr = 0.0) {
   
   #add noise to df
   df[] <- data.frame(apply(df, c(1,2), function(x) add_noise(x,fpr,fnr)))
-  
   return(df)
 }
 
@@ -89,9 +88,10 @@ add_noise <- function(x, fpr, fnr) {
 #' https://doi.org/10.1186/s13059-016-0936-x. 
 #' 
 #' 
-singleCell <- function(tumor, pos, noise = 0.0) {
-  if(length(pos) != 3) {
-    stop("Position must be a vector of length 3.")
+singleCell <- function(tumor, cells, fpr = 0.0, fnr = 0.0) {
+  cells <- as.matrix(cells)
+  if(nrow(cells) != 3) {
+    stop("cells must be a matrix with 3 columns: (x,y,z) coordinates")
   }
   cell_df <- tumor$cell_ids[tumor$cell_ids$x == pos[1] & tumor$cell_ids$y == pos[2] & tumor$cell_ids$z == pos[3],]
   if(nrow(cell_df) == 0) {

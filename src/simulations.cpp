@@ -9,7 +9,8 @@ Rcpp::List Sims::simulateIA(Rcpp::List input) {
     double u = params[3]; 
     double du = params[4]; 
     double s = params[5]; 
-    bool verbose = params[6];
+    double ul = params[6];
+    bool verbose = params[7];
 
     //Init time 
     double time = 0; 
