@@ -1,1 +1,1 @@
-In this update I add some functionality and fix a bug where a suggested package is not used conditionally. 
+In this update I add functionality and correct an error where suggested package `rgl` is not being used conditionally. 

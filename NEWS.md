@@ -13,7 +13,7 @@ This update introduces new functionality for the tumor growth simulator.
 
 **Bug fixes**:
 
-  * In `visualizeTumor`
+  * In `visualizeTumor`, there was an issue where suggested package `rgl` was not being used conditionally. 
   
 **Internal changes:**
 
