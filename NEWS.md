@@ -1,4 +1,6 @@
-## Version 1.1.0 DATE  
+## Version 1.1.0 January 3, 2021 
+
+This update introduces new functionality for the tumor growth simulator. 
 
 **New functionality:**
 

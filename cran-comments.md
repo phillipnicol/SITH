@@ -1,1 +1,1 @@
-In this patch I fix an ERROR on R CMD CHECK for Solaris. The underlying issue was that one line had an ambiguous call to an overloaded function. I also change depends R (>= 4.0.0) to R (>= 3.6.0) so that users with the old release can use the package. 
+In this update I add some functionality and fix a bug where a suggested package is not used conditionally. 

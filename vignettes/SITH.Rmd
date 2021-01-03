@@ -293,10 +293,13 @@ plotSlice(out)
 To define complicated networks, it is probably easier to obtain the matrix `G` from an `igraph` object. We provide functionality to do this. Let's start by whipping up a simple DAG:
 
 ```{r, fig.width = 7.5, fig.height = 6}
-library(igraph)
+if (!requireNamespace("igraph", quietly = TRUE)) {
+  stop("igraph needed to compile the vignette.",
+      call. = FALSE)
+}
 
 el <- matrix(as.character(c(0,1,0,2,2,3,3,4,2,5,1,5)), ncol = 2, byrow = TRUE)
-iG <- graph_from_edgelist(el)
+iG <- igraph::graph_from_edgelist(el)
 plot(iG)
 ```
 We'll assume that $0$ is the initial mutation (similar to the original model). 
