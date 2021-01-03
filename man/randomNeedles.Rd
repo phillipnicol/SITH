@@ -25,7 +25,7 @@ fine needle aspiration. A random one-dimensional cross-section
 of the tumor is chosen, and the cells within this cross section are sampled, reporting mutation allele frequency.
 }
 \examples{
-out <- simulateTumor(N = 1000)
+out <- simulateTumor(max_pop = 1000)
 df <- randomNeedles(tumor = out, nsamples = 5)
 
 }

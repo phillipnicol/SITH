@@ -27,7 +27,7 @@ The procedure is exactly the same as \code{\link{singleCell}()} except that it a
 to be sequenced at once (chosen randomly throughout the entire tumor).
 }
 \examples{
-out <- simulateTumor(N = 1000)
+out <- simulateTumor(max_pop = 1000)
 df <- randomSingleCells(tumor = out, ncells = 5, fnr = 0.1) 
 }
 \author{

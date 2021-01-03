@@ -22,33 +22,33 @@ visualizeTumor <- function(tumor, plot.type = "normal", background = "black", ax
   if(!requireNamespace("rgl", quietly = TRUE)) {
     warning("Installing package 'rgl' is recommended for interactive visualization. Feautures and performance limited.")
     vistum_scatter(tumor, plot.type = plot.type)
-  }
-  min_x <- min(tumor$cell_ids[,1])
-  max_x <- max(tumor$cell_ids[,1])
-  min_y <- min(tumor$cell_ids[,2])
-  max_y <- max(tumor$cell_ids[,2])
-  min_z <- min(tumor$cell_ids[,3])
-  max_z <- max(tumor$cell_ids[,3])
+  } else{
+    min_x <- min(tumor$cell_ids[,1])
+    max_x <- max(tumor$cell_ids[,1])
+    min_y <- min(tumor$cell_ids[,2])
+    max_y <- max(tumor$cell_ids[,2])
+    min_z <- min(tumor$cell_ids[,3])
+    max_z <- max(tumor$cell_ids[,3])
   
-  if(plot.type == "heat") {
+    if(plot.type == "heat") {
     col.pal <- colorRampPalette(c("blue", "red"))
     hotcold <- col.pal(max(tumor$cell_ids$nmuts) + 1)
     rgl::open3d()
     rgl::bg3d(background)
     rgl::plot3d(tumor$cell_ids[,1], tumor$cell_ids[,2], tumor$cell_ids[,3], 
-           col = hotcold[tumor$cell_ids$nmuts+1], box = axes, axes = axes,
-           xlim = c(min_x - 10, max_x + 10), ylim = c(min_y - 10, max_y + 10), size = 5,
-           zlim = c(min_z - 10, max_z + 10), xlab = ifelse(axes,"X",""), ylab = ifelse(axes,"Y",""), 
-           zlab = ifelse(axes,"Z",""))
-  }
-  else if(plot.type == "normal") {
-  rgl::open3d()
-  rgl::bg3d(background)
-  rgl::plot3d(tumor$cell_ids[,1], tumor$cell_ids[,2], tumor$cell_ids[,3], 
-         col = tumor$color_scheme[tumor$cell_ids[,4]+1],  box = axes, axes = axes,
-         xlim = c(min_x - 10, max_x + 10), ylim = c(min_y - 10, max_y + 10), size = 5,
-         zlim = c(min_z - 10, max_z + 10), xlab = ifelse(axes,"X",""), ylab = ifelse(axes,"Y",""), 
-         zlab = ifelse(axes,"Z",""))
+            col = hotcold[tumor$cell_ids$nmuts+1], box = axes, axes = axes,
+            xlim = c(min_x - 10, max_x + 10), ylim = c(min_y - 10, max_y + 10), size = 5,
+            zlim = c(min_z - 10, max_z + 10), xlab = ifelse(axes,"X",""), ylab = ifelse(axes,"Y",""), 
+            zlab = ifelse(axes,"Z",""))
+    } else if(plot.type == "normal") {
+      rgl::open3d()
+      rgl::bg3d(background)
+      rgl::plot3d(tumor$cell_ids[,1], tumor$cell_ids[,2], tumor$cell_ids[,3], 
+          col = tumor$color_scheme[tumor$cell_ids[,4]+1],  box = axes, axes = axes,
+          xlim = c(min_x - 10, max_x + 10), ylim = c(min_y - 10, max_y + 10), size = 5,
+          zlim = c(min_z - 10, max_z + 10), xlab = ifelse(axes,"X",""), ylab = ifelse(axes,"Y",""), 
+          zlab = ifelse(axes,"Z",""))
+    }
   }
 }
 

@@ -39,7 +39,7 @@ Note that \code{cube.length} is required to be an odd integer (in order to have 
 }
 \examples{
 set.seed(116776544, kind = "Mersenne-Twister", normal.kind = "Inversion")
-out <- simulateTumor(N = 1000)
+out <- simulateTumor(max_pop = 1000)
 df <- bulkSample(tumor = out, pos = c(0,0,0))
 
 }

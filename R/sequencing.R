@@ -16,7 +16,7 @@
 #' @author Phillip B. Nicol <philnicol740@gmail.com>
 #' 
 #' @examples
-#' out <- simulateTumor(N = 1000)
+#' out <- simulateTumor(max_pop = 1000)
 #' df <- randomSingleCells(tumor = out, ncells = 5, fnr = 0.1) 
 
 randomSingleCells <- function(tumor, ncells, fpr = 0.0, fnr = 0.0) {
@@ -81,7 +81,7 @@ add_noise <- function(x, fpr, fnr) {
 #' 
 #' @examples 
 #' set.seed(1126490984)
-#' out <- simulateTumor(N = 1000)
+#' out <- simulateTumor(max_pop = 1000)
 #' df <- singleCell(tumor = out, pos = c(0,0,0), noise = 0.1)
 #' 
 #' @references 
@@ -135,7 +135,7 @@ singleCell <- function(tumor, pos, noise = 0.0) {
 #' with random center points. 
 #' 
 #' @examples 
-#' out <- simulateTumor(N = 1000)
+#' out <- simulateTumor(max_pop = 1000)
 #' df <- randomBulkSamples(tumor = out, nsamples = 5, cube.length = 5, threshold = 0.05)
 #' 
 #' @author Phillip B. Nicol 
@@ -222,7 +222,7 @@ randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05
 #' 
 #' @examples 
 #' set.seed(116776544, kind = "Mersenne-Twister", normal.kind = "Inversion")
-#' out <- simulateTumor(N = 1000)
+#' out <- simulateTumor(max_pop = 1000)
 #' df <- bulkSample(tumor = out, pos = c(0,0,0))
 #' 
 #' @references 
@@ -305,7 +305,7 @@ bulkSample <- function(tumor, pos, cube.length = 5, threshold = 0.05, coverage =
 #' of the tumor is chosen, and the cells within this cross section are sampled, reporting mutation allele frequency. 
 #' 
 #' @examples 
-#' out <- simulateTumor(N = 1000)
+#' out <- simulateTumor(max_pop = 1000)
 #' df <- randomNeedles(tumor = out, nsamples = 5)
 #' 
 #' @references 

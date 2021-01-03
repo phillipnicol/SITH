@@ -5,28 +5,32 @@
 \title{Spatial simulation of tumor growth}
 \usage{
 simulateTumor(
-  N = 250000,
-  b = 0.25,
-  d = 0.18,
-  u = 0.01,
-  du = 0.003,
-  s = 1.05,
+  max_pop = 250000,
+  div_rate = 0.25,
+  death_rate = 0.18,
+  mut_rate = 0.01,
+  driver_prob = 0.003,
+  selective_adv = 1.05,
+  disease_model = NULL,
   verbose = TRUE
 )
 }
 \arguments{
-\item{N}{Number of cells in the tumor.}
+\item{max_pop}{Number of cells in the tumor.}
 
-\item{b}{Cell division rate.}
+\item{div_rate}{Cell division rate.}
 
-\item{d}{Cell death rate.}
+\item{death_rate}{Cell death rate.}
 
-\item{u}{Mutation rate. When a cell divides, both daughter cell acquire \eqn{Pois(u)} genetic alterations}
+\item{mut_rate}{Mutation rate. When a cell divides, both daughter cell acquire \eqn{Pois(u)} genetic alterations}
 
-\item{du}{The probability that a genetic alteration is a driver mutation.}
+\item{driver_prob}{The probability that a genetic alteration is a driver mutation.}
 
-\item{s}{The selective advantage conferred to a driver mutation. A cell with k
+\item{selective_adv}{The selective advantage conferred to a driver mutation. A cell with k
 driver mutations is given birth rate \eqn{bs^k}.}
+
+\item{disease_model}{Edge list for a directed acyclic graph describing possible transitions between states. See
+\code{\link{progressionChain}()} for an example of a valid input matrix.}
 
 \item{verbose}{Whether or not to print simulation details to the R console.}
 }
@@ -67,9 +71,12 @@ alteration is a driver mutation with some probability \eqn{du}. A cell with k dr
 The model is simulated using a Gillespie algorithm. See the package vignette for details on how the algorithm is implemented.
 }
 \examples{
-out <- simulateTumor(N = 1000)
+out <- simulateTumor(max_pop = 1000)
 #Take a look at mutants in order of decreasing MAF
 sig_muts <- out$muts[order(out$muts$MAF, decreasing = TRUE),]
+
+#Specify the disease model
+out <- simulateTumor(max_pop = 1000, disease_model = progressionChain(3))
 
 }
 \references{

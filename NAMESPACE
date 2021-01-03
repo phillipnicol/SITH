@@ -1,6 +1,5 @@
 useDynLib(SITH, .registration=TRUE)
 export(simulateTumor, 
-simulateTumorUDT,
 visualizeTumor, 
 plotSlice, 
 spatialDistribution,

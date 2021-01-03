@@ -28,7 +28,7 @@ the \code{noise} parameter introduces false negatives into the data set at the s
 }
 \examples{
 set.seed(1126490984)
-out <- simulateTumor(N = 1000)
+out <- simulateTumor(max_pop = 1000)
 df <- singleCell(tumor = out, pos = c(0,0,0), noise = 0.1)
 
 }

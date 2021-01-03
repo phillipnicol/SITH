@@ -27,7 +27,7 @@
 #' 
 #' @examples 
 #' set.seed(1126490984)
-#' out <- simulateTumor(N = 1000, du = 0.1)
+#' out <- simulateTumor(max_pop = 1000, driver_prob = 0.1)
 #' sp <- spatialDistribution(tumor = out, make.plot = FALSE)
 #' 
 #' @author Phillip B. Nicol

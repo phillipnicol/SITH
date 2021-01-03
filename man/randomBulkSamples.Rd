@@ -36,7 +36,7 @@ This is the same as \code{\link{bulkSample}()}, except multiple samples are take
 with random center points.
 }
 \examples{
-out <- simulateTumor(N = 1000)
+out <- simulateTumor(max_pop = 1000)
 df <- randomBulkSamples(tumor = out, nsamples = 5, cube.length = 5, threshold = 0.05)
 
 }
