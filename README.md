@@ -4,7 +4,7 @@
 
 A Spatial Model of Intra-Tumor Heterogeneity (SITH)
 ================
-R package version 1.0.1.1 (1.0.1 on CRAN). 
+R package version 1.1.0.
 
 ## Installation
 
@@ -51,11 +51,6 @@ Refer to the [official CRAN page](https://CRAN.R-project.org/package=SITH) to vi
     simulated tumor.
       - Users can specify what part of the tumor the samples are taken
         from.
-        
-## Features (Github version only)
-
-  - Simulations with user-defined mutation types (instead of assuming infinite alleles hypothesis). See `simulateTumorMTBP()`, vignette soon to come.
-  - More realistic bulk sequencing procedure, allowing user to set coverage. 
 
 ## Future features  
 
