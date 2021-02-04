@@ -38,6 +38,15 @@ void Gillespie::gillespieIA(std::vector<cell> &cells, std::vector<specie> &speci
                 cells.pop_back();   
                 --species[cell.id].count;    
             }
+            else {
+                time = 0.0; 
+                cells[index].x = 0;
+                cells[index].y = 0;
+                cells[index].z = 0; 
+                cells[index].id = 0;
+                lattice[cell.x][cell.y][cell.z] = 0;
+                lattice[500][500][500] = 1; 
+            }
         }
     }
     else

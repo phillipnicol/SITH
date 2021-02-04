@@ -9,8 +9,8 @@ Rcpp::List Sims::simulateIA(Rcpp::List input) {
     double u = params[3]; 
     double du = params[4]; 
     double s = params[5]; 
-    double ul = params[6];
-    bool verbose = params[7];
+    bool verbose = params[6];
+    double max_time = params[7];
 
     //Init time 
     double time = 0; 
@@ -28,7 +28,7 @@ Rcpp::List Sims::simulateIA(Rcpp::List input) {
     start = clock();
 
     //main simulation loop
-    while(cells.size() < tumor_size)
+    while(cells.size() < tumor_size && time < max_time)
     {
         index = selectIndexRS(cells, species);
         Gillespie::gillespieIA(cells, species, index, time, wt_dr, u, du, s);

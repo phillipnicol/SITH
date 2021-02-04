@@ -139,19 +139,7 @@ void gv_init(const int N, const double wt_br, const double wt_dr, const double u
     if(s < 0) {Rcpp::stop("Driver selctive advantage must be non-negative");}
     if(ul < 0) {Rcpp::stop("Mutation loss rate must be non-negative.");}
 
-    //set lattice dims 
-    if(N > 100000000) {
-        //very large lattice dims
-        x_dim = 2000; y_dim = 2000; z_dim = 2000;
-    }
-    else if(N > 10000000) {
-        //decently large
-        x_dim = 1000; y_dim = 1000; z_dim = 1000;
-    }
-    else {
-        //This should handle most cases
-        x_dim = 500; y_dim = 500; z_dim = 500;
-    }
+    x_dim = 1000; y_dim = 1000; z_dim = 1000;
 }
 
 //Store all permutations 

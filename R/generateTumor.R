@@ -8,9 +8,10 @@
 #' @param death_rate Cell death rate.
 #' @param mut_rate Mutation rate. When a cell divides, both daughter cell acquire \eqn{Pois(u)} genetic alterations
 #' @param driver_prob The probability that a genetic alteration is a driver mutation.
-#' @param driver_adv The selective advantage conferred to a driver mutation. A cell with k
+#' @param selective_adv The selective advantage conferred to a driver mutation. A cell with k
 #' driver mutations is given birth rate \eqn{bs^k}.
-#' @param mut_loss The probability that a mutation is lost during a replication event. 
+#' @param disease_model Edge list for a directed acyclic graph describing possible transitions between states. See
+#'  \code{\link{progressionChain}()} for an example of a valid input matrix. 
 #' @param verbose Whether or not to print simulation details to the R console.
 #' 
 #' @return A list with components 
@@ -50,21 +51,29 @@
 #' #Take a look at mutants in order of decreasing MAF
 #' sig_muts <- out$muts[order(out$muts$MAF, decreasing = TRUE),]
 #' 
+#' #Specify the disease model
+#' out <- simulateTumor(max_pop = 1000, disease_model = progressionChain(3))
+#' 
 #' @references B. Waclaw, I. Bozic, M. Pittman, R. Hruban, B. Vogelstein and M. Nowak. A spatial model predicts
 #' that dispersal and cell turnover limit intratumor heterogeneity. \emph{Nature}, pages 261-264, 2015. 
 #' 
 #' D. Gillespie. Exact stochastic simulation of coupled chemical reactions. \emph{The Journal of Physical Chemistry},
 #' volume 81, pages 2340-2361, 1970.
 #' 
-simulateTumor <- function(max_pop = 250000, div_rate = 0.25, death_rate = 0.18, 
-                          mut_rate = 0.01, driver_prob = 0.003, driver_adv = 1.05, 
-                          mut_loss = 0.0, verbose = TRUE) {
+simulateTumor <- function(max_pop = 250000, max_time = 1, div_rate = 0.25, death_rate = 0.18, mut_rate = 0.01, 
+                          driver_prob = 0.003, selective_adv = 1.05, disease_model = NULL, verbose = TRUE) {
   #create input list
   input <- list()
-  input$params <- c(max_pop, div_rate, death_rate, mut_rate, driver_prob, driver_adv, verbose)
   
-  #call Rcpp function
-  tumor <- simulateTumorcpp(input)
+  if(is.null(disease_model)) {
+    input$params <- c(max_pop, div_rate, death_rate, mut_rate, driver_prob, selective_adv, verbose, max_time)
+    tumor <- simulateTumorcpp(input)
+  } else {
+    checkG(disease_model)
+    input$params <- c(max_pop, div_rate, death_rate, verbose)
+    input$G <- disease_model 
+    tumor <- simulateTumorUDTcpp(input)
+  }
   
   out <- list()
   
@@ -79,7 +88,7 @@ simulateTumor <- function(max_pop = 250000, div_rate = 0.25, death_rate = 0.18,
   #get mutation ID and MAF 
   df <-  as.data.frame(tumor[[3]])
   ix <- as.data.frame(0:(nrow(df)-1))
-  out$muts <- cbind(ix, df[,1], df[,1]/max_pop)
+  out$muts <- cbind(ix, df[,1], df[,1]/nrow(out$cell_ids))
   colnames(out$muts) <- c("id", "count", "MAF")
   
   #record phylogenetic tree 
@@ -100,81 +109,4 @@ simulateTumor <- function(max_pop = 250000, div_rate = 0.25, death_rate = 0.18,
   out$params <- input$params
   
   return(out)
-}
-
-
-#' @title Spatial simulation of tumor growth with user-defined types 
-#' 
-#' @description Simulate a multi-type branching process on the 3D integer lattice. 
-#' Control the types of mutations which can occur. 
-#' 
-#' @param N Number of cells in the tumor.
-#' @param div_rate Baseline cell division rate.
-#' @param death_rate Baseline cell death rate. 
-#' @param G Edge list for a directed acyclic graph describing possible transitions between states. See
-#'  \code{\link{progressionChain}()} for an example of a valid input matrix. 
-#' @param verbose Whether or not to print simulation details to the R console.
-#' 
-#' @return A list which is exactly the same as the one returned by \code{\link{simulateTumor}()}.
-#' 
-#' @details This function implements the simulation of tumor growth without the infinite alleles
-#' hypothesis which insists that each mutation occurs only once. In particular, this function allows
-#' the user to define a directed acyclic graph describing the progression between different "states" that
-#' the cell can be in.
-#' 
-#' For example, a chain of length 3 could be used to model loss of function, where both copies of the gene must be mutated.
-#' State 1 could be the wild-type, state 2 could be the presence of one copy mutated, and state 3 could be the presence
-#' of both copies mutated. Run \code{progressionChain(3)} to get a valid \code{G} for this model. 
-#' 
-#' @author Phillip B. Nicol <philnicol740@gmail.com>
-#' 
-#' @examples 
-#' G <- progressionChain(3)
-#' out <- simulateTumorUDT(max_pop=1000,G=G,verbose=FALSE)
-#' 
-simulateTumorUDT <- function(max_pop = 250000, div_rate = 0.25, death_rate = 0.18, G = progressionChain(3), verbose = TRUE) {
-  checkG(G)
-  
-  #create input list
-  input <- list()
-  input$params <- c(max_pop, div_rate, death_rate, verbose)
-  input$G <- G
-  
-  #call Rcpp function
-  tumor <- simulateTumorUDTcpp(input)
-  
-  out <- list()
-  
-  #position data for the N cells 
-  out$cell_ids <- data.frame(tumor[[1]])
-  colnames(out$cell_ids) <- c("x", "y", "z", "genotype", "nmuts", "distance")
-  
-  #record the information for the uniqe genotypes
-  out$genotypes <- data.frame(tumor[[2]]); nc <- ncol(out$genotypes)
-  colnames(out$genotypes)[ncol(out$genotypes)] <- "count"
-  
-  #get mutation ID and MAF 
-  df <-  as.data.frame(tumor[[3]])
-  ix <- as.data.frame(0:(nrow(df)-1))
-  out$muts <- cbind(ix, df[,1], df[,1]/N)
-  colnames(out$muts) <- c("id", "count", "MAF")
-  
-  #record phylogenetic tree 
-  out$phylo_tree <- as.data.frame(tumor[[4]])
-  colnames(out$phylo_tree) <- c("parent", "child")
-  
-  #Record colors for plotting purposes 
-  color_scheme_mat <- tumor[[5]]
-  out$color_scheme <- apply(color_scheme_mat, 2, function(x) {
-    return(rgb(x[1],x[2],x[3],1))
-  })
-  
-  #record a list of drivers and the simulated time (in days)
-  out$drivers <- c()
-  out$time <- tumor[[8]]
-  
-  #return parameters used for simulation 
-  out$params <- input$params
-  
-  return(out)  
 }
