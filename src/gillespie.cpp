@@ -1,11 +1,10 @@
 #include"gillespie.h"
 
 void Gillespie::gillespieIA(std::vector<cell> &cells, std::vector<specie> &species, const int index, double &time,
-                const double wt_dr, const double u, const double du, const double s) {
+                double &lambda, const double wt_br, const double wt_dr, const double u, const double du, const double s) {
 
-    //Update time--approximate 
-    double lambda = 1/(cells.size()*p_max);
-    time += R::rexp(lambda);
+    //Update time 
+    time += R::rexp(1/lambda);
 
     //Randomly selected cell (from previous step)
     cell cell = cells[index];
@@ -13,59 +12,42 @@ void Gillespie::gillespieIA(std::vector<cell> &cells, std::vector<specie> &speci
     //Find the allele of the chosen cell 
     specie cell_species = species[cell.id];
 
-    //Look at the neighbors of the cell and find a (random) neighbor
-    //If no random neighbor, key = 0
-    int key = random_neighbor(cell);
-    if(key != 0)
-    {
-        //key != 0 so there is at least one free neighbor
-        //Probability of birth event
-        int bd = R::rbinom(1,cell_species.b/(cell_species.b + cell_species.d));
-        if(bd == 1) {
-            //Birth
+    //Probability of birth event
+    int bd = R::rbinom(1,cell_species.b/(cell_species.b + cell_species.d));
+    if(bd == 1) {
+        //Birth
+        //Look at the neighbors of the cell and find a (random) neighbor
+        //If no random neighbor, key = 0
+        int key = random_neighbor(cell);
+        if(key != 0) {
             update_lattice(cell, key, lattice);
             struct cell new_cell = birth_cellIA(cells[index], key, cell_species, species, wt_dr, u, du, s);
-            cells.push_back(new_cell);         
-        }
-        else
-        {
-            //Death
-            if(cells.size() > 1) {
-                //Free up the space in the lattice
-                lattice[cell.x][cell.y][cell.z] = 0;
-                //remove cell from list
-                std::swap(cells[index], cells.back());
-                cells.pop_back();   
-                --species[cell.id].count;    
-            }
-            else {
-                time = 0.0; 
-                cells[index].x = 0;
-                cells[index].y = 0;
-                cells[index].z = 0; 
-                cells[index].id = 0;
-                lattice[cell.x][cell.y][cell.z] = 0;
-                lattice[500][500][500] = 1; 
-            }
+            cells.push_back(new_cell); 
+            lambda += (species[new_cell.id].b + species[new_cell.id].d); 
         }
     }
-    else
-    {
-        //Key = 0 and the cell has no free neighbors
-        //No birth can occur, but the cell could still die
-        int bd = R::rbinom(1,cell_species.b/(cell_species.b + cell_species.d));
-        if(bd == 0)
-        {
-            //Death
-            if(cells.size() > 1)
-            {
-                //procedure same as above
-                lattice[cell.x][cell.y][cell.z] = 0;
-                std::swap(cells[index], cells.back());
-                cells.pop_back();
-                --species[cell.id].count;
-            }        
+    else {
+        //Death
+        if(cells.size() > 1) {
+            //Free up the space in the lattice
+            lattice[cell.x][cell.y][cell.z] = 0;
+            //remove cell from list
+            std::swap(cells[index], cells.back());
+            cells.pop_back();   
+            --species[cell.id].count;  
+            lambda -= (cell_species.b + cell_species.d);
         }
+        else {
+            Rcpp::Rcout << "BAD! \n"; 
+            time = 0.0; 
+            lattice[cell.x][cell.y][cell.z] = 0;
+            cells[index].x = 500;
+            cells[index].y = 500;
+            cells[index].z = 500; 
+            cells[index].id = 0;
+            lattice[500][500][500] = 1; 
+            lambda = wt_br + wt_dr; 
+        } 
     }
 }
 

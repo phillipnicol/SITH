@@ -15,6 +15,9 @@ Rcpp::List Sims::simulateIA(Rcpp::List input) {
     //Init time 
     double time = 0; 
 
+    //Init lambda
+    double lambda = wt_br + wt_dr; 
+
     //initialize vector of cells:
     std::vector<cell> cells; 
     std::vector<specie> species;
@@ -31,7 +34,7 @@ Rcpp::List Sims::simulateIA(Rcpp::List input) {
     while(cells.size() < tumor_size && time < max_time)
     {
         index = selectIndexRS(cells, species);
-        Gillespie::gillespieIA(cells, species, index, time, wt_dr, u, du, s);
+        Gillespie::gillespieIA(cells, species, index, time, lambda, wt_br, wt_dr, u, du, s);
         ++iteration;
         if(iteration % interval == 0)
         {

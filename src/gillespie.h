@@ -27,7 +27,7 @@ bool vin(std::vector<int> v, int a);
 
 namespace Gillespie {
     void gillespieIA(std::vector<cell> &cells, std::vector<specie> &species, const int index, double &time,
-                const double wt_dr, const double u, const double du, const double s);
+                double &lambda, const double wt_br, const double wt_dr, const double u, const double du, const double s);
     void gillespieUDT(std::vector<cell> &cells, std::vector<specie> &species, const int index, double &time);
 }
 
