@@ -260,7 +260,7 @@ bulkSample <- function(tumor, pos, cube.length = 5, threshold = 0.05, coverage =
   input$cell_ids <- cell_subset
   input$genotypes <- tumor$genotypes
   total_sqnc <- as.data.frame(randomSingleCells(input, nrow(cell_subset)))
-  total_sqnc <- colSums(total_sqnc)/bulk_size
+  total_sqnc <- colSums(total_sqnc)/nrow(cell_subset)
   total_sqnc <- total_sqnc[total_sqnc > threshold]
   
   total_sqnc <- as.data.frame(t(total_sqnc))

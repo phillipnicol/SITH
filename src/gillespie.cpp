@@ -47,6 +47,7 @@ void Gillespie::gillespieIA(std::vector<cell> &cells, std::vector<specie> &speci
             cells[index].id = 0;
             lattice[500][500][500] = 1; 
             lambda = wt_br + wt_dr; 
+            Rcpp::Rcout << time << "\n";
         } 
     }
 }
