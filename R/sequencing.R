@@ -51,8 +51,12 @@ randomSingleCells <- function(tumor, ncells, fpr = 0.0, fnr = 0.0) {
   
   #add noise to df
   df[] <- data.frame(apply(df, c(1,2), function(x) add_noise(x,fpr,fnr)))
-  
-  return(df)
+  out <- list()
+  out$sequencing <- df
+  out$positions <- tumor$cell_ids[cells, c(1,2,3)]
+  out$positions <- as.data.frame(out$positions)
+  colnames(out$positions) <- c("x", "y", "z")
+  return(out)
 }
 
 add_noise <- function(x, fpr, fnr) {
@@ -162,7 +166,7 @@ randomBulkSamples <- function(tumor, nsamples, cube.length = 5, threshold = 0.05
     input <- list()
     input$cell_ids <- cell_subset
     input$genotypes <- tumor$genotypes
-    total_sqnc <- as.data.frame(randomSingleCells(input, nrow(cell_subset)))
+    total_sqnc <- as.data.frame(randomSingleCells(input, nrow(cell_subset))$sequencing)
     total_sqnc <- colSums(total_sqnc)/bulk_size
     total_sqnc <- total_sqnc[total_sqnc > threshold]
     
