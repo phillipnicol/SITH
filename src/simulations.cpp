@@ -10,6 +10,9 @@ Rcpp::List Sims::simulateIA(Rcpp::List input) {
     double du = params[4]; 
     double s = params[5]; 
     bool verbose = params[6];
+    int recurrent_size = params[7];
+    double tr = params[8];
+
 
     //Init time 
     double time = 0; 
@@ -30,13 +33,45 @@ Rcpp::List Sims::simulateIA(Rcpp::List input) {
     while(cells.size() < tumor_size)
     {
         index = selectIndexRS(cells, species);
-        Gillespie::gillespieIA(cells, species, index, time, wt_dr, u, du, s);
+        Gillespie::gillespieIA(cells, species, index, time, wt_dr, u, du, s, tr);
         ++iteration;
         if(iteration % interval == 0)
         {
             if(verbose) {Rcpp::Rcout << "Simulated time: " << time << " days. Population is " << cells.size() << " cells. \n";}
             iteration = 1;
         }
+    }
+
+    if(recurrent_size > 0) {
+        if(verbose) {
+            Rcpp::Rcout << "Simulating treatment ... ... \n";
+        }
+        int i = 0; 
+        while(i < cells.size()) {
+            if(!species[cells[i].id].treatment_resistance) {
+                cell cell = cells[i];
+                //Free up the space in the lattice
+                lattice[cell.x][cell.y][cell.z] = 0;
+                //remove cell from list
+                std::swap(cells[i], cells.back());
+                cells.pop_back();   
+                --species[cell.id].count;    
+            } else {
+                ++i;
+            }
+        }
+
+        while(cells.size() < recurrent_size)
+        {
+            index = selectIndexRS(cells, species);
+            Gillespie::gillespieIA(cells, species, index, time, wt_dr, u, du, s, tr);
+            ++iteration;
+            if(iteration % interval == 0)
+            {
+                if(verbose) {Rcpp::Rcout << "Simulated time: " << time << " days. Population is " << cells.size() << " cells. \n";}
+                iteration = 1;
+            }
+        }   
     }
 
     //Print summary of simulation
@@ -50,7 +85,7 @@ Rcpp::List Sims::simulateIA(Rcpp::List input) {
     if(verbose) {Rcpp::Rcout << "Writing results ... ... \n";}
 
     //save the data and write them to R objects 
-    Rcpp::NumericMatrix cell_coords(cells.size(), 6);
+    Rcpp::NumericMatrix cell_coords(cells.size(), 7);
 
     int maximum_mut = max_mut(species);
     Rcpp::IntegerMatrix species_dict(species.size(), maximum_mut+1); 

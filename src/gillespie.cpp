@@ -1,7 +1,7 @@
 #include"gillespie.h"
 
 void Gillespie::gillespieIA(std::vector<cell> &cells, std::vector<specie> &species, const int index, double &time,
-                const double wt_dr, const double u, const double du, const double s) {
+                const double wt_dr, const double u, const double du, const double s, const double tr) {
 
     //Update time--approximate 
     double lambda = 1/(cells.size()*p_max);
@@ -24,7 +24,7 @@ void Gillespie::gillespieIA(std::vector<cell> &cells, std::vector<specie> &speci
         if(bd == 1) {
             //Birth
             update_lattice(cell, key, lattice);
-            struct cell new_cell = birth_cellIA(cells[index], key, cell_species, species, wt_dr, u, du, s);
+            struct cell new_cell = birth_cellIA(cells[index], key, cell_species, species, wt_dr, u, du, s, tr);
             cells.push_back(new_cell);         
         }
         else
@@ -120,7 +120,8 @@ void Gillespie::gillespieUDT(std::vector<cell> &cells, std::vector<specie> &spec
 }
 
 cell birth_cellIA(cell &cell, const int key, const specie cell_species, std::vector<specie> &species, 
-                            const double wt_dr, const double u, const double du, const double s) {
+                            const double wt_dr, const double u, const double du, const double s,
+                            const double tr) {
     //form new cell 
     struct cell new_cell;
     new_cell.x = cell.x;
@@ -164,9 +165,33 @@ cell birth_cellIA(cell &cell, const int key, const specie cell_species, std::vec
         new_species.genotype = new_gt;
         new_species.count = 1;
 
-        if(new_species.b + wt_dr > p_max)
-        {
+        if(new_species.b + wt_dr > p_max) {
             p_max = new_species.b + wt_dr;
+        }
+
+        new_species.treatment_resistance = cell_species.treatment_resistance;
+        int treatment_resistance = R::rbinom(1,tr);
+        if(treatment_resistance == 1) {
+            new_species.treatment_resistance = true; 
+        } 
+
+        new_species.red = cell_species.red + R::rnorm(0,0.05);
+        if(new_species.red > 1) {
+            new_species.red = 1-R::rnorm(0,0.05);
+        } else if(new_species.red < 0) {
+            new_species.red = abs(R::rnorm(0,0.05));
+        }
+        new_species.green = cell_species.green + R::rnorm(0,0.05);
+        if(new_species.green > 1) {
+            new_species.green = 1-R::rnorm(0,0.05);
+        } else if(new_species.green < 0) {
+            new_species.green = abs(R::rnorm(0,0.05));
+        }
+        new_species.blue = cell_species.blue + R::rnorm(0,0.05);
+        if(new_species.blue > 1) {
+            new_species.blue = 1-R::rnorm(0,0.05);
+        } else if(new_species.red < 0) {
+            new_species.blue = abs(R::rnorm(0,0.05));
         }
 
         species.push_back(new_species);
@@ -210,6 +235,31 @@ cell birth_cellIA(cell &cell, const int key, const specie cell_species, std::vec
             p_max = new_species.b + wt_dr;
         }
 
+        new_species.treatment_resistance = cell_species.treatment_resistance;
+        int treatment_resistance = R::rbinom(1,tr);
+        if(treatment_resistance == 1) {
+            new_species.treatment_resistance = true; 
+        } 
+
+        new_species.red = cell_species.red + R::rnorm(0,0.05);
+        if(new_species.red > 1) {
+            new_species.red = 1-R::rnorm(0,0.05);
+        } else if(new_species.red < 0) {
+            new_species.red = abs(R::rnorm(0,0.05));
+        }
+        new_species.green = cell_species.green + R::rnorm(0,0.05);
+        if(new_species.green > 1) {
+            new_species.green = 1-R::rnorm(0,0.05);
+        } else if(new_species.green < 0) {
+            new_species.green = abs(R::rnorm(0,0.05));
+        }
+        new_species.blue = cell_species.blue + R::rnorm(0,0.05);
+        if(new_species.blue > 1) {
+            new_species.blue = 1-R::rnorm(0,0.05);
+        } else if(new_species.red < 0) {
+            new_species.blue = abs(R::rnorm(0,0.05));
+        }
+
         species[cell_species.id].count--;
 
         species.push_back(new_species);
@@ -218,6 +268,7 @@ cell birth_cellIA(cell &cell, const int key, const specie cell_species, std::vec
 
     return new_cell;
 }
+
 
 cell birth_cellUDT(cell &cell, const int key, specie cell_species, std::vector<specie> &species) {
     //form new cell 
@@ -325,6 +376,9 @@ cell birth_cellUDT(cell &cell, const int key, specie cell_species, std::vector<s
     return new_cell;
 }
 
+
+
+
 int find_gtype(std::vector<specie> &species, std::vector<int> gtype) {
     for(int i = 0; i < species.size(); ++i) {
         if(species[i].genotype == gtype) {
@@ -342,3 +396,5 @@ bool vin(std::vector<int> v, int a) {
     }
     return false; 
 }
+
+
