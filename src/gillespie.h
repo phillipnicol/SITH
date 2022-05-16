@@ -12,6 +12,7 @@ License: GPL-2
 extern double p_max;
 extern std::vector<int> drivers; 
 extern int total_mutations;
+extern int nmig; 
 extern int x_dim, y_dim, z_dim; //Size of the lattice (set at the start of simulation to accomodate num of cells)
 
 extern bool*** lattice; 
@@ -26,8 +27,8 @@ int find_gtype(std::vector<specie> &species, std::vector<int> gtype);
 bool vin(std::vector<int> v, int a);
 
 namespace Gillespie {
-    void gillespieIA(std::vector<cell> &cells, std::vector<specie> &species, const int index, double &time,
-                const double wt_dr, const double u, const double du, const double s);
+void gillespieIA(std::vector<cell> &cells, std::vector<specie> &species, const int index, double &time,
+                const double wt_dr, const double u, const double du, const double s, const double alpha);
     void gillespieUDT(std::vector<cell> &cells, std::vector<specie> &species, const int index, double &time);
 }
 

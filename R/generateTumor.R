@@ -61,12 +61,13 @@
 #' volume 81, pages 2340-2361, 1970.
 #' 
 simulateTumor <- function(max_pop = 250000, div_rate = 0.25, death_rate = 0.18, mut_rate = 0.01, 
-                          driver_prob = 0.003, selective_adv = 1.05, disease_model = NULL, verbose = TRUE) {
+                          driver_prob = 0.003, selective_adv = 1.05, disease_model = NULL, verbose = TRUE,
+                          alpha = 0) {
   #create input list
   input <- list()
   
   if(is.null(disease_model)) {
-    input$params <- c(max_pop, div_rate, death_rate, mut_rate, driver_prob, selective_adv, verbose)
+    input$params <- c(max_pop, div_rate, death_rate, mut_rate, driver_prob, selective_adv, verbose, alpha)
     tumor <- simulateTumorcpp(input)
   } else {
     checkG(disease_model)
@@ -104,6 +105,8 @@ simulateTumor <- function(max_pop = 250000, div_rate = 0.25, death_rate = 0.18, 
   #record a list of drivers and the simulated time (in days)
   out$drivers <- tumor[[7]]
   out$time <- tumor[[8]]
+  
+  out$nmig <- tumor[[9]]
   
   #return parameters used for simulation 
   out$params <- input$params

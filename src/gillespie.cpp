@@ -1,7 +1,7 @@
 #include"gillespie.h"
 
 void Gillespie::gillespieIA(std::vector<cell> &cells, std::vector<specie> &species, const int index, double &time,
-                const double wt_dr, const double u, const double du, const double s) {
+                const double wt_dr, const double u, const double du, const double s, const double alpha) {
 
     //Update time--approximate 
     double lambda = 1/(cells.size()*p_max);
@@ -20,15 +20,17 @@ void Gillespie::gillespieIA(std::vector<cell> &cells, std::vector<specie> &speci
     {
         //key != 0 so there is at least one free neighbor
         //Probability of birth event
-        int bd = R::rbinom(1,cell_species.b/(cell_species.b + cell_species.d));
+        Rcpp::NumericVector prob = Rcpp::NumericVector::create(cell_species.b, cell_species.d, alpha);
+        Rcpp::IntegerVector bdv = Rcpp::sample(3,1,false,prob);
+        int bd = bdv[0];
+        //Rcpp::Rcout << bd << "\n"; 
         if(bd == 1) {
             //Birth
             update_lattice(cell, key, lattice);
             struct cell new_cell = birth_cellIA(cells[index], key, cell_species, species, wt_dr, u, du, s);
             cells.push_back(new_cell);         
         }
-        else
-        {
+        else if(bd == 2) {
             //Death
             if(cells.size() > 1) {
                 //Free up the space in the lattice
@@ -38,14 +40,52 @@ void Gillespie::gillespieIA(std::vector<cell> &cells, std::vector<specie> &speci
                 cells.pop_back();   
                 --species[cell.id].count;    
             }
-        }
+        } else {
+            ++nmig; 
+            lattice[cell.x][cell.y][cell.z] = 0; 
+            int sign_change = R::runif(1,4);
+            if(sign_change == 1) {
+                cell.x = -1*(cell.x-x_dim/2)+x_dim/2;
+
+            } else if(sign_change == 2) {
+                cell.y = -1*(cell.y-y_dim/2)+y_dim/2;
+
+            } else {
+                cell.z = -1*(cell.z-z_dim/2)+z_dim/2;
+            }
+            int cntr = 0;
+            while(lattice[cell.x][cell.y][cell.z]) {
+                //Find a new place
+                //Rcpp::Rcout << cntr << "\n";
+                //Find a new place
+                //Rcpp::Rcout << cntr << "\n";
+                int jump = R::runif(1,7);
+                if(jump==1) {
+                    ++cell.x;
+                } else if(jump==2) {
+                    --cell.x;
+                } else if(jump==3) {
+                    ++cell.y;
+                } else if(jump==4) {
+                    --cell.y;
+                } else if(jump==5) {
+                    ++cell.z;
+                } else {
+                    --cell.z;
+                }
+                }
+            lattice[cell.x][cell.y][cell.z]=true;
+            cells[index] = cell; 
+            }
     }
     else
     {
         //Key = 0 and the cell has no free neighbors
         //No birth can occur, but the cell could still die
-        int bd = R::rbinom(1,cell_species.b/(cell_species.b + cell_species.d));
-        if(bd == 0)
+        Rcpp::NumericVector prob = Rcpp::NumericVector::create(cell_species.b, cell_species.d, alpha);
+        Rcpp::IntegerVector bdv = Rcpp::sample(3,1,false,prob);
+        int bd = bdv[0];
+        if(bd == 2)
         {
             //Death
             if(cells.size() > 1)
@@ -56,6 +96,40 @@ void Gillespie::gillespieIA(std::vector<cell> &cells, std::vector<specie> &speci
                 cells.pop_back();
                 --species[cell.id].count;
             }        
+        } else if(bd==3) {
+            ++nmig; 
+            lattice[cell.x][cell.y][cell.z] = 0; 
+            int sign_change = R::runif(1,4);
+            if(sign_change == 1) {
+                cell.x = -1*(cell.x-x_dim/2)+x_dim/2;
+
+            } else if(sign_change == 2) {
+                cell.y = -1*(cell.y-y_dim/2)+y_dim/2;
+
+            } else {
+                cell.z = -1*(cell.z-z_dim/2)+z_dim/2;
+            }
+            int cntr = 0;
+            while(lattice[cell.x][cell.y][cell.z]) {
+                //Find a new place
+                //Rcpp::Rcout << cntr << "\n";
+                int jump = R::runif(1,7);
+                if(jump==1) {
+                    ++cell.x;
+                } else if(jump==2) {
+                    --cell.x;
+                } else if(jump==3) {
+                    ++cell.y;
+                } else if(jump==4) {
+                    --cell.y;
+                } else if(jump==5) {
+                    ++cell.z;
+                } else {
+                    --cell.z;
+                }
+            }
+            lattice[cell.x][cell.y][cell.z]=true;
+            cells[index] = cell; 
         }
     }
 }
@@ -137,6 +211,7 @@ cell birth_cellIA(cell &cell, const int key, const specie cell_species, std::vec
         case 6: --new_cell.z; break; 
         default: Rcpp::stop("Algorithm internal error.");
     }
+
 
     //daughter cell 
     //Receieve a poisson number of genetic alterations 

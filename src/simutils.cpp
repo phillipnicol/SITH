@@ -3,6 +3,7 @@
 double p_max;
 std::vector<int> drivers; 
 int total_mutations;
+int nmig;
 int x_dim, y_dim, z_dim; //Size of the lattice (set at the start of simulation to accomodate num of cells)
 
 bool*** lattice; 
@@ -126,6 +127,7 @@ bool*** init_lattice()
 
 void gv_init(const int N, const double wt_br, const double wt_dr, const double u, const double du, const double s) {
     total_mutations = 0; 
+    nmig = 0;
     drivers.clear(); 
     p_max = wt_br + wt_dr;
 
