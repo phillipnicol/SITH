@@ -10,6 +10,11 @@ void PostProcessing::write_results(std::vector<cell> &cells, std::vector<specie>
         cell_coords(i, 3) = cells[i].id;
         cell_coords(i, 4) = species[cells[i].id].genotype.size(); 
         cell_coords(i, 5) = sqrt(cell_coords(i,0)*cell_coords(i,0) + cell_coords(i,1)*cell_coords(i,1) + cell_coords(i,2)*cell_coords(i,2));
+        if(species[cells[i].id].treatment_resistance) {
+            cell_coords(i,6) = 1;
+        } else {
+            cell_coords(i,6) = 0;
+        }
     }    
 
     //Write species results
@@ -37,12 +42,28 @@ void PostProcessing::write_phylo_tree(std::vector<std::vector<int> > &phylo_tree
 Rcpp::NumericMatrix PostProcessing::get_color_scheme(std::vector<specie> &species) {
     Rcpp::NumericMatrix color_scheme(3, species.size());
 
-    color_scheme(0,0) = 0.5; color_scheme(1,0) = 0.5; color_scheme(2,0) = 0.5; 
-
-    for(int i = 1; i < species.size(); ++i) {
-        color_scheme(0,i) = R::runif(rgb_lb, rgb_ub);
-        color_scheme(1,i) = R::runif(rgb_lb, rgb_ub);
-        color_scheme(2,i) = R::runif(rgb_lb, rgb_ub);
+    for(int i = 0; i < species.size(); ++i) {
+        if(species[i].red > 1) {
+            color_scheme(0,i) = 1;
+        } else if(species[i].red < 0) {
+            color_scheme(0,i) = 0;
+        } else {
+            color_scheme(0,i) = species[i].red;
+        }
+        if(species[i].green > 1) {
+            color_scheme(1,i) = 1;
+        } else if(species[i].green < 0) {
+            color_scheme(1,i) = 0;
+        } else {
+            color_scheme(1,i) = species[i].green;
+        }
+        if(species[i].blue > 1) {
+            color_scheme(2,i) = 1;
+        } else if(species[i].blue < 0) {
+            color_scheme(2,i) = 0;
+        } else {
+            color_scheme(2,i) = species[i].blue;
+        }
     }
     return(color_scheme);
 }

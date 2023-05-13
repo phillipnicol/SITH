@@ -19,7 +19,7 @@ extern std::vector<std::vector<int> > phylo_tree;
 extern std::vector<std::vector<Edge> > G; 
 
 cell birth_cellIA(cell &cell, const int key, const specie cell_species, std::vector<specie> &species, 
-                const double wt_dr, const double u, const double du, const double s);
+                const double wt_dr, const double u, const double du, const double s, const double tr);
 cell birth_cellUDT(cell &cell, const int key, specie cell_species, std::vector<specie> &species);
 
 int find_gtype(std::vector<specie> &species, std::vector<int> gtype);
@@ -27,7 +27,7 @@ bool vin(std::vector<int> v, int a);
 
 namespace Gillespie {
     void gillespieIA(std::vector<cell> &cells, std::vector<specie> &species, const int index, double &time,
-                const double wt_dr, const double u, const double du, const double s);
+                const double wt_dr, const double u, const double du, const double s, const double tr);
     void gillespieUDT(std::vector<cell> &cells, std::vector<specie> &species, const int index, double &time);
 }
 

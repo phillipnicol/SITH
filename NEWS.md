@@ -1,3 +1,13 @@
+## Version 1.2.0 
+
+The main feature of this update is the ability to simulate tumors under targeted therapy. 
+
+**New functionality:**
+
+ * Several new parameters to `simulateTumor()` have been added. After `max_pop` is reached, therapy is applied and all non-resistants cells die. Then the tumor grows to `recurrent_size`. To control the probability that a new mutation confers treatment resistance, use the `resistance_prob` parameter. 
+ * When plotting the tumor, the colors are now chosen so that grey is neutral and cells with similar genotypes have similar colors.
+
+
 ## Version 1.1.0 January 3, 2021 
 
 This update introduces new functionality for the tumor growth simulator. 

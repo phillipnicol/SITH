@@ -20,6 +20,8 @@ void SimUtils::initIA(Rcpp::List input) {
     double du = params[4]; 
     double s = params[5]; 
     bool verbose = params[6];
+    double treatment_time = params[7];
+    double recurrent_size = params[8];
 
     if(verbose) {Rcpp::Rcout << "Initializing structures ... ...\n";}
 
@@ -75,6 +77,12 @@ cell SimUtils::initial_cell(std::vector<specie> &species, double wt_br, double w
     initial_type.id = 0;
     initial_type.count = 1;
     initial_type.genotype.push_back(0);
+    initial_type.treatment_resistance = false;
+
+    //color
+    initial_type.red=0.5;
+    initial_type.green=0.5;
+    initial_type.blue=0.5;
 
     //Save the species type in the vector
     species.push_back(initial_type);

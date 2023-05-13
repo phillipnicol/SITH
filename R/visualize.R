@@ -18,7 +18,12 @@
 #' @author Phillip B. Nicol 
 #' 
 #' 
-visualizeTumor <- function(tumor, plot.type = "normal", background = "black", axes = FALSE) {
+visualizeTumor <- function(tumor, 
+                           plot.type = "normal",
+                           mut=NULL,
+                           background = "black", 
+                           axes = FALSE,
+                           remove.others=FALSE) {
   if(!requireNamespace("rgl", quietly = TRUE)) {
     warning("Installing package 'rgl' is recommended for interactive visualization. Feautures and performance limited.")
     vistum_scatter(tumor, plot.type = plot.type)
@@ -29,13 +34,31 @@ visualizeTumor <- function(tumor, plot.type = "normal", background = "black", ax
     max_y <- max(tumor$cell_ids[,2])
     min_z <- min(tumor$cell_ids[,3])
     max_z <- max(tumor$cell_ids[,3])
-  
-    if(plot.type == "heat") {
-    col.pal <- colorRampPalette(c("blue", "red"))
-    hotcold <- col.pal(max(tumor$cell_ids$nmuts) + 1)
-    rgl::open3d()
-    rgl::bg3d(background)
-    rgl::plot3d(tumor$cell_ids[,1], tumor$cell_ids[,2], tumor$cell_ids[,3], 
+    if(!is.null(mut)) {
+      ixs <- findMut(mut)
+      if(remove.others) {
+        rxs <- c(1:nrow(tumor$cell_ids)) 
+        rxs <- rxs[-ixs]
+        tumor$cell_ids <- tumor$cell_ids[-rxs,]
+        color <- rep("red",nrow(tumor$cell_ids))
+      } else {
+        color <- ifelse(1:nrow(tumor$cell_ids) %in% ixs,
+                        "red", "grey")
+      }
+      
+      rgl::open3d()
+      rgl::bg3d(background)
+      rgl::plot3d(tumor$cell_ids[,1], tumor$cell_ids[,2], tumor$cell_ids[,3], 
+                  col = color, box = axes, axes = axes,
+                  xlim = c(min_x - 10, max_x + 10), ylim = c(min_y - 10, max_y + 10), size = 5,
+                  zlim = c(min_z - 10, max_z + 10), xlab = ifelse(axes,"X",""), ylab = ifelse(axes,"Y",""), 
+                  zlab = ifelse(axes,"Z",""))
+    } else if(plot.type == "heat") {
+      col.pal <- colorRampPalette(c("blue", "red"))
+      hotcold <- col.pal(max(tumor$cell_ids$nmuts) + 1)
+      rgl::open3d()
+      rgl::bg3d(background)
+      rgl::plot3d(tumor$cell_ids[,1], tumor$cell_ids[,2], tumor$cell_ids[,3], 
             col = hotcold[tumor$cell_ids$nmuts+1], box = axes, axes = axes,
             xlim = c(min_x - 10, max_x + 10), ylim = c(min_y - 10, max_y + 10), size = 5,
             zlim = c(min_z - 10, max_z + 10), xlab = ifelse(axes,"X",""), ylab = ifelse(axes,"Y",""), 
@@ -68,18 +91,24 @@ visualizeTumor <- function(tumor, plot.type = "normal", background = "black", ax
 #' @author Phillip B. Nicol 
 #' 
 #' 
-plotSlice <- function(tumor, slice.dim = "x", level = 0, plot.type = "normal") {
+plotSlice <- function(tumor, slice.dim = "x", level = 0, plot.type = "normal",
+                      mut=NULL) {
   slice <- switch(slice.dim, "x" = 1, "y" = 2, "z" = 3)
   
   df_slice <- tumor$cell_ids[tumor$cell_ids[,slice] == level,-slice]
-  if(plot.type == "heat") {
+  if(!is.null(mut)) {
+    ixs <- findMut(mut)
+    color <- ifelse(1:nrow(tumor$cell_ids) %in% ixs,
+                    "red", "grey")
+    plot(df_slice[,1], df_slice[,2], col = color, pch = 16,
+         xlab = NA, ylab = NA)
+    
+  } else if(plot.type == "heat") {
     col.pal <- colorRampPalette(c("blue", "red"))
     hotcold <- col.pal(max(tumor$cell_ids$nmuts) + 1)
     plot(df_slice[,1], df_slice[,2], col = hotcold[df_slice$nmuts+1], pch = 16,
          xlab = NA, ylab = NA)
-    
-  }
-  else if(plot.type == "normal") {
+  } else if(plot.type == "normal") {
     plot(df_slice[,1], df_slice[,2], col = tumor$color_scheme[df_slice$genotype+1], pch = 16,
          xlab = NA, ylab = NA)
   }    

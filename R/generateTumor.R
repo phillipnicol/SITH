@@ -61,12 +61,15 @@
 #' volume 81, pages 2340-2361, 1970.
 #' 
 simulateTumor <- function(max_pop = 250000, div_rate = 0.25, death_rate = 0.18, mut_rate = 0.01, 
-                          driver_prob = 0.003, selective_adv = 1.05, disease_model = NULL, verbose = TRUE) {
+                          driver_prob = 0.003, selective_adv = 1.05, disease_model = NULL, 
+                          recurrent_size=0,resistance_prob=0,verbose = TRUE) {
   #create input list
   input <- list()
   
   if(is.null(disease_model)) {
-    input$params <- c(max_pop, div_rate, death_rate, mut_rate, driver_prob, selective_adv, verbose)
+    input$params <- c(max_pop, div_rate, death_rate, mut_rate, 
+                      driver_prob, selective_adv, verbose,
+                      recurrent_size,resistance_prob)
     tumor <- simulateTumorcpp(input)
   } else {
     checkG(disease_model)
@@ -79,7 +82,8 @@ simulateTumor <- function(max_pop = 250000, div_rate = 0.25, death_rate = 0.18, 
   
   #position data for the N cells 
   out$cell_ids <- data.frame(tumor[[1]])
-  colnames(out$cell_ids) <- c("x", "y", "z", "genotype", "nmuts", "distance")
+  colnames(out$cell_ids) <- c("x", "y", "z", "genotype",
+                              "nmuts", "distance","resistant")
   
   #record the information for the uniqe genotypes
   out$genotypes <- data.frame(tumor[[2]]); nc <- ncol(out$genotypes)
@@ -97,6 +101,7 @@ simulateTumor <- function(max_pop = 250000, div_rate = 0.25, death_rate = 0.18, 
   
   #Record colors for plotting purposes 
   color_scheme_mat <- tumor[[5]]
+
   out$color_scheme <- apply(color_scheme_mat, 2, function(x) {
     return(rgb(x[1],x[2],x[3],1))
   })
