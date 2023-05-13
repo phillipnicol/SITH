@@ -1,6 +1,6 @@
 ---
 title: "A Spatial Model of Intratumor Heterogeneity"
-author: "R package version 1.0.1"
+author: "R package version 1.2.0"
 output: github_document
 ---
 
@@ -28,6 +28,7 @@ Alternatively, the package can be installed directly from this repository by fir
   - Contains a 3D simulator of spatial tumor growth and mutation, similar to the model described in [this paper](https://www.nature.com/articles/nature14971).
     - The simulator is written in C++ since it is computationally expensive. 
     - A tumor with 1 million cells can be simulated in under a minute on a standard desktop computer.
+  - Simulation of the tumor under targeted therapy.
   - 3D interactive visualizations of the simulated tumor using `rgl`. 
     - Option to color regions with high mutation red and regions with low mutation blue. 
     - 2D cross section
@@ -51,7 +52,7 @@ Generate a tumor with $10^6$ cells:
 
 
 ```{r, echo}
-out <- simulateTumor(N = 1000000, verbose = FALSE)
+out <- simulateTumor(max_pop = 1000000, verbose = FALSE)
 ```
 
 
@@ -68,4 +69,15 @@ rgl::view3d(zoom = 0.66)
 visualizeTumor(out, background = "white", plot.type = "heat")
 rgl::view3d(zoom = 0.66)
 ```
+
+## References
+
+If you use `SITH` in your work, please cite: 
+
+Nicol, P.B., Barabasi, D.L., Coombes, K.R. and Asiaee, A. (2022). SITH: an R package for visualizing and analyzing a spatial model of intratumor heterogeneity. Computational and Systems Oncology. Vol 2(2), pg. e1033. https://doi.org/10.1002/cso2.1033.
+
+
+
+
+
 
