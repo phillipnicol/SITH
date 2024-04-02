@@ -18,7 +18,7 @@
 #' @examples
 #' out <- simulateTumor(max_pop = 1000)
 #' df <- randomSingleCells(tumor = out, ncells = 5, fnr = 0.1) 
-
+#'
 randomSingleCells <- function(tumor, ncells, fpr = 0.0, fnr = 0.0) {
   cells <- sample(1:nrow(tumor$cell_ids), ncells, replace = F)
   
