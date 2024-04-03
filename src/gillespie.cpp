@@ -45,35 +45,33 @@ void Gillespie::gillespieIA(std::vector<cell> &cells, std::vector<specie> &speci
             lattice[cell.x][cell.y][cell.z] = 0; 
             int sign_change = R::runif(1,4);
             if(sign_change == 1) {
-                cell.x = -1*(cell.x-x_dim/2)+x_dim/2;
+                cell.x = x_dim - cell.x - 1;
 
             } else if(sign_change == 2) {
-                cell.y = -1*(cell.y-y_dim/2)+y_dim/2;
+                cell.y = y_dim - cell.y - 1;
 
             } else {
-                cell.z = -1*(cell.z-z_dim/2)+z_dim/2;
+                cell.z = z_dim - cell.z - 1;
             }
             int cntr = 0;
             while(lattice[cell.x][cell.y][cell.z]) {
                 //Find a new place
                 //Rcpp::Rcout << cntr << "\n";
-                //Find a new place
-                //Rcpp::Rcout << cntr << "\n";
                 int jump = R::runif(1,7);
-                if(jump==1) {
+                if(jump==1 && cell.x < x_dim-1) {
                     ++cell.x;
-                } else if(jump==2) {
+                } else if(jump==2 && cell.x > 0) {
                     --cell.x;
-                } else if(jump==3) {
+                } else if(jump==3 && cell.y < y_dim-1) {
                     ++cell.y;
-                } else if(jump==4) {
+                } else if(jump==4 && cell.y > 0) {
                     --cell.y;
-                } else if(jump==5) {
+                } else if(jump==5 && cell.z < z_dim - 1) {
                     ++cell.z;
-                } else {
+                } else if(cell.z > 0) {
                     --cell.z;
                 }
-                }
+            }
             lattice[cell.x][cell.y][cell.z]=true;
             cells[index] = cell; 
             }
@@ -101,30 +99,30 @@ void Gillespie::gillespieIA(std::vector<cell> &cells, std::vector<specie> &speci
             lattice[cell.x][cell.y][cell.z] = 0; 
             int sign_change = R::runif(1,4);
             if(sign_change == 1) {
-                cell.x = -1*(cell.x-x_dim/2)+x_dim/2;
+                cell.x = x_dim - cell.x - 1;
 
             } else if(sign_change == 2) {
-                cell.y = -1*(cell.y-y_dim/2)+y_dim/2;
+                cell.y = y_dim - cell.y - 1;
 
             } else {
-                cell.z = -1*(cell.z-z_dim/2)+z_dim/2;
+                cell.z = z_dim - cell.z - 1;
             }
             int cntr = 0;
             while(lattice[cell.x][cell.y][cell.z]) {
                 //Find a new place
                 //Rcpp::Rcout << cntr << "\n";
                 int jump = R::runif(1,7);
-                if(jump==1) {
+                if(jump==1 && cell.x < x_dim-1) {
                     ++cell.x;
-                } else if(jump==2) {
+                } else if(jump==2 && cell.x > 0) {
                     --cell.x;
-                } else if(jump==3) {
+                } else if(jump==3 && cell.y < y_dim-1) {
                     ++cell.y;
-                } else if(jump==4) {
+                } else if(jump==4 && cell.y > 0) {
                     --cell.y;
-                } else if(jump==5) {
+                } else if(jump==5 && cell.z < z_dim - 1) {
                     ++cell.z;
-                } else {
+                } else if(cell.z > 0) {
                     --cell.z;
                 }
             }

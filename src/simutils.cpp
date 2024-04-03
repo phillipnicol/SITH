@@ -65,9 +65,9 @@ cell SimUtils::initial_cell(std::vector<specie> &species, double wt_br, double w
 {
     //Initial cell lies in the center of the lattice
     cell cell;
-    cell.x = x_dim/2;
-    cell.y = y_dim/2;
-    cell.z = z_dim/2;
+    cell.x = 0;
+    cell.y = 0;
+    cell.z = 0;
 
     //initial specie type has wild type birth and death rates
     specie initial_type;
@@ -121,7 +121,7 @@ bool*** init_lattice()
             }
         }
     }
-    lattice[x_dim/2][y_dim/2][z_dim/2] = 1;
+    lattice[0][0][0] = 1;
     return lattice;
 }
 
